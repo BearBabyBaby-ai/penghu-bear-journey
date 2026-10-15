@@ -1,6 +1,6 @@
 {
   "project": "熊熊澎湖之旅",
-  "exportedAt": "2026-10-16T06:56:42+08:00",
+  "exportedAt": "2026-10-16T07:24:01+08:00",
   "siteVersion": 14,
   "deploymentDirectory": "dist",
   "recordCount": 977,
@@ -21,7 +21,8 @@
     "Node.js 24 run (will run in GitHub Actions)",
     "GitHub Actions has not run in the destination repository",
     "External map tiles (NLSC/OSM) could not be reached from this environment",
-    "No physical Android/iOS device testing"
+    "No physical Android/iOS device testing",
+    "APK full-screen (no URL bar) on a physical device"
   ],
   "files": [
     {
@@ -41,8 +42,8 @@
     },
     {
       "path": "CLAUDE.md",
-      "bytes": 3228,
-      "sha256": "5b03b1572fecba874f27a3c941b86044cf29e1b610175cdd9377474ff66c72c8"
+      "bytes": 3496,
+      "sha256": "0fb7f5fb8a7839696b6b2454e3e78ec8fb1d40ad86aade2db61caf23b8ad1c81"
     },
     {
       "path": "DEVELOPMENT.md",
@@ -51,13 +52,13 @@
     },
     {
       "path": "HANDOFF_CLAUDE_GEMINI.md",
-      "bytes": 12076,
-      "sha256": "58630cb15f504c36996335c79b74d22673527c1facefee1767a0567938accb1f"
+      "bytes": 12942,
+      "sha256": "5fc1831dce746b50330da2f2045b634ca85fd17c8f18bee9154a11de112db246"
     },
     {
       "path": "README.md",
-      "bytes": 7720,
-      "sha256": "4447d7bc64155391bc3ebfb3485ad7453b9e70fafe89ac1426742dc76b62b318"
+      "bytes": 8586,
+      "sha256": "5a79568fe4b54bf987f2893841103a21e7d59fc8f9e0d850df1e08240489331b"
     },
     {
       "path": "START_HERE.txt",
@@ -1048,5 +1049,12 @@
   "previousExportSha256": "31529d562278dad55686203c1d2c902d9090c9687437422f4c8913a14c0592e9",
   "baseSourceCommit": "bd506c093dd8eb189ec1c1f7454aa4d04a993b90",
   "repository": "BearBabyBaby-ai/penghu-bear-journey",
-  "pagesUrl": "https://bearbabybaby-ai.github.io/penghu-bear-journey/"
+  "pagesUrl": "https://bearbabybaby-ai.github.io/penghu-bear-journey/",
+  "apk": {
+    "packageId": "io.github.bearbabybaby_ai.penghubear",
+    "builder": "PWABuilder (TWA)",
+    "displayMode": "standalone",
+    "signingKey": "shared with 熊熊綜合系統 (fingerprint B4:D3:...:3A:3A); keystore kept outside repository",
+    "assetlinks": "https://bearbabybaby-ai.github.io/.well-known/assetlinks.json lists both apps"
+  }
 }

@@ -29,6 +29,14 @@
   - `dist/icons/` 由 `tools/build-app-icons.py` 把原始熊寶PNG等比例置中到海色底，熊寶原檔不變。theme-color 改為與手機標題列相同的 #faf9ee。
   - APK 以 PWABuilder 打包（Trusted Web Activity），網域根 `assetlinks.json` 位於 `BearBabyBaby-ai.github.io` 儲存庫，需加入本App的package與簽章指紋。
 
+## Android APK（2026-10-16 已打包）
+
+- PWABuilder 打包（Trusted Web Activity），Package ID：`io.github.bearbabybaby_ai.penghubear`，Display mode：Standalone。
+- 簽章沿用熊熊綜合系統同一把金鑰（SHA-256 指紋 `B4:D3:2D:70:…:04:3A:3A`）；金鑰檔與資訊存於使用者雲端硬碟「key」資料夾，不放進此公開儲存庫。重新打包時選 Use mine、Package ID 不變，才能覆蓋安裝。
+- 網域根驗證檔 `https://bearbabybaby-ai.github.io/.well-known/assetlinks.json`（`BearBabyBaby-ai.github.io` 儲存庫）已同時列出熊熊綜合系統（`io.github.bearbabybaby_ai.twa`）與本App兩筆，不可覆蓋其中一筆。
+- 若App開啟仍有網址列：清除該App儲存空間或重新安裝，讓手機重新驗證。
+- 未驗證：實體手機上的全螢幕顯示結果、各Android版本相容性。
+
 ## 可直接開始的步驟
 
 1. 解壓縮GitHub專案ZIP，先讀 `CLAUDE.md`、`START_HERE.txt`、本檔、`README.md` 及 `DEVELOPMENT.md`。

@@ -25,6 +25,10 @@
 
 `dist/manifest.json`、`dist/sw.js`、`dist/pwa.js`、`dist/icons/`。更換圖示或 manifest 時改 `sw.js` 的 `VERSION`。圖示只能用 `tools/build-app-icons.py` 由原始熊寶PNG產生，不改繪。正式網址：https://bearbabybaby-ai.github.io/penghu-bear-journey/
 
+## Android APK
+
+Package ID `io.github.bearbabybaby_ai.penghubear`，與熊熊綜合系統共用簽章金鑰（金鑰不在本儲存庫）。網域根 `assetlinks.json` 在 `BearBabyBaby-ai.github.io` 儲存庫，兩個App各一筆，修改時不可刪掉另一筆。
+
 ## 手機版面（第13版起）
 
 700px 以下由 `style.css` 末段「2026-10-16 手機版面整理」區塊控制，`dist/mobile-layout.js` 量測下方卡片高度寫入 `--ui-bottom`，讓搖桿與 E 鍵浮在卡片上方。調整手機版面時改這兩處，不要動桌機規則。

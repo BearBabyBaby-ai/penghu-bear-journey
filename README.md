@@ -62,6 +62,14 @@ python -m http.server 4173 --directory dist
 - APK 要全螢幕（不顯示網址列）開啟，網域根目錄 `https://bearbabybaby-ai.github.io/.well-known/assetlinks.json`（放在 `BearBabyBaby-ai.github.io` 儲存庫）必須加入此 App 的 package 名稱與簽章指紋。少了這筆，APK 仍可用，但上方會出現網址列。
 - 圖示由 `python tools/build-app-icons.py` 從原始熊寶PNG產生，只縮放置中，不改繪熊寶。
 
+## Android APK（2026-10-16 已打包）
+
+- PWABuilder 打包（Trusted Web Activity），Package ID：`io.github.bearbabybaby_ai.penghubear`，Display mode：Standalone。
+- 簽章沿用熊熊綜合系統同一把金鑰（SHA-256 指紋 `B4:D3:2D:70:…:04:3A:3A`）；金鑰檔與資訊存於使用者雲端硬碟「key」資料夾，不放進此公開儲存庫。重新打包時選 Use mine、Package ID 不變，才能覆蓋安裝。
+- 網域根驗證檔 `https://bearbabybaby-ai.github.io/.well-known/assetlinks.json`（`BearBabyBaby-ai.github.io` 儲存庫）已同時列出熊熊綜合系統（`io.github.bearbabybaby_ai.twa`）與本App兩筆，不可覆蓋其中一筆。
+- 若App開啟仍有網址列：清除該App儲存空間或重新安裝，讓手機重新驗證。
+- 未驗證：實體手機上的全螢幕顯示結果、各Android版本相容性。
+
 ## 進度轉移
 
 集章進度儲存在各網站的瀏覽器儲存空間。搬到 GitHub Pages 後，請先在舊網站的「集章手帳」匯出進度備份，再於新網站匯入。程式與資料檔案備份不包含瀏覽器內的個人進度。
