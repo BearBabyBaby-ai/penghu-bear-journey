@@ -1,6 +1,6 @@
 {
   "project": "熊熊澎湖之旅",
-  "exportedAt": "2026-10-16T07:31:32+08:00",
+  "exportedAt": "2026-10-16T07:57:56+08:00",
   "siteVersion": 14,
   "deploymentDirectory": "dist",
   "recordCount": 977,
@@ -47,13 +47,13 @@
     },
     {
       "path": "DEVELOPMENT.md",
-      "bytes": 11773,
-      "sha256": "934e7e0b0e63e479e71f923b5c8563ab29124cfa3950f4c218988b88e6c33184"
+      "bytes": 11926,
+      "sha256": "b594363fbf2af3f578169b3af19482c1437a0c52adf106c2526c9d019ff5f8dc"
     },
     {
       "path": "HANDOFF_CLAUDE_GEMINI.md",
-      "bytes": 13217,
-      "sha256": "b7bcdfa3fe0710e143a98a3513c263b2f9b4a90e3f8633beebee9d898d64a521"
+      "bytes": 13587,
+      "sha256": "7e2710f880aa6d6fe381c54c4904565f8307fd24b27090f28b29a2e17d495797"
     },
     {
       "path": "README.md",
@@ -807,8 +807,8 @@
     },
     {
       "path": "dist/game.js",
-      "bytes": 44078,
-      "sha256": "9ddcd6f0f5317c3cce5bff116af85d1018c3694112aa0cbf225846d648da94f0"
+      "bytes": 44319,
+      "sha256": "4aa568c3483b4177b3c17b76cee71b1f358c1f91f8597ca9f4a5ae8637ae9d9e"
     },
     {
       "path": "dist/geo/MIRROR-LICENSE.txt",
@@ -868,7 +868,7 @@
     {
       "path": "dist/index.html",
       "bytes": 8726,
-      "sha256": "aa21b2ce8bd7864f9d619fb8d9cd151d171e3fa48b34bad19cbeeda572a2f0fb"
+      "sha256": "72c6d1c8a14098f75cf38d1982600ea6ecd273321af477a68697fc573187f158"
     },
     {
       "path": "dist/manifest.json",
@@ -917,8 +917,8 @@
     },
     {
       "path": "dist/style.css",
-      "bytes": 36862,
-      "sha256": "187c12cbb1dfda7857ab00b8b670711ee360964f36306778b50d409e75f2347a"
+      "bytes": 36904,
+      "sha256": "1c46bcbf415fbd65e20019a1894aa52cd9ca02846f23b8b862a5a0cf452c6cc7"
     },
     {
       "path": "dist/sw.js",
@@ -1049,7 +1049,8 @@
     "Destination card updates only the distance while walking (no per-frame DOM rebuild)",
     "CLAUDE.md core constraints; handoff documents updated",
     "App setup: manifest.json, sw.js, pwa.js, icons generated from original Bearbao PNG",
-    "App/APK icon replaced with user-supplied 旅遊熊熊.png (sources/app-icon-travel-bear.png); sw.js VERSION v2"
+    "App/APK icon replaced with user-supplied 旅遊熊熊.png (sources/app-icon-travel-bear.png); sw.js VERSION v2",
+    "Fix mobile joystick: touch-action none restored, overscroll-behavior none, joystick center fixed during drag"
   ],
   "previousSiteVersion": 13,
   "previousExportSha256": "31529d562278dad55686203c1d2c902d9090c9687437422f4c8913a14c0592e9",

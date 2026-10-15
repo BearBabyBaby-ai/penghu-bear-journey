@@ -272,9 +272,10 @@ function bindControls(){
  window.addEventListener('pointerdown',e=>{if(currentPanel||e.pointerType!=='touch'||!onMap(e.target))return;touches.set(e.pointerId,{x:e.clientX,y:e.clientY});if(touches.size===2){drag=null;pinch={span:pinchSpan(),zoom:engine.zoom}}});
  window.addEventListener('pointermove',e=>{if(!touches.has(e.pointerId))return;touches.set(e.pointerId,{x:e.clientX,y:e.clientY});if(pinch&&touches.size>=2){mapOverview=false;engine.zoom=clamp(pinch.zoom*pinch.span/pinchSpan(),3,mapMode()?650:39)}});
  const endTouch=e=>{touches.delete(e.pointerId);if(touches.size<2)pinch=null;if(touches.size)drag=null};window.addEventListener('pointerup',endTouch);window.addEventListener('pointercancel',endTouch);
- const joy=$('#joystick'),stick=$('#stick');let joyId=null;
- const updateJoy=e=>{const r=joy.getBoundingClientRect(),x=e.clientX-r.left-r.width/2,y=e.clientY-r.top-r.height/2,scale=Math.min(1,30/Math.hypot(x,y));joystick={x:x*scale/30,y:y*scale/30};stick.style.transform=`translate(${x*scale}px,${y*scale}px)`};
- joy.addEventListener('pointerdown',e=>{joyId=e.pointerId;joy.setPointerCapture(joyId);updateJoy(e)});joy.addEventListener('pointermove',e=>{if(joyId===e.pointerId)updateJoy(e)});const resetJoy=()=>{joyId=null;joystick={x:0,y:0};stick.style.transform=''};joy.addEventListener('pointerup',resetJoy);joy.addEventListener('pointercancel',resetJoy);$('#touch-action').onclick=interact;
+ const joy=$('#joystick'),stick=$('#stick');let joyId=null,joyCenter=null;
+ /* 按下時記住搖桿中心：拖曳中下方卡片高度改變、搖桿跟著移位時，方向不會跳動 */
+ const updateJoy=e=>{if(!joyCenter){const r=joy.getBoundingClientRect();joyCenter={x:r.left+r.width/2,y:r.top+r.height/2}}const x=e.clientX-joyCenter.x,y=e.clientY-joyCenter.y,scale=Math.min(1,30/Math.hypot(x,y));joystick={x:x*scale/30,y:y*scale/30};stick.style.transform=`translate(${x*scale}px,${y*scale}px)`};
+ joy.addEventListener('pointerdown',e=>{e.preventDefault();joyId=e.pointerId;joyCenter=null;joy.setPointerCapture(joyId);updateJoy(e)});joy.addEventListener('pointermove',e=>{if(joyId===e.pointerId)updateJoy(e)});const resetJoy=()=>{joyId=null;joyCenter=null;joystick={x:0,y:0};stick.style.transform=''};joy.addEventListener('pointerup',resetJoy);joy.addEventListener('pointercancel',resetJoy);$('#touch-action').onclick=interact;
  $('#world').addEventListener('webglcontextlost',e=>{e.preventDefault();toast('3D 顯示中斷。進度已保留，請重新載入遊戲。')});
 }
 let coastLoading=false;

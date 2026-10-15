@@ -79,7 +79,7 @@ WASD／方向鍵沿路移動、Shift加速、點道路沿路前往；點地標�
 
 只在 `@media(max-width:700px)` 內調整，桌機規則未動。`style.css` 檔尾「2026-10-16 手機版面整理」區塊覆寫先前多層手機規則：標題列底色條、地圖工具橫向滑動列、右側指北／縮放、狀態列只在載入中或錯誤時顯示、全寬目的地卡（CSS grid：相片｜類別／名稱／距離，下列「前往」＋「地點資料與故事」）、地圖顯示列、底部選單。`dist/mobile-layout.js` 以 ResizeObserver／MutationObserver 量測目的地卡、地圖顯示列與底部選單的最高頂點，寫入 `--ui-bottom`；搖桿與E鍵用 `calc(var(--ui-bottom)+…)` 定位。
 
-`game.js` 兩處變更：兩指縮放（window 層 pointer 事件，只接受落在地圖或地標上的觸控，比例尺範圍與滾輪相同），以及 `updateDestination()` 的重繪鍵不含距離，行進中只改距離數字，不再每幀重建卡片 DOM。
+搖桿 `#joystick`／`#stick` 必須維持 `touch-action:none`（觸控規則不可把它併入 manipulation），按下時記住中心點計算方向。`game.js` 主要變更：兩指縮放（window 層 pointer 事件，只接受落在地圖或地標上的觸控，比例尺範圍與滾輪相同），以及 `updateDestination()` 的重繪鍵不含距離，行進中只改距離數字，不再每幀重建卡片 DOM。
 
 ## App（第14版）
 

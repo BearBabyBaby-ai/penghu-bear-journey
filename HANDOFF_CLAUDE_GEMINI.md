@@ -23,6 +23,7 @@
   - 新增兩指縮放地圖（手指落在地標上也可）；單指拖曳、點道路前往維持原行為。按鈕加大到約40–48px觸控範圍。
   - 目的地卡行進中只更新距離數字，不再每幀重建整張卡（舊版行進中按卡片按鈕可能點不到）。
   - 說明視窗相關文字同步更新；viewport 禁止頁面縮放，避免誤觸放大整個介面。
+  - 2026-10-16 修正：第13版一條觸控規則誤把搖桿的 `touch-action` 由 none 改成 manipulation，手機拖曳搖桿時瀏覽器可能接手捲動／下拉重新整理而中斷操作；已改回 none，另加 `overscroll-behavior:none`，並在按下時固定搖桿中心，拖曳中卡片高度改變也不會讓方向跳動。實體手機尚未重測。
 - 2026-10-16（第14版）App設定與GitHub上線：
   - 儲存庫 `BearBabyBaby-ai/penghu-bear-journey`（main），GitHub Pages 由 Actions 發布 `dist/`，網址 https://bearbabybaby-ai.github.io/penghu-bear-journey/ 。
   - `dist/manifest.json`（直向、standalone）、`dist/sw.js`（畫面／程式／JSON先連網、相片與圖示快取；外部圖磚不攔截）、`dist/pwa.js`（只在HTTPS或localhost註冊）。

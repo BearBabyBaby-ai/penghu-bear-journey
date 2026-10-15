@@ -46,7 +46,7 @@
 /* ===== 2026-10-16 手機版面整理（只影響 700px 以下；桌機不變） =====
    上：標題列 → 地圖工具橫列；右：指北／縮放；下：目的地卡 → 地圖顯示 → 底部選單。
    搖桿與 E 鍵依下方卡片實際高度（--ui-bottom，由 mobile-layout.js 計算）浮在上方，不再互相遮擋。 */
-button,select,a,#joystick,#touch-action{touch-action:manipulation}.place-label{touch-action:none}
+button,select,a,#touch-action{touch-action:manipulation}.place-label,#joystick,#stick{touch-action:none}html,body{overscroll-behavior:none}
 @media(max-width:700px){
  .topbar{top:0;left:0;right:0;height:auto;padding:calc(6px + env(safe-area-inset-top)) 10px 6px 8px;background:#faf9eef2;border-bottom:1px solid #fff;box-shadow:0 4px 18px #37564c14;backdrop-filter:blur(14px)}
  .brand{gap:6px;font-size:15px;letter-spacing:1px}.brand small{font-size:6.5px;letter-spacing:1px;margin-top:4px}.brand-bear{width:34px;height:38px}
