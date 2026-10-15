@@ -1,0 +1,12 @@
+熊熊澎湖之旅｜第14版 Claude／Gemini接手入口
+
+先讀CLAUDE.md（核心限制），再讀HANDOFF_CLAUDE_GEMINI.md、README.md與DEVELOPMENT.md。
+Node.js 24：npm run check。發布目錄dist/，GitHub主分支main。
+第12版：類別下拉、密集數字群組、跨鄉市沿路導航、馬公／望安／七美港口搭船。
+第13版：手機版面整理（精簡目的地卡、搖桿不被遮、兩指縮放），桌機不變。
+第14版：App設定（manifest、service worker、熊寶圖示），上線於 https://bearbabybaby-ai.github.io/penghu-bear-journey/ ，可用PWABuilder打包APK。
+禁止瞬移；未收錄路線留在原位，航行中改道／取消須靠港下船後銜接。
+熊寶PNG不可改繪或換角色；船體為獨立SVG。
+977筆地點、141張原表相片及來源對應都在專案內。
+旅程及位置保存方式、港口來源與示意航線限制見交接文件。
+不得恢復島嶼任務、試算表來源UI或任意平移地點座標。

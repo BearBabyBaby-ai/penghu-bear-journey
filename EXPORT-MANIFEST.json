@@ -1,0 +1,1052 @@
+{
+  "project": "熊熊澎湖之旅",
+  "exportedAt": "2026-10-16T06:56:42+08:00",
+  "siteVersion": 14,
+  "deploymentDirectory": "dist",
+  "recordCount": 977,
+  "mappedRecordCount": 940,
+  "foodCount": 608,
+  "photoCount": 141,
+  "baishaStart": "澎湖水族館（白沙本島）",
+  "runtimeFilesMatchPublishedSource": false,
+  "checks": [
+    "npm run check: six suites PASS on Node.js 22.22.0 (Node 24 not available in this environment)",
+    "Headless Chromium screenshots: desktop 1366x800 unchanged vs v12; phone 393x760, 360x640, 393x850 without overlapping controls",
+    "Destination card, ferry journey card, atlas, tides, detail and help dialogs checked at phone size",
+    "Two-finger pinch zoom simulated via touch events; tapping card buttons while walking works",
+    "Bearbao PNG, data.json, photos and source snapshots byte-identical to v12",
+    "Service worker registers, controls page, and offline reload still opens game (headless Chromium, localhost)"
+  ],
+  "unverified": [
+    "Node.js 24 run (will run in GitHub Actions)",
+    "GitHub Actions has not run in the destination repository",
+    "External map tiles (NLSC/OSM) could not be reached from this environment",
+    "No physical Android/iOS device testing"
+  ],
+  "files": [
+    {
+      "path": ".github/workflows/deploy-pages.yml",
+      "bytes": 931,
+      "sha256": "3698d5bf6f2740afc75610e5c6d2e5bebb8424f442b50fe1e4a5f7aee01bb52e"
+    },
+    {
+      "path": ".gitignore",
+      "bytes": 94,
+      "sha256": "da032a976c344dac5e3f1f97b19a940c03fb836b9e19a7f76594d77dfb435f4e"
+    },
+    {
+      "path": ".nojekyll",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "CLAUDE.md",
+      "bytes": 3228,
+      "sha256": "5b03b1572fecba874f27a3c941b86044cf29e1b610175cdd9377474ff66c72c8"
+    },
+    {
+      "path": "DEVELOPMENT.md",
+      "bytes": 11773,
+      "sha256": "934e7e0b0e63e479e71f923b5c8563ab29124cfa3950f4c218988b88e6c33184"
+    },
+    {
+      "path": "HANDOFF_CLAUDE_GEMINI.md",
+      "bytes": 12076,
+      "sha256": "58630cb15f504c36996335c79b74d22673527c1facefee1767a0567938accb1f"
+    },
+    {
+      "path": "README.md",
+      "bytes": 7720,
+      "sha256": "4447d7bc64155391bc3ebfb3485ad7453b9e70fafe89ac1426742dc76b62b318"
+    },
+    {
+      "path": "START_HERE.txt",
+      "bytes": 991,
+      "sha256": "010c8af679e780ac1bedb9f32ac00ec2512e0410fb84900e7e71b3593b381a25"
+    },
+    {
+      "path": "dist/.nojekyll",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dist/assets/bearbao.png",
+      "bytes": 1270474,
+      "sha256": "2791856bcf16fd1fc39c67f7ec467659d15cb5790d598c3fb0c1b61d2d0556c7"
+    },
+    {
+      "path": "dist/assets/penghu-map.jpg",
+      "bytes": 330798,
+      "sha256": "9d426faaee192fc2266cbb112281c7c652371d1c3883d36393a59f064df35938"
+    },
+    {
+      "path": "dist/assets/places/1-8CnNgLsCU5Ksugdjztp-zlYncYcaU2s.webp",
+      "bytes": 181194,
+      "sha256": "455eed594516de50b8f332539d31f70a99c3b0b9acdaf612c52e7594e0c10113"
+    },
+    {
+      "path": "dist/assets/places/1-ApcF1cmCNGQeKsURylYdqIlC9qBiad9.webp",
+      "bytes": 357192,
+      "sha256": "149722192de6618d2dd74dad2f84674d1021bc86888398845fc4b997650a36d5"
+    },
+    {
+      "path": "dist/assets/places/1-jjRypi9K0huiBxghqwZPKNVOHHSYT1M.webp",
+      "bytes": 301036,
+      "sha256": "56ca05ce41d88b2870c88ae8a7b5074addcadaadb1a02d36f71159c70c44d883"
+    },
+    {
+      "path": "dist/assets/places/105knnRxvN1GeTQS8-VRDvYeX4Tbsb_9c.webp",
+      "bytes": 339006,
+      "sha256": "9c864f226be88452f85eb76bd432ea6e9aee32a50aba1f94d43adf507ad5a1f2"
+    },
+    {
+      "path": "dist/assets/places/10ip8ztFHv_xzsQI_S4A0sTymL-aHOak4.webp",
+      "bytes": 303096,
+      "sha256": "ef482701008ba4ccea3ecc98cc5d8ed345a023744a937ee4a1ec3bc4e4232f0b"
+    },
+    {
+      "path": "dist/assets/places/10qcQ0xdNkoQuoq3vWKjaWBabU2xg1Rc4.webp",
+      "bytes": 141216,
+      "sha256": "e9de96f28f3d378554ee4755869fc2706bc9d90d5a7b4b0438c26418a3141a4c"
+    },
+    {
+      "path": "dist/assets/places/10vEvdgWI70XThXd9qc0_QSKXpwJsM7on.webp",
+      "bytes": 203364,
+      "sha256": "2decd9b2efc875cc60e2705c56fefb8b0573d07c7f73ba94b1e5ed2ae9a16921"
+    },
+    {
+      "path": "dist/assets/places/10w6yG0spUWjmZdbvUSk-E8zFtJkCAUnS.webp",
+      "bytes": 408212,
+      "sha256": "ca75b3ebb87f92bcaa747eea3398e163a47c7bebae5569a7007e79899fbd8316"
+    },
+    {
+      "path": "dist/assets/places/11MD3bXkjrq2v2lD9gakmxxsNeCDflrRA.webp",
+      "bytes": 299280,
+      "sha256": "d5c0bb9f17e2e36bb6adb7c09077faa32ac77d521a5a710df5002c15beb3b342"
+    },
+    {
+      "path": "dist/assets/places/11qwDxXofrwUpLi1uk77T47yhGIoWTOCv.webp",
+      "bytes": 273456,
+      "sha256": "7bc319cb8efcbf3ab8afe57a430ff077d6942009a149c0633085cd94d8cfd1b2"
+    },
+    {
+      "path": "dist/assets/places/127bI1DDSeKG_LUiIw3Bf-lT33ih7E3ZE.webp",
+      "bytes": 276034,
+      "sha256": "e064dbd1b0e804cf61cf7912ebc79ff7eb302762ec2fd8ae8be190ba01a7adc0"
+    },
+    {
+      "path": "dist/assets/places/13Q--7KM3pKKklbNZNY8OEnw-qcc1ZVdB.webp",
+      "bytes": 82340,
+      "sha256": "44a7dc4b7859baba9295b3ce3c355442ed9cf4f4654797f0204be3237b21ad5d"
+    },
+    {
+      "path": "dist/assets/places/14muyylO6sjcdFXqhq71wZUMFe478mbor.webp",
+      "bytes": 290992,
+      "sha256": "2a94b3453111de2c0844e26b329c9eb5ab6f0f328bfab231ae454bc99e06c998"
+    },
+    {
+      "path": "dist/assets/places/15ouMU1Cm-jGwguPCM60qllrd-nhsBHkf.webp",
+      "bytes": 77286,
+      "sha256": "ce888c652fc0d672ac88fdbd1a78663e07294cb938bbdbd25188f72757b5a811"
+    },
+    {
+      "path": "dist/assets/places/15r4solkP2F_M-w4Z80eMKNIYZdl_NRSV.webp",
+      "bytes": 184592,
+      "sha256": "8e485b561bc1b111aec81e430ed027ed1a56a70209f107d8ddca9a81f9b4d88d"
+    },
+    {
+      "path": "dist/assets/places/16OHMqPD8IZFNxFIqd4tE9bFTIuQrJ0G0.webp",
+      "bytes": 220484,
+      "sha256": "f36a9e51f2365cfa4d77df995177f1edcffde80d391a4acf8a99bbad9712d7cd"
+    },
+    {
+      "path": "dist/assets/places/1884GMvYG7NGOwkyIuMHxWkdLZ-7HQtay.webp",
+      "bytes": 140362,
+      "sha256": "7b1715d91d5ce86370a929da9b993006fc436fed1c69feb39297d6d7bec2d44b"
+    },
+    {
+      "path": "dist/assets/places/18NW5eBxL51BcSszrSiZMNSSALgLWe5k7.webp",
+      "bytes": 175410,
+      "sha256": "383ab4679acb478b12ad7f72e730da6469ec3c5a02ed2d96771daa522bf70d38"
+    },
+    {
+      "path": "dist/assets/places/18S7O4EjL-t4oKD3eTFFRtkDYSM175vax.webp",
+      "bytes": 146822,
+      "sha256": "a4df5885032bce522992864e26f9c642c87349d7691041cdd2a523ed0a4444ff"
+    },
+    {
+      "path": "dist/assets/places/19_CFi9TYoUH-KKoOSiKtutXWJNlBmF8S.webp",
+      "bytes": 417480,
+      "sha256": "dc0ac83a559d0e7cc6c09c37c1c2478ecedb10f3a598db9dc8eabc5e9a3a452b"
+    },
+    {
+      "path": "dist/assets/places/19lXawr6lFfj5BeuSYj_9oc9wwmAXNtCl.webp",
+      "bytes": 514256,
+      "sha256": "1c7769371d113d04c016175a9913acc39fd71efb1af1a1cfb4954199b2dcd48f"
+    },
+    {
+      "path": "dist/assets/places/1A67Dt8ZkJIunNLopQvm82mHr0QfxP9-A.webp",
+      "bytes": 298256,
+      "sha256": "ad7bcad661fbcad42b0c490e569b4073c08b2265195d7892bc75187632580ed2"
+    },
+    {
+      "path": "dist/assets/places/1Bm-3MqqpbvdaWXjo590MWmeBcoQKtkT4.webp",
+      "bytes": 420018,
+      "sha256": "aa3b5583850a28fe4a6d35fcc67403e1a45123a986a8926b970b1bf51dd3e9d2"
+    },
+    {
+      "path": "dist/assets/places/1BnCfTUp-lvaFVJfS6ab9tDOBRU4cMg5W.webp",
+      "bytes": 346050,
+      "sha256": "9c86fd126334dab764e0560b3ad6bb426defbe7f1503a3a8592d764e29ad8e25"
+    },
+    {
+      "path": "dist/assets/places/1BxnQGw58TMAk24G7HbElijr6x8ELpXGv.webp",
+      "bytes": 210654,
+      "sha256": "0ca811763812a78d3782f4c6db055136e34bd468eebad072d7a921c492af202e"
+    },
+    {
+      "path": "dist/assets/places/1C9AbG5Ddt2m-4YcZkxwhsXOF1a0NMC4E.webp",
+      "bytes": 197112,
+      "sha256": "a48589013189c3fef189fd5cf9f68da35d488387b002b8cc19ef30ec85d4adea"
+    },
+    {
+      "path": "dist/assets/places/1CNTvWAUfJmquCwQQqL9b65h7fEX8y8gG.webp",
+      "bytes": 314586,
+      "sha256": "2d3160c70a9f93027fe514049d989fd58e38aa07a2d058945189ab7915c422a0"
+    },
+    {
+      "path": "dist/assets/places/1CglBY3kO3cew4k4e6P74w1eAyDOC3hFn.webp",
+      "bytes": 409420,
+      "sha256": "924150e996843d962f40aa8fdbadf8b706cef6933a042f2386734ececee91909"
+    },
+    {
+      "path": "dist/assets/places/1Czzuw9HyphtnWK4wGGaq4qwFqMhpqVzX.webp",
+      "bytes": 193930,
+      "sha256": "e7d566ef1136193244f5a474ae01fb5d681cb67ea853bf96672995882be6f292"
+    },
+    {
+      "path": "dist/assets/places/1DxLC8WOcEguF8dgl7IbHWuI4WQqjcMdo.webp",
+      "bytes": 299368,
+      "sha256": "680f31123bd998269e37d76c7cdfe94d3061810773dad3078cdc3cf0fbfec818"
+    },
+    {
+      "path": "dist/assets/places/1EG_aLY6fBl37vEI4jV6OyeHnf9ckqNiI.webp",
+      "bytes": 216790,
+      "sha256": "60f1d48ba89d8f6009acade5e34fb749b52f507b215b8ab28acc91788a6d6c01"
+    },
+    {
+      "path": "dist/assets/places/1EMvmeIKxO08i8dnLKwXl1UDl75gwD4La.webp",
+      "bytes": 151874,
+      "sha256": "889d784da06bd8a1e548c0a1afcacbf077d2ab1cdcde7897870ca0f17a83eeca"
+    },
+    {
+      "path": "dist/assets/places/1Eg1IZP5PIeahSCeUOECrZdiqF1c6DvK4.webp",
+      "bytes": 277920,
+      "sha256": "b0a9fc7d68abe7f9785002699d6d5d33c117ed1a9619eeb4d6b650582952b197"
+    },
+    {
+      "path": "dist/assets/places/1EjPYOWcDxxjz7oTty_HukEY8ypK4t6JH.webp",
+      "bytes": 103170,
+      "sha256": "d6a3a1d82ae465c2c9a665e18200961d8d3f5d973a94ddd31809894c5aef2663"
+    },
+    {
+      "path": "dist/assets/places/1FYd0xGdcFzzIx7PmXumHuxI_dLr4x5sE.webp",
+      "bytes": 80328,
+      "sha256": "3e8dbc2b73b3e9f6ed46c2db60e50ba4017d59c22b3758ff9cf109f4e8016833"
+    },
+    {
+      "path": "dist/assets/places/1FfwE-tDE3Me5YQihdJA-1Vlue8l1F0W_.webp",
+      "bytes": 130534,
+      "sha256": "63fb63973b9e927031eb732f09ac9d0501b4bfd62b5da4c66aa236f8a9d9a7f9"
+    },
+    {
+      "path": "dist/assets/places/1G6mbNF9hZlBnY7PE_5gf-Dr4m8PjJMNq.webp",
+      "bytes": 333418,
+      "sha256": "8c3dcda7ad76e92e49abe9a5188a8716b2989b7660baf7f9503e01de851c9f8e"
+    },
+    {
+      "path": "dist/assets/places/1GGhXN7kjXjh17fy08DObTsbOYR7EaC0H.webp",
+      "bytes": 401136,
+      "sha256": "34266826158bc6fc0e6241e3d33fd42dffac046624f492c557850af81582f2b0"
+    },
+    {
+      "path": "dist/assets/places/1GRhxb0KRNHDCLOUwJHATeVBGPrTxOEoN.webp",
+      "bytes": 331342,
+      "sha256": "cae4ec9a1c02218b73938105fb55db44f1f200563a6a7231207003b9b3a6efa6"
+    },
+    {
+      "path": "dist/assets/places/1I4N36_YBImHqckKyxhr1OlcFW7dkDrEK.webp",
+      "bytes": 67128,
+      "sha256": "0e7cf4c2452dfb6fc226650f6059b88fe9f4dedaebd4709b3cdc81667adfe6cb"
+    },
+    {
+      "path": "dist/assets/places/1I8IFtwczG7C1al7X4VgRWpXvK26p_Wxq.webp",
+      "bytes": 131078,
+      "sha256": "cb4631d305bb52d3d1098b69af2e5f6658f0f07d7bfa4c9721331d01cccc905e"
+    },
+    {
+      "path": "dist/assets/places/1ImDRPKQTjdOxcQSHZ-Dh4tdmDP1BnUjS.webp",
+      "bytes": 157360,
+      "sha256": "f75f0218f386e556aa3c7be4aa8daaff1676c482284f8c0d0640e8c58a424246"
+    },
+    {
+      "path": "dist/assets/places/1Ion1UYJUGpfekLQSLmd7uGEhTYkvCFn1.webp",
+      "bytes": 315190,
+      "sha256": "d02f90ae6467cd48d9c188f20cd1d1c0dfe66fb7baba1c65df4df0650f54a156"
+    },
+    {
+      "path": "dist/assets/places/1KNjkHv_JbqUApek7PrZhr8EFBc3pZHc_.webp",
+      "bytes": 310266,
+      "sha256": "06b5a916db14424d88e010fac4a3534ebcbeaddb2d9c19486aa9d5d73e168ea0"
+    },
+    {
+      "path": "dist/assets/places/1KXSOKnLH9ZFoE2jU97xy9PpBXN7zL5rz.webp",
+      "bytes": 290808,
+      "sha256": "06ace1b2756c3e86db1f37668ebdc3936d8c797f06c50f86b7f3249d53364e46"
+    },
+    {
+      "path": "dist/assets/places/1L4_YK42hpqjyiNf-ZOT_jopKmJsx9z5l.webp",
+      "bytes": 201768,
+      "sha256": "de6423ba748e557c308c41b397e376f4dd9fe6ee216be097f14308087d0edaa9"
+    },
+    {
+      "path": "dist/assets/places/1LFeggbkD44xyHqjQVZDyzBGmC7PzCowf.webp",
+      "bytes": 218444,
+      "sha256": "7483628f85e395573d71cbba649d204bc5b37a4c81ba6dd1d99639e64e0cf458"
+    },
+    {
+      "path": "dist/assets/places/1LTZsU2z_-FbleTj7v1nK8XX_jYgcmMEz.webp",
+      "bytes": 156446,
+      "sha256": "36fa7e25a8faf65870e290bc7e42e7a3e6100617d42476ab1fc270a3567139dd"
+    },
+    {
+      "path": "dist/assets/places/1LWi83YAZi_VvINpBuD0AuaSOIm-F6SVF.webp",
+      "bytes": 310876,
+      "sha256": "ab4981fa70b76fb74ff2e07a536f39550db81433aa86ba112c3a159e64d03834"
+    },
+    {
+      "path": "dist/assets/places/1M8AH27tGnqNnA7uWGNSefGlicw7hNqw5.webp",
+      "bytes": 266148,
+      "sha256": "50303b9712038e9b050ce9fda65f793931b91f90d62d09c795b65ceb4baf7e32"
+    },
+    {
+      "path": "dist/assets/places/1MLUEbbVy4admQohLJdhJZ8yyj5WaiQWw.webp",
+      "bytes": 408972,
+      "sha256": "c5cd9d3de7abf8005c601b60f73b47fb6b533468a2483d4f015d7283635e1d7c"
+    },
+    {
+      "path": "dist/assets/places/1MgY2Cb5Jt-Ac89PHZ3gZV3jrN4uPHfU_.webp",
+      "bytes": 420492,
+      "sha256": "5bb2b2c7c0808b4a7ea3c463cf96b34e8dee80bdd8597d3a6460416d12062145"
+    },
+    {
+      "path": "dist/assets/places/1N0FUGb1yvA5jMHYxsztzVHW52SJub2AJ.webp",
+      "bytes": 393790,
+      "sha256": "7f1840699fbcaf5ddc876e3ebcc87f6af32e55b7251879b476ae75c47ddb03de"
+    },
+    {
+      "path": "dist/assets/places/1OhuPOLQCbt_ojhvOje7zw9J9vndnlrAA.webp",
+      "bytes": 363364,
+      "sha256": "46d3d93e1a71fa3d8f363d1b118666a683cbe33926ab39cbaf5bd20fe6e56696"
+    },
+    {
+      "path": "dist/assets/places/1Pl75FDIzrGlm-jINxF4x7fDGzSv_fDzx.webp",
+      "bytes": 337332,
+      "sha256": "5d1fb8cb75b98cf953646503685212fe281b3a4caa4e16804c643e69cffff837"
+    },
+    {
+      "path": "dist/assets/places/1QFRKtV3Iv3g4lZrHVqz6SjbRRr3eAyCg.webp",
+      "bytes": 299162,
+      "sha256": "3fa1d5901792a5da1b288708f1cbe53a61adc6a28b4812764224961962f0a7e4"
+    },
+    {
+      "path": "dist/assets/places/1RHY1NfadJmsgN9VXJ39lkmeC0pyLvOLn.webp",
+      "bytes": 331646,
+      "sha256": "b9fcfe65952b072ba38b6453bb22fdddd494aad9cff3ef468cc2283c3d5d7253"
+    },
+    {
+      "path": "dist/assets/places/1Rc018uN5Fj3ikM0NkqrEK6ylBPrQ7FLd.webp",
+      "bytes": 358738,
+      "sha256": "e512419172848474ac6aa7fc4a0eb8e05ee63bb682364b304864b686869ebfbc"
+    },
+    {
+      "path": "dist/assets/places/1RktkVXDQsW998MzrV1KLZLY0YKvW211l.webp",
+      "bytes": 321384,
+      "sha256": "cf19f616f3a67a22a9d3d82bfe882c8635b5353f71547721776f9ac27085b135"
+    },
+    {
+      "path": "dist/assets/places/1SPtjfA9253SqVJAavgTEwprGKi41IjD5.webp",
+      "bytes": 136124,
+      "sha256": "90bf9eb02207af5d5ef81d399dbda4c394aa75db9c96ae2a8297aca113d93b97"
+    },
+    {
+      "path": "dist/assets/places/1T38bhJplAk-vhzkmKGx3pWbpJqT0Rbdq.webp",
+      "bytes": 139918,
+      "sha256": "bc677ac4f035bc10d26ba7f7f297a75c72852ee0f45081f55c6678bab9465896"
+    },
+    {
+      "path": "dist/assets/places/1T80h19bxvqt6cZ0mkadnmXLGlu886ypy.webp",
+      "bytes": 136222,
+      "sha256": "ce0dd62f43f43dd1112949dde73130ea4385677a622daef7b6c0cd7545a47539"
+    },
+    {
+      "path": "dist/assets/places/1TYcUDPLltzAR3uuDbW4a7xCxWfJhlPSV.webp",
+      "bytes": 354286,
+      "sha256": "fb8db8d40263ea179435d3e3452eeae95690c5ba2b5e87dc9970335e4508b13f"
+    },
+    {
+      "path": "dist/assets/places/1TlEZZZEm4rX9gm888c9DoDM6LpzFnfB1.webp",
+      "bytes": 202350,
+      "sha256": "0f95163cf289c8e72ab0b89595b5c20ac0b08e4969f62591f1870c887d396665"
+    },
+    {
+      "path": "dist/assets/places/1UBPc_YuZzc4aNsOkQyjhWPV0H0Wm7guU.webp",
+      "bytes": 117492,
+      "sha256": "7c7861f25d666baa6705b2ab04020f8c7d5c607764a456a5876c2be4b58ad00a"
+    },
+    {
+      "path": "dist/assets/places/1Ubvj_7FaNJx5GsmTJc4LOGkU5fDhHXjw.webp",
+      "bytes": 322850,
+      "sha256": "2e63bc675c18090468293937ac714bcaad0bbcbdc7ceb462fdb0a5ca526c782e"
+    },
+    {
+      "path": "dist/assets/places/1WFEzlWBpxIDDeyHACTng6KgLzh6K5X1p.webp",
+      "bytes": 111600,
+      "sha256": "921e70716f943650680b5f0532f7ea9ca62587ebac6fc94a3a84b72f9b5683e8"
+    },
+    {
+      "path": "dist/assets/places/1X2OmEPto71jWB5XxKLLIkET5mH19VBLe.webp",
+      "bytes": 169636,
+      "sha256": "b5e8411a1d7acb787bd7571ac2d8836cf0c3fb893232382df76c532011b0a8bc"
+    },
+    {
+      "path": "dist/assets/places/1XBjLXMhN6r8jFFCinab2wgOQNCzSf82q.webp",
+      "bytes": 153298,
+      "sha256": "7ecc9d60118c264b05a1b58e6312099c46eb789a2039475712cee25d28641ea1"
+    },
+    {
+      "path": "dist/assets/places/1Y0n8LZmqtP-Eae_aipJW1yxV85XC7dDw.webp",
+      "bytes": 341636,
+      "sha256": "b627434be6565035c4db71db5686cdc6cc7b02276100d1520e4f885caca775fa"
+    },
+    {
+      "path": "dist/assets/places/1YFIhMiviXAi2Q5BuYSE2jQ_8ctqJ7oFN.webp",
+      "bytes": 327176,
+      "sha256": "b451abf651acfa7f25d1e309073f116d91c2bad09e43e3e00f4e5bbbc2180c48"
+    },
+    {
+      "path": "dist/assets/places/1Y_fx1dzxLtZuAmcngSsdU-WHMVa46IXu.webp",
+      "bytes": 314914,
+      "sha256": "477c4be1388e6c65cada7540bc533fcb08544ed0a76b4d5f26bb97d6ce7c2fb3"
+    },
+    {
+      "path": "dist/assets/places/1YgYOqD5K7EoaBegXdXnS3cNvlqKh8O59.webp",
+      "bytes": 191482,
+      "sha256": "16812ed96856354ad6bb8a3f39f4aba15db477fd0cea331bbc49e7345d9eedba"
+    },
+    {
+      "path": "dist/assets/places/1ZCJC5donbOkrYTF0hKdz_YsS4uuce9om.webp",
+      "bytes": 116134,
+      "sha256": "a0fe5ff0903f4d716d4d0d29023d820984d38bdd7721594662847a80d26e7b8a"
+    },
+    {
+      "path": "dist/assets/places/1ZSSCr3kMExZSOJUOUk9kPIvpZN078Ov7.webp",
+      "bytes": 224412,
+      "sha256": "5eebf4f392037c12dba07b185f38c8f4cc16996af7aa2ae21d1252315d67990e"
+    },
+    {
+      "path": "dist/assets/places/1Zpr6ofU9mjM5uXKKuEc2oIQPpLn8I1DP.webp",
+      "bytes": 231750,
+      "sha256": "f315c2000ff683a048d97556e52f8188021a16c23154332d21b3dc4fb71fd228"
+    },
+    {
+      "path": "dist/assets/places/1ZxnTJs_UjLoi1QIhClcbnN-MIYcdPcBa.webp",
+      "bytes": 74430,
+      "sha256": "0b1ec0ef789b7af78d7df44f2a6664ba9f1902796bbb5095ff41811ae219d9d4"
+    },
+    {
+      "path": "dist/assets/places/1_S_NClo1fRQxGpnB2UX35q36OUx_mU-1.webp",
+      "bytes": 446308,
+      "sha256": "0a615f975478999f0b236d4cb5cff0543670fd05ee7c017e9ceab23b789af641"
+    },
+    {
+      "path": "dist/assets/places/1_kHn8f0xhym-xNK9c5zC5TNVnl3HNYOF.webp",
+      "bytes": 260048,
+      "sha256": "2399683b7bcb12719ca98723e5aff79c2fd10b34be92ba0669c36253df135143"
+    },
+    {
+      "path": "dist/assets/places/1abPZoDKnOpgvYaMsYqM5JBuaPxqEdAI6.webp",
+      "bytes": 129262,
+      "sha256": "04bacfdcb1ae573e30942afafe162c3149ee4ea1bf08c1248e311588a78f1781"
+    },
+    {
+      "path": "dist/assets/places/1bYah1u5jrifov8CdpJira-uFQMny8FaX.webp",
+      "bytes": 298846,
+      "sha256": "a8a0c4e66365a15d985212578b6336799905630f6f59f6cda8b227b3836a9323"
+    },
+    {
+      "path": "dist/assets/places/1bcMC4NAJDgpeJQ0lhSJ5vGmyRo4aZtpD.webp",
+      "bytes": 446640,
+      "sha256": "211d52dd7181c35559ee3a4bba6636d57180824cc91821026e8735e00bb8cb13"
+    },
+    {
+      "path": "dist/assets/places/1cgkEP7mkiZU02658POA0Lg-y8EPJQQ_b.webp",
+      "bytes": 304058,
+      "sha256": "ee0174c084a13d6a25e189d3e407715e001a7244c4f5f09379a7fdb864dc06f2"
+    },
+    {
+      "path": "dist/assets/places/1cm2ml6KTHLnvAiD4yn_eJb5ZPf6uSTyM.webp",
+      "bytes": 296904,
+      "sha256": "5e473ef8dda5d67879d921202394ebef2640c990216df4d5963e6be6645dc108"
+    },
+    {
+      "path": "dist/assets/places/1dbELqzxeJTwbaRAPDDSbDeGocPWsT7bC.webp",
+      "bytes": 140174,
+      "sha256": "285c40131c48179ceb6b0debf87ee2c471bab5334e0abb1f7e1621d28aef3224"
+    },
+    {
+      "path": "dist/assets/places/1dbYXZoL66DrRLGgGpU7Q2NeK-s77vi9y.webp",
+      "bytes": 358340,
+      "sha256": "64a0ab396d2747400e6ca5072e7861c2005f29577e2d73bea8f80ced86780aa4"
+    },
+    {
+      "path": "dist/assets/places/1dkMcGE3fZeeWEf05Cm4MkWJWSkmcRJhI.webp",
+      "bytes": 245966,
+      "sha256": "71d858ccbe0e3edcf2be5f065cb193dda7a535723438471feffb77a95283ee10"
+    },
+    {
+      "path": "dist/assets/places/1e5SD2V9jrsbQbtkVoA4olTd0scl1pScV.webp",
+      "bytes": 433568,
+      "sha256": "6ddf669b9bca59f124f230cc4df3e3853f72541535a1e7892716109c1fe06a04"
+    },
+    {
+      "path": "dist/assets/places/1eOEqqv94vOw1wqOfkEFWwglh_WFeSYHl.webp",
+      "bytes": 336788,
+      "sha256": "0f784660629ea418bbaca97023e585e12cb5e30f8ce81403b23fb58b0c090a6b"
+    },
+    {
+      "path": "dist/assets/places/1egsmv-oxK8iWEP-JLUl7AxEGDhkSiGG8.webp",
+      "bytes": 213854,
+      "sha256": "c497c9c9a4403bd7b1b21911f33c8a563ef387db60dc3dcb1f871458344a26ea"
+    },
+    {
+      "path": "dist/assets/places/1ew6svhw5IHMSMw0UVbTkGup__RyW3o6T.webp",
+      "bytes": 276806,
+      "sha256": "ac8e676609fc163f168d3c580c25f66bb3f5d37a443224181dea962fb5ae98ab"
+    },
+    {
+      "path": "dist/assets/places/1f2LajtB2_nktp7ZrF5lWVF3IjD9juAF_.webp",
+      "bytes": 128252,
+      "sha256": "f04630d64e67bec1bebba8c3249146eaef9e54f7e39f579d97cb6b3a9a4f2407"
+    },
+    {
+      "path": "dist/assets/places/1fNKEMyesiCl9_1Tv7XX8nnrAlE4Qw369.webp",
+      "bytes": 396654,
+      "sha256": "557c9dcbd4b9e46aa3cbf112e8f3dce30458c6d500ea20228a17074ec17c3616"
+    },
+    {
+      "path": "dist/assets/places/1fkqNZOUu1d9234NJE-Ljg9iVA7Gp-uyx.webp",
+      "bytes": 256952,
+      "sha256": "a8c6274e2b1ebbf8a43f1af9d4eb751dfc41941e598b52c41175e5dbb955fd9f"
+    },
+    {
+      "path": "dist/assets/places/1flz1zgP492TxaN-fl5PwvoGvgw889sVJ.webp",
+      "bytes": 189598,
+      "sha256": "7f20a1688464999e4cc9be8b8817da3a3b64b8b1f9952cd3f7ceed0ce0989ba0"
+    },
+    {
+      "path": "dist/assets/places/1gRPh1NXkQzrAaXQc9m2A-BLJOln2U3H8.webp",
+      "bytes": 173640,
+      "sha256": "f07ec612ff2a36c9a4b9ddf58c27310d12f73e22dd9a70d264ff0ce5a3f8542f"
+    },
+    {
+      "path": "dist/assets/places/1gXp6qAiey7wodPedP0NKf-TAJBV3ocRg.webp",
+      "bytes": 145294,
+      "sha256": "8bd881a7fa68cd62d1cf642151a52d095fa233c77644bfdeeb9bc0b12a7c3e41"
+    },
+    {
+      "path": "dist/assets/places/1hFgdyeYt5XmI23AtrQw3r1BtyO6Jz2zi.webp",
+      "bytes": 188672,
+      "sha256": "23055f4a4ff187f0fd2e0000acbb623a2950be33c8515d0573bb10324715d70f"
+    },
+    {
+      "path": "dist/assets/places/1hRLz4ujT7uv9z3vdV5-O2bsIqk4pDS-u.webp",
+      "bytes": 299760,
+      "sha256": "89e5198c0547f3150b94bf3899a9b219e0989f65f0477bc927aceae994a1e002"
+    },
+    {
+      "path": "dist/assets/places/1hWQ67lmFaCXVrMOSk0ML3sVWH9O-Usua.webp",
+      "bytes": 234498,
+      "sha256": "a44ee66d05fbac33739f0f0d57ec34f7d05ff3121e8ba82bf2f023634b1db64f"
+    },
+    {
+      "path": "dist/assets/places/1h_pVV6ATrZ1cD8ecislAfgN-nhHlAMu0.webp",
+      "bytes": 68106,
+      "sha256": "99bf030c6c495ff18aa8622bfe685ed37ae2ab20e33ab654d0e2754a46c113bd"
+    },
+    {
+      "path": "dist/assets/places/1jAIIZdBO3cQJJBii_HdDX_r2QKco3Z4N.webp",
+      "bytes": 44710,
+      "sha256": "b7c353288494869cea4efa9a06e797eafd11b2bd9733bbfc5b8289a16fb7f8f7"
+    },
+    {
+      "path": "dist/assets/places/1jq6h80eekeSSsmfQSF8rn0lvOVc4rSY2.webp",
+      "bytes": 285716,
+      "sha256": "8ecd9652b68722266e67232524eebf9d3a3c71a670fad6584822ee4643138e38"
+    },
+    {
+      "path": "dist/assets/places/1jwYit7fMJuRyZkgm75Jkkxsu5AsM35YG.webp",
+      "bytes": 378606,
+      "sha256": "d96bc655a41cbe98a2af2b136e7bc15df35152a26f5b000957d1d785d72a2ba9"
+    },
+    {
+      "path": "dist/assets/places/1k2uHLI4kSS3s71X1oVEW6OIYEcrTcRoi.webp",
+      "bytes": 117302,
+      "sha256": "bf927948027b748d50c23ee5ebb123fe5f47a74646ca9b79d31b4fe963b57dc0"
+    },
+    {
+      "path": "dist/assets/places/1kHNUDRcwhyfPPwLFlQ2_ZbUDINEtXvIg.webp",
+      "bytes": 51846,
+      "sha256": "f96e491338b6b071e1fc328cfbae15e0dbb3657c641aea154bb3b1b6102487b9"
+    },
+    {
+      "path": "dist/assets/places/1lH2jXnGV-as7c28KMcv69vgd8KU6kW4n.webp",
+      "bytes": 231842,
+      "sha256": "41f83a64dbfcd3be9d4a2c38255b6010ffbd27e8163ae0b299633883653aead0"
+    },
+    {
+      "path": "dist/assets/places/1m2etNuet1KdI3Ak_inJ2dzKeBOgjSfSS.webp",
+      "bytes": 317726,
+      "sha256": "65741ba65d56358ce1f8ac06eb38d13074aa94e27db9d156f8fe2a85e90f1176"
+    },
+    {
+      "path": "dist/assets/places/1mRs24i9bbPVR9ZtC4ftLlKOBv5lydR7s.webp",
+      "bytes": 310698,
+      "sha256": "af7c7fa9ba350f0b1293701c756058d2119fe711d7703ffbec2bedef5911538b"
+    },
+    {
+      "path": "dist/assets/places/1mvpMINSq6YpOrHgelwINVAgcqMt6oO91.webp",
+      "bytes": 202154,
+      "sha256": "b914330e1b372122901d89349466fe2e189b5ee27dc4041623bf5701707f7da4"
+    },
+    {
+      "path": "dist/assets/places/1mwIaspNIp-3p2Uw1HbMTT5dqk1dGhOEd.webp",
+      "bytes": 249636,
+      "sha256": "3e0b90cc38de98c481093c1d6f5def03af664961b4b594be62b770de1670028f"
+    },
+    {
+      "path": "dist/assets/places/1n8Hq1GqpX_bYFd4YMtBkZgSNdtOIs2hd.webp",
+      "bytes": 188178,
+      "sha256": "7416f5ef3a0af3452d3272631146c2f304e4f1bebe33c8e307379378fec5a82d"
+    },
+    {
+      "path": "dist/assets/places/1n9IEZUfxLDKn7zFZXyvEMSpdnh2_te5j.webp",
+      "bytes": 311042,
+      "sha256": "60cd56d15ab872655b813a4b882066a8b17f79ae9105affb1b0e8de3240cfecb"
+    },
+    {
+      "path": "dist/assets/places/1nzUwM-Lq3IWSLEfYNFTRMtvDpu5TtQHp.webp",
+      "bytes": 70644,
+      "sha256": "45a96cb9af1493c6d38cf8b6087f2d1fb08a06341fd12c438512626aa79fed18"
+    },
+    {
+      "path": "dist/assets/places/1oOE4ZU30xrnUtpeoKuFak1oC_GRv64E5.webp",
+      "bytes": 176222,
+      "sha256": "9c7de6321dfcd99915693963ec22249a47b45aaa6792eea83d87bbec03966435"
+    },
+    {
+      "path": "dist/assets/places/1oomvQ3T6_6qQsEcTt8WeNWaViQl6igWk.webp",
+      "bytes": 190304,
+      "sha256": "e42b3d0a2a18fffc802e66a49a652b4895926412a8f22a65599a59f207a9ec68"
+    },
+    {
+      "path": "dist/assets/places/1p9dnhc7Qlo5y_hj9_-N6svG5qsWe1LOr.webp",
+      "bytes": 55362,
+      "sha256": "2b6552c7e1b5d031491de65c74b8101834da8d06b555e9363f414455ca5a0743"
+    },
+    {
+      "path": "dist/assets/places/1pBQq3Z9lIVFlXHbGEiSrSVKinOjR-nGo.webp",
+      "bytes": 147608,
+      "sha256": "82f8d134bd528300004c0e16d9dcb8e38fb70cb8f0fc37a26f8e77ce3e9f4e98"
+    },
+    {
+      "path": "dist/assets/places/1pTu3VYxl40WWe7fha13CQPomzCMjY_jY.webp",
+      "bytes": 129866,
+      "sha256": "a13ef11abbf798479b28b13ca60c662d1567c8a5b8f4a5cddbd5176eca7767ed"
+    },
+    {
+      "path": "dist/assets/places/1pXzYbnUWl5IrMgztMd2LhIXi8-PFaaJv.webp",
+      "bytes": 173642,
+      "sha256": "f43d1e4c86a2db43712babe1898e458da2777a3f24e21e5b2d8b041e6e7cec29"
+    },
+    {
+      "path": "dist/assets/places/1qs0Jkk0eHviwNYCjTEJoHSneVQTV2sKE.webp",
+      "bytes": 130538,
+      "sha256": "2bb2e7d053508cc325656e65f319d1b5d7e5c6d7cced5c47cab74334c9dbd057"
+    },
+    {
+      "path": "dist/assets/places/1rMpHtryktvYS0fV7rpQf0gS8lwYKIdJp.webp",
+      "bytes": 90014,
+      "sha256": "73b61d981d1797d154ef8435b148cdde57c555ff4e47b77afdd676b2a0b3e366"
+    },
+    {
+      "path": "dist/assets/places/1rQjRwHrGzYnA0druEMtk80Q-a0qCWyTB.webp",
+      "bytes": 116628,
+      "sha256": "58ef8006fa7d34868d82cc31d5e14d32206223d34a431a53535c6121719683c3"
+    },
+    {
+      "path": "dist/assets/places/1rvwkrJwAMLnPf86QGR4g-smgDgFxlubR.webp",
+      "bytes": 137066,
+      "sha256": "143ce49ff9d34aa54a16b2f2b4ac5e3b0da9d78f745e473db9bed18cdab9e32c"
+    },
+    {
+      "path": "dist/assets/places/1tSANJpMmjxigcTX1DOjCbV9IlP5-oX5v.webp",
+      "bytes": 220446,
+      "sha256": "aaddcbda084f11f1d96ca3882cfc614c378782bb2341e826f6829c0e445854d8"
+    },
+    {
+      "path": "dist/assets/places/1tWe0hHYKGHZsZdAiJ53O9Nv0IIyszbpc.webp",
+      "bytes": 224234,
+      "sha256": "b1cc78d77640a072d251131de28bbe6368ba8f647e82bad9437cda278b8171f8"
+    },
+    {
+      "path": "dist/assets/places/1teTi5Qi88AgGpbeBVvoatrnDpRotT8za.webp",
+      "bytes": 197052,
+      "sha256": "fbdd07d5e361c2b2bd5453e743908b737d28a579c6df8f3b71da4ce3c7bd654b"
+    },
+    {
+      "path": "dist/assets/places/1tfaGpzJTqh3aOhGHrQiWn2cot5xsL8Jz.webp",
+      "bytes": 284782,
+      "sha256": "75e4b6df615ad64ba823e970091e9615cfe0b406734697689d77dc544721d737"
+    },
+    {
+      "path": "dist/assets/places/1u19sxclTGDFwM0M36BWGlMHWCe2OcZIy.webp",
+      "bytes": 398990,
+      "sha256": "3478cbe82e25e9755a0f82056c004845b6fffe608d4898f5d88c4ff32b627973"
+    },
+    {
+      "path": "dist/assets/places/1uj-278MZEr1Ous8MHI1GQXxSvReLpKIH.webp",
+      "bytes": 71458,
+      "sha256": "75468bb80b65d98b349231493dd3cf3d10cde77453fdbc8bfa8e9b1281a0bbed"
+    },
+    {
+      "path": "dist/assets/places/1vmYWSUd6l-a-41_DdMLPcrzwXD74bOnO.webp",
+      "bytes": 206670,
+      "sha256": "e30c78c714fc6a28b1457206da537039aee5df3c5c8080eb2b68d171ca38eb85"
+    },
+    {
+      "path": "dist/assets/places/1w1diYo__FZ6dx6kzlaoNoD84dcPUcrhg.webp",
+      "bytes": 264718,
+      "sha256": "7b18ac3cbb0aa90727eeb75e61215d4d2418b5baa7378fe7f062519bc56b42a1"
+    },
+    {
+      "path": "dist/assets/places/1wTTFmwLMzyrbmhT0hRJ1SJyFX1BzyFhq.webp",
+      "bytes": 331790,
+      "sha256": "ead4ef2d59c6098f080f0a26f069267715ce6697481331747b2efcd46e9dcf42"
+    },
+    {
+      "path": "dist/assets/places/1wXVZVIESLADpqR9m2TpHMYRyxcxU0zkZ.webp",
+      "bytes": 354996,
+      "sha256": "3b7a5116e96c91d55451c75e94f166a4642f70066dfaa343b5554849de92c828"
+    },
+    {
+      "path": "dist/assets/places/1wx6ykxXjI46ll8gj-kNfuCGJT6iHqF67.webp",
+      "bytes": 82506,
+      "sha256": "58b447ff29185aa9462ea2a159de6c22dabdc4d42e8d44025474665e6d96ae75"
+    },
+    {
+      "path": "dist/assets/places/1xubKcPyTLHfSjU3g_1NDCXIaRntoVChE.webp",
+      "bytes": 241936,
+      "sha256": "6e46f8968148a1d421092f2e0e1d307fbf23bf4e8d95d61f95e2b4959c3d9504"
+    },
+    {
+      "path": "dist/assets/places/1yjNWma09TE-3FWWJi3j-Qq_zgk7QnDMA.webp",
+      "bytes": 65062,
+      "sha256": "a22f4572fb05d2d4c5e33e81b86eaea6b5eeb723db8a151333f99c1edddf4aa0"
+    },
+    {
+      "path": "dist/assets/places/1yspZOqekEei2FCJF9zzNJLEoPMJGu8Ma.webp",
+      "bytes": 175046,
+      "sha256": "6eecf8368141f92449fc5e9f05da8853d0c2130a98ef834432a4a73f464c47ce"
+    },
+    {
+      "path": "dist/assets/places/1z9uFvC7Me3EcOVbw3mPsitfwin7U71mZ.webp",
+      "bytes": 389322,
+      "sha256": "20dbfd6eefd13638587e2090c8c7c937270d632e47531d47cf980deafe214ead"
+    },
+    {
+      "path": "dist/assets/places/1zlV0NzMEBHJcvaqFgwe7cY4eYsv6dUQi.webp",
+      "bytes": 467804,
+      "sha256": "4a73556e265d165dab14e97ad51308536693da2f961c16b26e186711fe4206d1"
+    },
+    {
+      "path": "dist/assets/places/1zt0G5jX4QSvlqZeHyQZVDLVks-TKcLDk.webp",
+      "bytes": 279922,
+      "sha256": "c92a1c50cc8d0900bda8371a45eeae713e91b17198dd9cd18017157a186ec0cf"
+    },
+    {
+      "path": "dist/assets/places/PHOTO-MANIFEST.json",
+      "bytes": 106671,
+      "sha256": "68cb122f3dc7e978bd7ce619594df149dd1dbc597503ff2a581a65c907176804"
+    },
+    {
+      "path": "dist/coastline.js",
+      "bytes": 3840,
+      "sha256": "1b07681f188ad636f28bf564494b3678a09dd7bbbeefd497355d5f571286544e"
+    },
+    {
+      "path": "dist/data.json",
+      "bytes": 1134465,
+      "sha256": "f4edce64e171b4607578b7a9e183723be0338e2ba2176a0ebf61362184e0685c"
+    },
+    {
+      "path": "dist/engine.js",
+      "bytes": 15877,
+      "sha256": "84ec8a274e963141fd409da476aa2d65b83209a68864514c0ddbd639a8fda4aa"
+    },
+    {
+      "path": "dist/game.js",
+      "bytes": 44078,
+      "sha256": "9ddcd6f0f5317c3cce5bff116af85d1018c3694112aa0cbf225846d648da94f0"
+    },
+    {
+      "path": "dist/geo/MIRROR-LICENSE.txt",
+      "bytes": 1079,
+      "sha256": "407e768a07208360ae0cde5ac308ade8e563f3b0ad54b461cb7ff2f1edad6267"
+    },
+    {
+      "path": "dist/geo/SOURCES.md",
+      "bytes": 1786,
+      "sha256": "2fb6470b0d66fcae5ef280ce70728a542db00435981784224fbd2b6044d5511b"
+    },
+    {
+      "path": "dist/geo/penghu-ferries-20261015.json",
+      "bytes": 2565,
+      "sha256": "fdc90b4983c24a2a1c5d068745eaa8466fa50304bbfc31f70d4bba8e2b9f40af"
+    },
+    {
+      "path": "dist/geo/penghu-grid-20260407.json",
+      "bytes": 22279,
+      "sha256": "f2dad12264b9b45a6153c6b141a9c7596475eada74fc8ca22f8eeab561007d35"
+    },
+    {
+      "path": "dist/geo/penghu-land-20260407.geojson",
+      "bytes": 1694725,
+      "sha256": "40ad2373db07cdcce45e09ae382525c6fab7fc71f34b5320902d7a7be37f997b"
+    },
+    {
+      "path": "dist/geo/penghu-roads-20211217.json",
+      "bytes": 1697594,
+      "sha256": "bcb80e84d0190334c4c4cce8580d55dccd8f5cb45072f8fc56f0d68ee1674952"
+    },
+    {
+      "path": "dist/icons/apple-touch-icon.png",
+      "bytes": 29722,
+      "sha256": "d40492641402c0a5a215f83c2929697762a834762257491248a036fe8ee59cb6"
+    },
+    {
+      "path": "dist/icons/favicon-32.png",
+      "bytes": 1978,
+      "sha256": "b76d4ba1460af7d8d3366b1f26108db6e94d7c8eed0ecfa2adfec9108e0f7b31"
+    },
+    {
+      "path": "dist/icons/icon-192.png",
+      "bytes": 34326,
+      "sha256": "9dc3fb8bbd32482fd305128e77f11ca5c357a9edec2ad2a7e489ae3d8fa4c1e1"
+    },
+    {
+      "path": "dist/icons/icon-512.png",
+      "bytes": 172736,
+      "sha256": "266c81a02bccc986747af72c84b808f7dada2f2c23de109fb63b57e0a5c1fa3f"
+    },
+    {
+      "path": "dist/icons/icon-maskable-512.png",
+      "bytes": 101745,
+      "sha256": "af0461797f15c0dff34b55f852019a9b00b837d6ffb8b900c84b4964cf89d765"
+    },
+    {
+      "path": "dist/index.html",
+      "bytes": 8726,
+      "sha256": "aa21b2ce8bd7864f9d619fb8d9cd151d171e3fa48b34bad19cbeeda572a2f0fb"
+    },
+    {
+      "path": "dist/manifest.json",
+      "bytes": 699,
+      "sha256": "d2b64a97193ec254ceeac411c1271ca4312fc37f548ecc45ca276137b2ff3b94"
+    },
+    {
+      "path": "dist/map.js",
+      "bytes": 2327,
+      "sha256": "6ad6fb59b9bb98560de547dec126187423f3148c56a243618b77142b3a0658c2"
+    },
+    {
+      "path": "dist/media.js",
+      "bytes": 482,
+      "sha256": "0edbcc152ab67cd5de7a9fcf1b30f0e1aeab857e610792a4bbe87312e9c827d0"
+    },
+    {
+      "path": "dist/mobile-layout.js",
+      "bytes": 1134,
+      "sha256": "7a32b4a36784b93db7bc4701405891d25ce4f91805120b3f2803e89731ee9686"
+    },
+    {
+      "path": "dist/model.js",
+      "bytes": 3190,
+      "sha256": "5e8a40b84da315a1f8b6e3142001ef42f7753c74f6d12a330249e9705e73a71d"
+    },
+    {
+      "path": "dist/navigation.js",
+      "bytes": 5701,
+      "sha256": "bf3ef34cc148e14a27ae2953a962643c1c1a1c173d0c6f7ef6aa29fa6504cd89"
+    },
+    {
+      "path": "dist/places.js",
+      "bytes": 2909,
+      "sha256": "e81a98124d894f8bc8c9f8cc96fdbff65ed2c32747659d4de3c751e56f29362c"
+    },
+    {
+      "path": "dist/pwa.js",
+      "bytes": 301,
+      "sha256": "00905a32f8c90d574424220f8ae2445daabf3e364178da4412b1392168a7e57b"
+    },
+    {
+      "path": "dist/roads.js",
+      "bytes": 7276,
+      "sha256": "c0070072921185396e5a6cabe62922c48633158bd434afecc9f2327416346fbe"
+    },
+    {
+      "path": "dist/style.css",
+      "bytes": 36862,
+      "sha256": "187c12cbb1dfda7857ab00b8b670711ee360964f36306778b50d409e75f2347a"
+    },
+    {
+      "path": "dist/sw.js",
+      "bytes": 2726,
+      "sha256": "c9431d450325f0a918acda9b0547c06e5c9a3f5d3380544e99f9576b966b5ec6"
+    },
+    {
+      "path": "dist/tiles.js",
+      "bytes": 4434,
+      "sha256": "e41309b8dda3319fd2e17763ae5f1f69e00f5bb68152833349ab08bd47ce118d"
+    },
+    {
+      "path": "dist/travel.js",
+      "bytes": 8084,
+      "sha256": "40baf4698e9181cd89e1f5353ba6515eac21212e08c381c7a4070d22eb08a98d"
+    },
+    {
+      "path": "index.html",
+      "bytes": 313,
+      "sha256": "eace9f167fdd0cbc9eb25fb4841ff4efc6ab4d2243f0cbf5d97e0eba8faa5f23"
+    },
+    {
+      "path": "package.json",
+      "bytes": 429,
+      "sha256": "84235499071c532ce66a81c5c9a13d0809554e32dcddb34857462087283d9cb8"
+    },
+    {
+      "path": "sources/approved-sheet-snapshot-20261015.json",
+      "bytes": 299854,
+      "sha256": "6eb9e5c78c54f512f11b7a71e3d4effb7307e3f8f3f834fce8bccd207ad7f176"
+    },
+    {
+      "path": "sources/photo-assets-20261015.json",
+      "bytes": 71966,
+      "sha256": "9becd68e50c981c5450fe6b3c8b3e9b57b534cb363b5a12548a88e3b73fa8dee"
+    },
+    {
+      "path": "tests/content.mjs",
+      "bytes": 3915,
+      "sha256": "7b6739c0cc74719f7e826babd493157c4265252903fe4d4dc1a5928064409735"
+    },
+    {
+      "path": "tests/controls.mjs",
+      "bytes": 4912,
+      "sha256": "92c4854052e6dda56bf76af07ecd3289c902a1fd300b4f31485f50310a8e658c"
+    },
+    {
+      "path": "tests/places.mjs",
+      "bytes": 4718,
+      "sha256": "26bceb5eb7e80ecf5f7637148cb87b02b45075456fe9cdfdf669831faa7f9cd8"
+    },
+    {
+      "path": "tests/roads.mjs",
+      "bytes": 6748,
+      "sha256": "aa9b2fd53b166744b611e21d59f22e978281314d21225ef85447db3450933537"
+    },
+    {
+      "path": "tests/travel.mjs",
+      "bytes": 4871,
+      "sha256": "8684dfc937858faa18070fbdfa8ff0cd656c645063435fd8cbb8d7a5cabb900b"
+    },
+    {
+      "path": "tests/verify.mjs",
+      "bytes": 14877,
+      "sha256": "b2836386cf45447d58192fd5253aed794d4569b721546418d9d142e94f72a14f"
+    },
+    {
+      "path": "tools/build-app-icons.py",
+      "bytes": 1246,
+      "sha256": "dc694ace2130a6814fab4af1afe5ab1269c6bc5a2f7013c18c90bb5a701f77c9"
+    },
+    {
+      "path": "tools/build-ferry-routes.mjs",
+      "bytes": 4129,
+      "sha256": "e791dc0465158e5d7cada3db5f997fd222b714672bd3c398283c228d8fa69442"
+    },
+    {
+      "path": "tools/build-land.mjs",
+      "bytes": 2581,
+      "sha256": "730ba1582518d88e85d2b6621172e35201f05be28b7171c097570230b0037cd0"
+    },
+    {
+      "path": "tools/build-road-graph.mjs",
+      "bytes": 2352,
+      "sha256": "46b0eb913c7726657dac63075a1811428f345656f227fbe7cd6855e45652ccf3"
+    },
+    {
+      "path": "tools/decode-road-tiles.py",
+      "bytes": 3414,
+      "sha256": "462738a159dab917efdd30c65840eb0e5ccad3a002bbf7be7dd49c706aa0ac2b"
+    },
+    {
+      "path": "tools/import-food-photos.py",
+      "bytes": 2366,
+      "sha256": "41b0ac22b64842eba9fc09b0677501c7921a41f11d1790112aca859c9e2eb153"
+    },
+    {
+      "path": "tools/import-photos.mjs",
+      "bytes": 3213,
+      "sha256": "4fcc8ecd1550f934e86c357d26b3748659b937b82e7474b9f8db5f7f8a15bc4a"
+    },
+    {
+      "path": "tools/link-photo-assets.mjs",
+      "bytes": 1039,
+      "sha256": "4dab01ff2f182baa79972feb0926fcb71302cee7033523d2ac1c24e9f3bf2b2a"
+    },
+    {
+      "path": "tools/vendor/polygon-clipping-LICENSE.md",
+      "bytes": 1327,
+      "sha256": "864ae9e4ed75e1571a3bcf5dc9070264213445b32e7e2af5bf60eba46fb656d0"
+    },
+    {
+      "path": "tools/vendor/polygon-clipping.cjs",
+      "bytes": 29106,
+      "sha256": "7f8619e84a86ce8dd400c9b50430e9c8cf8f26027b19eeb479f109f5c1a9d688"
+    }
+  ],
+  "changes": [
+    "Mobile (<=700px) layout: header bar, scrollable map-tool chips, right-side compass/zoom",
+    "Mobile destination card: full-width compact grid with thumbnail; ferry phase/ports shown",
+    "Joystick and E button float above bottom cards via --ui-bottom (mobile-layout.js)",
+    "Two-finger pinch zoom on map; viewport page zoom disabled",
+    "Destination card updates only the distance while walking (no per-frame DOM rebuild)",
+    "CLAUDE.md core constraints; handoff documents updated",
+    "App setup: manifest.json, sw.js, pwa.js, icons generated from original Bearbao PNG"
+  ],
+  "previousSiteVersion": 13,
+  "previousExportSha256": "31529d562278dad55686203c1d2c902d9090c9687437422f4c8913a14c0592e9",
+  "baseSourceCommit": "bd506c093dd8eb189ec1c1f7454aa4d04a993b90",
+  "repository": "BearBabyBaby-ai/penghu-bear-journey",
+  "pagesUrl": "https://bearbabybaby-ai.github.io/penghu-bear-journey/"
+}
