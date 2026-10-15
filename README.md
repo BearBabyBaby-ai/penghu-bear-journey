@@ -60,7 +60,7 @@ python -m http.server 4173 --directory dist
 
 - `sw.js`：畫面、程式與 JSON 先連網取最新版，沒網路才用上次的版本；相片與圖示存在手機。GitHub 更新後，App 下次開啟就是新版，不必重新安裝 APK。只有更換圖示或 `manifest.json` 時，才需要改 `sw.js` 的 `VERSION`。
 - APK 要全螢幕（不顯示網址列）開啟，網域根目錄 `https://bearbabybaby-ai.github.io/.well-known/assetlinks.json`（放在 `BearBabyBaby-ai.github.io` 儲存庫）必須加入此 App 的 package 名稱與簽章指紋。少了這筆，APK 仍可用，但上方會出現網址列。
-- 圖示由 `python tools/build-app-icons.py` 從原始熊寶PNG產生，只縮放置中，不改繪熊寶。
+- App／APK 圖示來源為 `sources/app-icon-travel-bear.png`（使用者指定的「旅遊熊熊.png」），由 `python tools/build-app-icons.py` 只做縮放產生；遮罩圖示另縮小置中於同色藍底。遊戲內角色仍是 `dist/assets/bearbao.png`，不受影響。
 
 ## Android APK（2026-10-16 已打包）
 
@@ -83,7 +83,7 @@ python -m http.server 4173 --directory dist
 | `dist/mobile-layout.js` | 手機搖桿／E鍵避開下方卡片 |
 | `CLAUDE.md` | 接手模型必讀的核心限制 |
 | `dist/manifest.json`、`dist/sw.js`、`dist/pwa.js` | App 安裝設定與離線快取 |
-| `dist/icons/` | 由原始熊寶PNG置中於海色底產生的 App 圖示（`tools/build-app-icons.py`） |
+| `dist/icons/` | App 圖示，由 `sources/app-icon-travel-bear.png`（旅遊熊熊）產生（`tools/build-app-icons.py`） |
 | `dist/game.js` | 操作、圖鑑、集章及潮汐工具 |
 | `dist/engine.js` | WebGL 3D 繪製 |
 | `dist/places.js` | 全部地標與類別顯示 |

@@ -1,6 +1,6 @@
 {
   "project": "熊熊澎湖之旅",
-  "exportedAt": "2026-10-16T07:24:01+08:00",
+  "exportedAt": "2026-10-16T07:31:32+08:00",
   "siteVersion": 14,
   "deploymentDirectory": "dist",
   "recordCount": 977,
@@ -42,8 +42,8 @@
     },
     {
       "path": "CLAUDE.md",
-      "bytes": 3496,
-      "sha256": "0fb7f5fb8a7839696b6b2454e3e78ec8fb1d40ad86aade2db61caf23b8ad1c81"
+      "bytes": 3690,
+      "sha256": "5a11580141780cea6e8a3713174e4e38c423f1ed562337617a678b89cdfe8a5e"
     },
     {
       "path": "DEVELOPMENT.md",
@@ -52,18 +52,18 @@
     },
     {
       "path": "HANDOFF_CLAUDE_GEMINI.md",
-      "bytes": 12942,
-      "sha256": "5fc1831dce746b50330da2f2045b634ca85fd17c8f18bee9154a11de112db246"
+      "bytes": 13217,
+      "sha256": "b7bcdfa3fe0710e143a98a3513c263b2f9b4a90e3f8633beebee9d898d64a521"
     },
     {
       "path": "README.md",
-      "bytes": 8586,
-      "sha256": "5a79568fe4b54bf987f2893841103a21e7d59fc8f9e0d850df1e08240489331b"
+      "bytes": 8776,
+      "sha256": "fd189b196c86f4a2355ec42e5827996b9da4dec6f8246e846dfe47ee07c00b66"
     },
     {
       "path": "START_HERE.txt",
-      "bytes": 991,
-      "sha256": "010c8af679e780ac1bedb9f32ac00ec2512e0410fb84900e7e71b3593b381a25"
+      "bytes": 1009,
+      "sha256": "c503b7459112ab3ecdb03d1417179e9c2713dfa3f2c0acaeb07bb366954c1990"
     },
     {
       "path": "dist/.nojekyll",
@@ -842,28 +842,28 @@
     },
     {
       "path": "dist/icons/apple-touch-icon.png",
-      "bytes": 29722,
-      "sha256": "d40492641402c0a5a215f83c2929697762a834762257491248a036fe8ee59cb6"
+      "bytes": 64750,
+      "sha256": "3134caee94dbe54452ab0c931934949b5072d4786cc1d784c43647c1e6ca27f0"
     },
     {
       "path": "dist/icons/favicon-32.png",
-      "bytes": 1978,
-      "sha256": "b76d4ba1460af7d8d3366b1f26108db6e94d7c8eed0ecfa2adfec9108e0f7b31"
+      "bytes": 2957,
+      "sha256": "97a3c354c078cb19828a3e4d93ae85147225ced64ba318e774c8f63d7870e7ae"
     },
     {
       "path": "dist/icons/icon-192.png",
-      "bytes": 34326,
-      "sha256": "9dc3fb8bbd32482fd305128e77f11ca5c357a9edec2ad2a7e489ae3d8fa4c1e1"
+      "bytes": 72163,
+      "sha256": "3b4bac117aef6efa849a067180eeab035cc28518ea330160080888f5e7b63175"
     },
     {
       "path": "dist/icons/icon-512.png",
-      "bytes": 172736,
-      "sha256": "266c81a02bccc986747af72c84b808f7dada2f2c23de109fb63b57e0a5c1fa3f"
+      "bytes": 379168,
+      "sha256": "889ffa47355e8c068d8407331bc958f0520f6bbfacbffd3f602026925d3686c0"
     },
     {
       "path": "dist/icons/icon-maskable-512.png",
-      "bytes": 101745,
-      "sha256": "af0461797f15c0dff34b55f852019a9b00b837d6ffb8b900c84b4964cf89d765"
+      "bytes": 242542,
+      "sha256": "4b5ea3da698bd981597d9344f350bb34e79b4204f76653be4f8edf1f9e4b5051"
     },
     {
       "path": "dist/index.html",
@@ -923,7 +923,7 @@
     {
       "path": "dist/sw.js",
       "bytes": 2726,
-      "sha256": "c9431d450325f0a918acda9b0547c06e5c9a3f5d3380544e99f9576b966b5ec6"
+      "sha256": "98e5ddf7080bade973edc3f7c2d1bd9617c092ed899cd533410907bd609a3d17"
     },
     {
       "path": "dist/tiles.js",
@@ -944,6 +944,11 @@
       "path": "package.json",
       "bytes": 429,
       "sha256": "84235499071c532ce66a81c5c9a13d0809554e32dcddb34857462087283d9cb8"
+    },
+    {
+      "path": "sources/app-icon-travel-bear.png",
+      "bytes": 1841700,
+      "sha256": "e47d52ff8475d50937067e0764588c03520f0ac812a15c4b3fe679cd1e9b6bd5"
     },
     {
       "path": "sources/approved-sheet-snapshot-20261015.json",
@@ -987,8 +992,8 @@
     },
     {
       "path": "tools/build-app-icons.py",
-      "bytes": 1246,
-      "sha256": "dc694ace2130a6814fab4af1afe5ab1269c6bc5a2f7013c18c90bb5a701f77c9"
+      "bytes": 1997,
+      "sha256": "07125c683b64fdd080aba2531f79a72a82143d3ed6b16872643fa7a9cdc34735"
     },
     {
       "path": "tools/build-ferry-routes.mjs",
@@ -1043,7 +1048,8 @@
     "Two-finger pinch zoom on map; viewport page zoom disabled",
     "Destination card updates only the distance while walking (no per-frame DOM rebuild)",
     "CLAUDE.md core constraints; handoff documents updated",
-    "App setup: manifest.json, sw.js, pwa.js, icons generated from original Bearbao PNG"
+    "App setup: manifest.json, sw.js, pwa.js, icons generated from original Bearbao PNG",
+    "App/APK icon replaced with user-supplied 旅遊熊熊.png (sources/app-icon-travel-bear.png); sw.js VERSION v2"
   ],
   "previousSiteVersion": 13,
   "previousExportSha256": "31529d562278dad55686203c1d2c902d9090c9687437422f4c8913a14c0592e9",

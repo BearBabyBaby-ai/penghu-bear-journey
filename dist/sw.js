@@ -6,7 +6,7 @@
    ・地圖圖磚（其他網站）：照常連網，不離線打包
    只有更換圖示或 manifest.json 時，才需要把下面的 VERSION 改一個新名稱
    ===================================================================== */
-const VERSION = 'penghu-bear-2026-10-16-v1';
+const VERSION = 'penghu-bear-2026-10-16-v2';
 const SHELL_CACHE = `shell-${VERSION}`;
 const MEDIA_CACHE = 'media';
 const SHELL = ['./', './index.html', './manifest.json', './style.css', './icons/icon-192.png', './icons/icon-512.png', './icons/icon-maskable-512.png', './assets/bearbao.png'];

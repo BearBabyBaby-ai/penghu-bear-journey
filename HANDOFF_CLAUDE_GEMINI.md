@@ -26,7 +26,7 @@
 - 2026-10-16（第14版）App設定與GitHub上線：
   - 儲存庫 `BearBabyBaby-ai/penghu-bear-journey`（main），GitHub Pages 由 Actions 發布 `dist/`，網址 https://bearbabybaby-ai.github.io/penghu-bear-journey/ 。
   - `dist/manifest.json`（直向、standalone）、`dist/sw.js`（畫面／程式／JSON先連網、相片與圖示快取；外部圖磚不攔截）、`dist/pwa.js`（只在HTTPS或localhost註冊）。
-  - `dist/icons/` 由 `tools/build-app-icons.py` 把原始熊寶PNG等比例置中到海色底，熊寶原檔不變。theme-color 改為與手機標題列相同的 #faf9ee。
+  - `dist/icons/` 由 `tools/build-app-icons.py` 產生。2026-10-16 依使用者指定，App／APK 圖示改為「旅遊熊熊.png」（存於 `sources/app-icon-travel-bear.png`，Drive ID `1p5XsE-HThStXMV-Ti8H47Pl-SdwAMPAt`），只縮放、不改繪；遮罩圖示縮小置中於原圖外框的藍色。遊戲內角色仍是 `bearbao.png`（未變）。`sw.js` 的 `VERSION` 已改為 v2。theme-color 改為與手機標題列相同的 #faf9ee。
   - APK 以 PWABuilder 打包（Trusted Web Activity），網域根 `assetlinks.json` 位於 `BearBabyBaby-ai.github.io` 儲存庫，需加入本App的package與簽章指紋。
 
 ## Android APK（2026-10-16 已打包）

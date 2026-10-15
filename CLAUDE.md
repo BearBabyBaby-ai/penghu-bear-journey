@@ -23,7 +23,7 @@
 
 ## App 設定（第14版起）
 
-`dist/manifest.json`、`dist/sw.js`、`dist/pwa.js`、`dist/icons/`。更換圖示或 manifest 時改 `sw.js` 的 `VERSION`。圖示只能用 `tools/build-app-icons.py` 由原始熊寶PNG產生，不改繪。正式網址：https://bearbabybaby-ai.github.io/penghu-bear-journey/
+`dist/manifest.json`、`dist/sw.js`、`dist/pwa.js`、`dist/icons/`。更換圖示或 manifest 時改 `sw.js` 的 `VERSION`。App／APK 圖示來源是使用者指定的 `sources/app-icon-travel-bear.png`（旅遊熊熊.png），只能用 `tools/build-app-icons.py` 縮放產生，不改繪；遊戲內角色仍是 `bearbao.png`，兩者不可互換。換圖示後 APK 需用 PWABuilder 重新打包。正式網址：https://bearbabybaby-ai.github.io/penghu-bear-journey/
 
 ## Android APK
 
