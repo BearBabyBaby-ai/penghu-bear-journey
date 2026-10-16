@@ -1,6 +1,6 @@
 {
   "project": "熊熊澎湖之旅",
-  "exportedAt": "2026-10-17T07:18:56+08:00",
+  "exportedAt": "2026-10-17T07:39:39+08:00",
   "siteVersion": 14,
   "deploymentDirectory": "dist",
   "recordCount": 977,
@@ -49,28 +49,28 @@
     },
     {
       "path": "CLAUDE.md",
-      "bytes": 9500,
-      "sha256": "dcd93e7a3a53461c9fddeba01f100a7ed18b330a21ca2690b26f6c7a041ebbee"
+      "bytes": 9726,
+      "sha256": "b5abdf1ed95b6cc178e768f3a2c85feacfe778a17d4fa037baeb78200bdc475d"
     },
     {
       "path": "DEVELOPMENT.md",
-      "bytes": 21918,
-      "sha256": "cb528ebff53885772463a2f506a1f79c40e3a9b5c73518e4d043dfb2c3fb65ed"
+      "bytes": 22249,
+      "sha256": "82b5f6ae5477c958441deb948a8a4297cb198c2a89a7f56d28a4bb0f049e9f15"
     },
     {
       "path": "HANDOFF_CLAUDE_GEMINI.md",
-      "bytes": 27688,
-      "sha256": "3b9608251c7b1ca63b7675166b32662e6c9a36f7dabc16e7a7452f816d945dea"
+      "bytes": 28488,
+      "sha256": "a4d1108601ace183920c05b718ea07be5261842b61a4c708f99a87038b653a8f"
     },
     {
       "path": "README.md",
-      "bytes": 11666,
-      "sha256": "8863f74b1cc8f2f36241d605237fa1f2bf3add6c6dd02341ec90cf4bab399938"
+      "bytes": 11834,
+      "sha256": "61139efd2f152cf31c646a7e07eb78877ba0a274c44e5fea855c39445d273c57"
     },
     {
       "path": "START_HERE.txt",
-      "bytes": 2881,
-      "sha256": "fff98a4d4f2a1225dd078ffed18591ccc6ad6e95118d9ff508fa2301ea6bb83e"
+      "bytes": 3004,
+      "sha256": "b1fa6271d78a903ffb7b4e90e020f700b3814cd56404879d60068201056b4612"
     },
     {
       "path": "dist/.nojekyll",
@@ -849,8 +849,8 @@
     },
     {
       "path": "dist/game.js",
-      "bytes": 76787,
-      "sha256": "ca72e1e3fc62820dd72b1ea491bf65288abea74bb305e3382bed158006ca4da7"
+      "bytes": 77681,
+      "sha256": "827e02ae85148989ebeb8919b26b52379875de23a412d84d2a24ee5f693aed5b"
     },
     {
       "path": "dist/geo/MIRROR-LICENSE.txt",
@@ -914,8 +914,8 @@
     },
     {
       "path": "dist/index.html",
-      "bytes": 12547,
-      "sha256": "114886ab076b0b863f5b5160b58c869d51bd5338344635b58e74daf9a764fe99"
+      "bytes": 12548,
+      "sha256": "86fe4575ca4ac24f5b04c3d0bc1cd1335a5bdcdd5ad6f461e0233e65df2a346f"
     },
     {
       "path": "dist/manifest.json",
@@ -995,7 +995,7 @@
     {
       "path": "package.json",
       "bytes": 512,
-      "sha256": "b9ac090e64c7a9edff20ddc4ec8ad279a2a8202aae1d5473620decc08c1bcf45"
+      "sha256": "8568589289bbf3bc006bd8f8d801ec9f07d82e7b81168a1e4f46e23967e7d6fd"
     },
     {
       "path": "sources/app-icon-travel-bear.png",
@@ -1185,7 +1185,8 @@
     "2026-10-16 第17版：騎車／搭船改用使用者提供的動畫WebP；測速詳情合併、固定測速不標科技執法；測速提醒不與一般提示重疊",
     "2026-10-16 第18版：全功能逐一檢查；分海動畫鏡頭對準步道、自動播放、時間條；手機開場不被遮；提示文字更正",
     "2026-10-16 第19版：分海動畫改在真實地圖上播放，不再使用示意小島",
-    "2026-10-17 第20版：手機版面 v3（下方單一卡片、提示一條、目的地卡兩列、地區資訊預設一列）"
+    "2026-10-17 第20版：手機版面 v3（下方單一卡片、提示一條、目的地卡兩列、地區資訊預設一列）",
+    "2026-10-17 第21版：WebGL 收回自動重新載入；測速紅圈拉遠隱藏、可疑點不顯示"
   ],
   "previousSiteVersion": 13,
   "previousExportSha256": "31529d562278dad55686203c1d2c902d9090c9687437422f4c8913a14c0592e9",
@@ -1199,5 +1200,5 @@
     "signingKey": "shared with 熊熊綜合系統 (fingerprint B4:D3:...:3A:3A); keystore kept outside repository",
     "assetlinks": "https://bearbabybaby-ai.github.io/.well-known/assetlinks.json lists both apps"
   },
-  "version": "20"
+  "version": "21"
 }

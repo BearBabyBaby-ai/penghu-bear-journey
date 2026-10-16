@@ -351,7 +351,11 @@ function bindControls(){
  /* 按下時記住搖桿中心：拖曳中下方卡片高度改變、搖桿跟著移位時，方向不會跳動 */
  const updateJoy=e=>{if(!joyCenter){const r=joy.getBoundingClientRect();joyCenter={x:r.left+r.width/2,y:r.top+r.height/2}}const x=e.clientX-joyCenter.x,y=e.clientY-joyCenter.y,scale=Math.min(1,30/Math.hypot(x,y));joystick={x:x*scale/30,y:y*scale/30};stick.style.transform=`translate(${x*scale}px,${y*scale}px)`};
  joy.addEventListener('pointerdown',e=>{e.preventDefault();joyId=e.pointerId;joyCenter=null;joy.setPointerCapture(joyId);updateJoy(e)});joy.addEventListener('pointermove',e=>{if(joyId===e.pointerId)updateJoy(e)});const resetJoy=()=>{joyId=null;joyCenter=null;joystick={x:0,y:0};stick.style.transform=''};joy.addEventListener('pointerup',resetJoy);joy.addEventListener('pointercancel',resetJoy);$('#touch-action').onclick=interact;
- $('#world').addEventListener('webglcontextlost',e=>{e.preventDefault();toast('3D 顯示中斷。進度已保留，請重新載入遊戲。')});
+ /* 手機 App 切到背景再回來時，系統可能收回 3D 畫面（只剩地標、地圖變空白）。進度先存好，畫面恢復或回到 App 時自動重新載入 */
+ let glLost=false;const reloadAfterLoss=()=>{if(!glLost)return;glLost=false;persist();try{sessionStorage.setItem('bear-penghu-resume','1')}catch{}location.reload()};
+ $('#world').addEventListener('webglcontextlost',e=>{e.preventDefault();glLost=true;persist();toast('地圖畫面重新整理中…')});
+ $('#world').addEventListener('webglcontextrestored',reloadAfterLoss);
+ document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&(glLost||engine?.gl?.isContextLost?.())){glLost=true;setTimeout(reloadAfterLoss,300)}});
 }
 /* 問熊寶：本機文字查詢。只列原表地點；「前往」沿用 navigateTo（沿道路／港口搭船，不瞬移） */
 const FERRY_AREAS=['望安鄉','七美鄉'];
@@ -484,17 +488,17 @@ async function toggleEnforce(on,silent=false){
  if(!on){$('#enforce-labels').innerHTML='';$('#enforce-alert').hidden=true;document.body.classList.remove('enforce-alerting');if(!silent)toast('已關閉測速／科技執法圖層與提醒。');return}
  if(!enforce.points.length&&!enforce.loading){enforce.loading=true;const res=await loadEnforcement();enforce.loading=false;enforce.from=res.from;enforce.meta=res.meta||null;enforce.points=groupPoints(res.records);prepareEnforcePoints()}
  renderEnforceMarkers();
- if(!silent){const n=enforce.points.length,nt=enforce.points.filter(q=>q.tech).length;toast(n?`已顯示測速照相 ${enforce.points.filter(q=>q.speed).length} 處${nt?`（其中 ${nt} 處路口另有科技執法）`:''}（${enforce.from==='sheet'?'即時讀取試算表':'遊戲內建資料'}，澎湖縣警察局公布）。騎車請勿操作手機，以現場標誌與速限為準。`:'測速／科技執法資料暫時讀不到。')}
+ if(!silent){const shown=enforce.points.filter(q=>!q.suspect),n=shown.length,nt=shown.filter(q=>q.tech).length;toast(n?`已顯示測速照相 ${shown.filter(q=>q.speed).length} 處${nt?`（其中 ${nt} 處路口另有科技執法）`:''}（${enforce.from==='sheet'?'即時讀取試算表':'遊戲內建資料'}，澎湖縣警察局公布）。騎車請勿操作手機，以現場標誌與速限為準。`:'測速／科技執法資料暫時讀不到。')}
 }
 /* 世界座標與「提醒點」（附近收錄道路，只用來算距離；標記仍在原始座標） */
 function prepareEnforcePoints(){for(const p of enforce.points){p.world=mapPosition({lat:p.lat,lng:p.lng});p.alertAt=p.world&&navigation?.snap(p.world.x,p.world.z,.6)||p.world}}
 function renderEnforceMarkers(){
  const box=$('#enforce-labels');if(!box)return;if(!enforce.on){box.innerHTML='';return}
- box.innerHTML=enforce.points.filter(p=>p.world).map(p=>`<button class="enforce-marker${p.tech?' tech':''}${p.suspect?' suspect':''}" data-enf="${p.id}" hidden aria-label="${escape((p.speed?'測速照相':'')+(p.tech?(p.speed?'＋':'')+'路口科技執法':'')+' '+p.name)}"><b>${p.suspect?'?':escape(p.limit??'')}</b>${p.tech?'<i>科</i>':''}</button>`).join('');
+ box.innerHTML=enforce.points.filter(p=>p.world&&!p.suspect).map(p=>`<button class="enforce-marker${p.tech?' tech':''}${p.suspect?' suspect':''}" data-enf="${p.id}" hidden aria-label="${escape((p.speed?'測速照相':'')+(p.tech?(p.speed?'＋':'')+'路口科技執法':'')+' '+p.name)}"><b>${p.suspect?'?':escape(p.limit??'')}</b>${p.tech?'<i>科</i>':''}</button>`).join('');
  box.querySelectorAll('[data-enf]').forEach(b=>b.onclick=()=>showEnforceDetail(enforce.points.find(p=>p.id===b.dataset.enf)));
 }
 function placeEnforceMarkers(){
- if(!enforce.on||!engine)return;const box=$('#enforce-labels');if(!box)return;const show=mapMode()&&engine.zoom<=220;
+ if(!enforce.on||!engine)return;const box=$('#enforce-labels');if(!box)return;const show=mapMode()&&engine.zoom<=40&&!tideView; /* 拉遠看全區時不顯示，避免整片紅圈 */
  for(const el of [...(box.children||[])]){const p=enforce.points.find(q=>q.id===el.dataset.enf);if(!show||!p?.world){el.hidden=true;continue}const s=engine.project([p.world.x,1.05,p.world.z]);if(!s||s.x<-30||s.x>innerWidth+30||s.y<-30||s.y>innerHeight+30){el.hidden=true;continue}el.hidden=false;el.style.left=s.x+'px';el.style.top=s.y+'px'}
 }
 function showEnforceDetail(p){
@@ -550,6 +554,8 @@ async function init(){
   $('#north-liao').onclick=()=>navigateTo(data.records.find(r=>r.id==='temple-76'));
   const sea=data.seaDays[tideDate]||Object.values(data.seaDays)[0];updateSimulation(sea);
   $('#loading').hidden=true;requestAnimationFrame(frame);prepareCoastline();
+  /* 畫面被系統收回後自動重新載入：直接回到地圖，不再顯示開場 */
+  try{if(sessionStorage.getItem('bear-penghu-resume')){sessionStorage.removeItem('bear-penghu-resume');start()}}catch{}
  }catch(e){$('#loading').classList.add('error');$('#loading').innerHTML=`<div class="error-box"><h2>熊寶暫時無法出發</h2><p>${escape(e.message)}</p><button class="primary" onclick="location.reload()">重新載入</button></div>`;console.error(e)}
 }
 init();

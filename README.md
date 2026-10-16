@@ -137,6 +137,11 @@ python -m http.server 4173 --directory dist
 
 - 手機版面重做：下方同時只有一張卡片、地圖上方不壓卡片、提示統一一條、目的地卡兩列、地區資訊預設一列。
 
+## 第21版
+
+- App 從背景回來地圖變空白時，會自動重新整理並回到地圖。
+- 測速紅圈拉遠時隱藏；位置有誤的那一點不再顯示。
+
 ## 署名與驗證範圍
 
 國土測繪陸域、OSM 道路及第三方工具的授權與出處保留於 `dist/geo/SOURCES.md`、`dist/geo/MIRROR-LICENSE.txt` 及 `tools/vendor/polygon-clipping-LICENSE.md`。此匯出未為熊寶圖像與第一方內容另行指定開源授權。
