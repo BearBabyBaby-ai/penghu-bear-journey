@@ -1,6 +1,6 @@
 {
   "project": "熊熊澎湖之旅",
-  "exportedAt": "2026-10-16T08:41:30+08:00",
+  "exportedAt": "2026-10-16T11:12:05+08:00",
   "siteVersion": 14,
   "deploymentDirectory": "dist",
   "recordCount": 977,
@@ -48,13 +48,13 @@
     },
     {
       "path": "DEVELOPMENT.md",
-      "bytes": 12721,
-      "sha256": "d1d4c44b121d1a4c25440319b469cc6060dd6560b7193ca7a4b74906965b37ca"
+      "bytes": 12983,
+      "sha256": "3775b083a626bd24147d93681c0ba1075c9b197c3228b7b7bbb0260370410629"
     },
     {
       "path": "HANDOFF_CLAUDE_GEMINI.md",
-      "bytes": 14706,
-      "sha256": "974c5594cbbabbfd815d31b5782a1fb6821e5a4bc3067f08642991be59c8e5f6"
+      "bytes": 14962,
+      "sha256": "a49891f3dfde053a7ba092abac5d5ea1d22f91434865c9bc6ba96dfe6acfc712"
     },
     {
       "path": "README.md",
@@ -813,8 +813,8 @@
     },
     {
       "path": "dist/game.js",
-      "bytes": 48173,
-      "sha256": "226e77b0668a5da9c9c5aeb67d9935118799879ad24b7f03e4ccaf86f070cf93"
+      "bytes": 48722,
+      "sha256": "c82cd6982a3aa83169fda951956b9a31d02c72bb47c0f6f4ee4ff32d0f96cb12"
     },
     {
       "path": "dist/geo/MIRROR-LICENSE.txt",
@@ -873,8 +873,8 @@
     },
     {
       "path": "dist/index.html",
-      "bytes": 9279,
-      "sha256": "9a97c985d24fb8614a7e2129f39f9b30fd09690a3c5eec67b26f47c4b17f269a"
+      "bytes": 9280,
+      "sha256": "b57650192488ec354160a411a01771cebdc2826762b3159d54b97b7d6ba60e52"
     },
     {
       "path": "dist/manifest.json",
@@ -978,8 +978,8 @@
     },
     {
       "path": "tests/controls.mjs",
-      "bytes": 4912,
-      "sha256": "92c4854052e6dda56bf76af07ecd3289c902a1fd300b4f31485f50310a8e658c"
+      "bytes": 5163,
+      "sha256": "01843161e9dcfc5146601e7df8cae4fb157e608cced4098867edaa9da4c30ec0"
     },
     {
       "path": "tests/places.mjs",
@@ -1062,7 +1062,8 @@
     "App setup: manifest.json, sw.js, pwa.js, icons generated from original Bearbao PNG",
     "App/APK icon replaced with user-supplied 旅遊熊熊.png (sources/app-icon-travel-bear.png); sw.js VERSION v2",
     "Fix mobile joystick: touch-action none restored, overscroll-behavior none, joystick center fixed during drag",
-    "問熊寶 local text query (dist/ask.js, tests/ask.mjs); results only from source records; 前往 uses navigateTo"
+    "問熊寶 local text query (dist/ask.js, tests/ask.mjs); results only from source records; 前往 uses navigateTo",
+    "Region selector 七美鄉 now navigates to 七美南滬港 (arrival port) instead of 神鷹寶塔"
   ],
   "previousSiteVersion": 13,
   "previousExportSha256": "31529d562278dad55686203c1d2c902d9090c9687437422f4c8913a14c0592e9",

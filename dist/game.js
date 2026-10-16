@@ -98,7 +98,11 @@ function setRegion(area,record=null,mode='map'){
  routeRevision=-1;updatePlaceLayers();persist();updateProgress();updateDestination();
 }
 function returnToMap(){if(!mapMode())setRegion(mapReturn?.area||save.area)}
+/* 選七美：目的地為七美南滬港（下船的港口）本身，不再續走到島上地標 */
+const REGION_PORTS={'七美鄉':'qimei'};
 function navigateRegion(area){
+ const port=REGION_PORTS[area]&&journey?.planner?.port(REGION_PORTS[area]);
+ if(port){returnToMap();start();target=null;destinationKey='';$('#destination').hidden=true;document.body.classList.remove('has-target');$$('.place-label').forEach(el=>el.classList.remove('target'));$('#region').value=area;$('#scene-label').textContent=`前往${area} · ${port.name}`;planTrip({...port.road});persist();return}
  returnToMap();const point=regionalSpawn(nodes,area),record=nodes.find(n=>n.record.id===point?.startRecordId)?.record;
  if(!record){toast('此區尚無可用道路目的地，熊寶留在原位。');return}
  navigateTo(record);
