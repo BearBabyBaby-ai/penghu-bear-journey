@@ -1,6 +1,6 @@
 {
   "project": "熊熊澎湖之旅",
-  "exportedAt": "2026-10-16T11:12:05+08:00",
+  "exportedAt": "2026-10-16T11:14:51+08:00",
   "siteVersion": 14,
   "deploymentDirectory": "dist",
   "recordCount": 977,
@@ -48,13 +48,13 @@
     },
     {
       "path": "DEVELOPMENT.md",
-      "bytes": 12983,
-      "sha256": "3775b083a626bd24147d93681c0ba1075c9b197c3228b7b7bbb0260370410629"
+      "bytes": 13134,
+      "sha256": "2288ab5553b30078794dbe0fa5d73c87ba79eb763e6c072d8c69bfb3ca22af66"
     },
     {
       "path": "HANDOFF_CLAUDE_GEMINI.md",
-      "bytes": 14962,
-      "sha256": "a49891f3dfde053a7ba092abac5d5ea1d22f91434865c9bc6ba96dfe6acfc712"
+      "bytes": 14941,
+      "sha256": "e7f8a5c4c5a11db1f75ef54413ec48ebff1ba9639dc91804434c2a4a8a9d5e9a"
     },
     {
       "path": "README.md",
@@ -813,8 +813,8 @@
     },
     {
       "path": "dist/game.js",
-      "bytes": 48722,
-      "sha256": "c82cd6982a3aa83169fda951956b9a31d02c72bb47c0f6f4ee4ff32d0f96cb12"
+      "bytes": 48773,
+      "sha256": "2f561b3ec2bb0fcaad810c7e041d071dcabdbb6551b8c2599e7343fa7174a2cf"
     },
     {
       "path": "dist/geo/MIRROR-LICENSE.txt",
@@ -874,7 +874,7 @@
     {
       "path": "dist/index.html",
       "bytes": 9280,
-      "sha256": "b57650192488ec354160a411a01771cebdc2826762b3159d54b97b7d6ba60e52"
+      "sha256": "94989cf9763e2dbf8d9e52ad97dcb806e610a3847f793b63c30cd4c050cb5399"
     },
     {
       "path": "dist/manifest.json",
@@ -978,8 +978,8 @@
     },
     {
       "path": "tests/controls.mjs",
-      "bytes": 5163,
-      "sha256": "01843161e9dcfc5146601e7df8cae4fb157e608cced4098867edaa9da4c30ec0"
+      "bytes": 5573,
+      "sha256": "ca82897e94e94a7f61f0afd4d3bb271c08991da54340ff2751839c10c65cb266"
     },
     {
       "path": "tests/places.mjs",
@@ -1063,7 +1063,8 @@
     "App/APK icon replaced with user-supplied 旅遊熊熊.png (sources/app-icon-travel-bear.png); sw.js VERSION v2",
     "Fix mobile joystick: touch-action none restored, overscroll-behavior none, joystick center fixed during drag",
     "問熊寶 local text query (dist/ask.js, tests/ask.mjs); results only from source records; 前往 uses navigateTo",
-    "Region selector 七美鄉 now navigates to 七美南滬港 (arrival port) instead of 神鷹寶塔"
+    "Region selector 七美鄉 now navigates to 七美南滬港 (arrival port) instead of 神鷹寶塔",
+    "Region selector 望安鄉 now navigates to 望安潭門港 (arrival port)"
   ],
   "previousSiteVersion": 13,
   "previousExportSha256": "31529d562278dad55686203c1d2c902d9090c9687437422f4c8913a14c0592e9",
