@@ -269,3 +269,45 @@ button,select,a,#touch-action{touch-action:manipulation}.place-label,#joystick,#
  .tide-bar{left:10px;right:10px;width:auto;transform:none;bottom:calc(84px + env(safe-area-inset-bottom))}
  .not-started .map-tools,.not-started .geo-status,.not-started .gps-chip,.not-started .place-layers{display:none!important}
 }
+
+/* ===== 2026-10-17 手機版面 v3（整體規則，只影響 700px 以下） =====
+   1. 下方只有一個卡片位置：目的地卡、問熊寶結果／地區資訊、分海時間條共用，同時只顯示一張；
+   2. 地圖上方不壓卡片：上方只有標題列與「問熊寶、類別」一列，右側直排工具；
+   3. 提示統一在同一條（類別列下方）：測速提醒 > 一般提示 > GPS 狀態 > 圖資狀態，新的蓋過舊的、不疊；
+   4. 目的地卡兩列；自動導航中不顯示停用按鈕；地區資訊預設一列，點「精選 ▾」展開。 */
+.region-actions{display:flex;align-items:center;gap:6px;flex:none}
+.region-toggle{padding:8px 10px;border-radius:10px;background:#fffdf4;border:1px solid #e2e4d5;font-size:12px;white-space:nowrap}
+.region-close{display:none;width:30px;height:30px;border-radius:50%;background:#e9eddf;font-size:18px;line-height:1}
+@media(min-width:701px){.region-toggle{display:none}}
+@media(max-width:700px){
+ /* 1. 下方卡片位置 */
+ .ask-results,.gps-on .ask-results{top:auto;bottom:calc(84px + env(safe-area-inset-bottom));left:10px;right:10px;max-height:min(46dvh,420px)}
+ .ask-results.region-info,.gps-on .ask-results.region-info{max-height:min(46dvh,420px)}
+ .ask-open #destination,.region-open #destination{display:none!important}
+ .ask-results.region-info.collapsed{padding:6px;overflow:visible}
+ .ask-results.region-info.collapsed .ask-head,.ask-results.region-info.collapsed .region-sub,.ask-results.region-info.collapsed .ask-list,.ask-results.region-info.collapsed .ask-empty,.ask-results.region-info.collapsed .ask-more{display:none}
+ .ask-results.region-info .region-card{margin:0;padding:8px 10px;gap:8px}
+ .ask-results.region-info .region-card strong{display:inline;font-size:15px;margin-right:6px}.ask-results.region-info .region-card span{display:inline;font-size:11px}
+ .ask-results.region-info .region-card small{font-size:11px;margin-top:2px;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+ .ask-results.region-info.collapsed .region-close{display:grid;place-items:center}
+
+ /* 4. 目的地卡兩列 */
+ .destination,.destination:has(#destination-start),.destination:has(.destination-photo){bottom:calc(84px + env(safe-area-inset-bottom));padding:8px 10px;row-gap:2px;column-gap:6px;grid-template-columns:minmax(0,1fr) auto auto;grid-template-areas:"name name name" "phase phase phase" "ports ports ports" "dist story act";max-height:none;overflow:visible}
+ .destination:has(.destination-photo){grid-template-columns:48px minmax(0,1fr) auto auto;grid-template-areas:"photo name name name" "photo dist story act"}
+ .destination .tag{display:none}
+ .destination h3{font-size:16px;margin:2px 36px 0 0}
+ .destination-head{top:4px;right:4px}.destination-head button{width:30px;height:30px;font-size:20px}
+ .destination .journey-phase{font-size:11px;margin:0}.destination .journey-ports{font-size:11px;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.destination .journey-ports small{display:none}
+ .destination .distance{margin:0;align-self:center;font-size:11px;gap:4px;flex-wrap:wrap}.destination .distance strong{font-size:17px}
+ .destination-photo,.destination-photo img{width:48px;height:48px}
+ .destination #destination-action,.destination .destination-story{margin-top:4px;min-height:38px;font-size:12px;padding:0 10px;border-radius:10px}
+ .destination #destination-action{grid-area:act}.destination .destination-story{grid-area:story}
+ .destination #destination-action.is-active{display:none}
+
+ /* 3. 提示統一一條 */
+ #toast,.gps-on #toast,#toast.visible{top:calc(112px + env(safe-area-inset-top));left:10px;right:66px;max-width:none;transform:none;text-align:left;z-index:30}
+ #enforce-alert,.gps-on #enforce-alert{top:calc(112px + env(safe-area-inset-top));left:10px;right:66px;max-width:none;transform:none;bottom:auto;font-size:15px;padding:10px 14px}
+ .gps-chip,.geo-status,.geo-status.ready,.gps-on .geo-status{top:calc(112px + env(safe-area-inset-top))}
+ .gps-on .geo-status{display:none!important}
+ body:has(#toast.visible) .gps-chip,body:has(#toast.visible) .geo-status,.enforce-alerting .gps-chip,.enforce-alerting .geo-status{visibility:hidden}
+}
