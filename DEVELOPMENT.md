@@ -124,3 +124,4 @@ WASD／方向鍵沿路移動、Shift加速、點道路沿路前往；點地標�
 第15版：`npm run check` 八組 PASS（Node 22.22.0）；無頭 Chromium 以模擬 GPS 檢查手機 393×760、360×640 與桌機 1366×800。實體手機 GPS、APK 內定位權限未驗證。
 第16版：`npm run check` 九組 PASS（Node 22.22.0）；無頭 Chromium 檢查測速圖層、提醒與模擬 GPS。實體手機震動／提示音未驗證。
 第17版：`npm run check` 九組 PASS；無頭 Chromium 檢查騎車／搭船動畫位置。實體手機動畫順暢度未驗證。
+分海動畫場景（第17版修正）：`setRegion(area,null,'tide')` 的地點改用 `tideNodes()`，只有奎壁山摩西分海一筆；`makeTour()` 保留但遊戲不再使用。

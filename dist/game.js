@@ -78,7 +78,7 @@ function setRegion(area,record=null,mode='map'){
  if(enteringTide&&mapMode())mapReturn={player:{...player},area:$('#region').value,targetId:target?.record.id};
  const returning=!enteringTide?mapReturn:null,previous=returning?.player||player;
  inspectPoint=null;$('#region').value=area;observingSea=enteringTide;destinationKey='';
- const mapped=!observingSea;nodes=mapped?mapPlaces(data.records,navigation):makeTour(data.records,area);
+ const mapped=!observingSea;nodes=mapped?mapPlaces(data.records,navigation):tideNodes();
  if(!mapped&&record&&!nodes.some(n=>n.record.id===record.id)){const slot=nodes.find(n=>n.record.kind===record.kind)||nodes[0];slot.record=record}
  engine.mapVisible=mapped;destination=null;route=[];
  if(mapped){
@@ -99,6 +99,8 @@ function setRegion(area,record=null,mode='map'){
  $('#map-note').textContent=mapped?'橘線：道路 · 藍色虛線：搭船示意':'分海動畫 · 點「全圖」返回原位';
  routeRevision=-1;updatePlaceLayers();persist();updateProgress();updateDestination();
 }
+/* 分海動畫場景只放「奎壁山摩西分海」本身（放在礫石步道起點旁），不再隨機帶入湖西鄉其他地點 */
+function tideNodes(){const r=data.records.find(x=>x.id==='sight-47');return r?[{record:r,x:17.5,z:-1.5,index:0}]:[]}
 function returnToMap(){if(!mapMode())setRegion(mapReturn?.area||save.area)}
 /* 沿路／搭船前往某個港口（鄉市選單的離島、交通船面板共用） */
 function goToPort(port,area=port.area){if($('#details').open)$('#details').close();closePanel();returnToMap();start();target=null;destinationKey='';$('#destination').hidden=true;document.body.classList.remove('has-target');$$('.place-label').forEach(el=>el.classList.remove('target'));if(area)$('#region').value=area;$('#scene-label').textContent=`前往${port.name}`;planTrip({...port.road});persist()}

@@ -1,6 +1,6 @@
 {
   "project": "熊熊澎湖之旅",
-  "exportedAt": "2026-10-16T19:56:08+08:00",
+  "exportedAt": "2026-10-16T21:46:10+08:00",
   "siteVersion": 14,
   "deploymentDirectory": "dist",
   "recordCount": 977,
@@ -54,13 +54,13 @@
     },
     {
       "path": "DEVELOPMENT.md",
-      "bytes": 20696,
-      "sha256": "7f7128f8bf98c5f90e99bb7ff5576098ddac2bc65bf06c6ad199e6f662bab08b"
+      "bytes": 20879,
+      "sha256": "3533db71f16fb59ed70af185a8d842e9e5af77b963faf24bab27d89c7d9a655b"
     },
     {
       "path": "HANDOFF_CLAUDE_GEMINI.md",
-      "bytes": 24018,
-      "sha256": "5ce5f14faffd7b5db69b1ce3827bb1b2633edb15247914ac968b301daa0a79db"
+      "bytes": 24299,
+      "sha256": "7edfb04f7d9e5f032b9f4946dc6687ebd15fd605ea11756e518b2db327ec081f"
     },
     {
       "path": "README.md",
@@ -69,8 +69,8 @@
     },
     {
       "path": "START_HERE.txt",
-      "bytes": 2340,
-      "sha256": "c2494ce827e43ebfa3ed336fd8883ccf194d5843d5e9b3212e7c2e378369bebf"
+      "bytes": 2428,
+      "sha256": "7e74ccc1a1a00fc358d9524067296682130712615585121373d844f399479b97"
     },
     {
       "path": "dist/.nojekyll",
@@ -849,8 +849,8 @@
     },
     {
       "path": "dist/game.js",
-      "bytes": 72806,
-      "sha256": "bced9e8d0d159e5260d094bf134634918e3f9a7cb9aa40dece2f2cb8e097123e"
+      "bytes": 73046,
+      "sha256": "aa03e383fa1f2bd8d0afe0aa81775724edd5c0cd535272f8759aa69945247887"
     },
     {
       "path": "dist/geo/MIRROR-LICENSE.txt",
@@ -915,7 +915,7 @@
     {
       "path": "dist/index.html",
       "bytes": 11797,
-      "sha256": "40dfe257b56d894a755cec138074eea152edb9d59f2cfb787c4b30bcaa73dca7"
+      "sha256": "3c290668f7215443ceb49046315136f379654bdcfabbbd9c4938121583c11716"
     },
     {
       "path": "dist/manifest.json",
