@@ -1,6 +1,6 @@
 {
   "project": "熊熊澎湖之旅",
-  "exportedAt": "2026-10-16T19:53:35+08:00",
+  "exportedAt": "2026-10-16T19:56:08+08:00",
   "siteVersion": 14,
   "deploymentDirectory": "dist",
   "recordCount": 977,
@@ -70,7 +70,7 @@
     {
       "path": "START_HERE.txt",
       "bytes": 2340,
-      "sha256": "7a6893bd8901b000e7e63b671e7befb261a2c37830cd01b95bd58ebb813f23e7"
+      "sha256": "c2494ce827e43ebfa3ed336fd8883ccf194d5843d5e9b3212e7c2e378369bebf"
     },
     {
       "path": "dist/.nojekyll",
