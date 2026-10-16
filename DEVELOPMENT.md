@@ -105,9 +105,9 @@ WASD／方向鍵沿路移動、Shift加速、點道路沿路前往；點地標�
 
 `index.html`：地圖工具改為 `#map-follow`、`#gps-toggle`、`#map-more` 加 `.map-extra`（全圖、北寮、底圖、重新載入）；桌機 `.map-extra{display:contents}` 並以 `order` 維持原順序。問熊寶表單多 `.ask-pill`；`body.ask-expanded` 控制手機展開。CSS 在 `style.css` 末段「手機版面 v2」。`mobile-layout.js` 不變（類別下拉移到上方後不再計入 `--ui-bottom`）。
 
-## 角色動畫（第15版）
+## 角色動畫（第17版起）
 
-`#bear-ride`、`#bear-boat` 由 `<img>` 改為 `<div class="bear-sprite">` 內含原圖與 `.fx` 特效元素；`game.js` 仍設定外層的位置、大小、`--rock`、`--flip`。動畫在 `style.css`「騎車／搭船熊寶動畫」區塊，`prefers-reduced-motion` 時停用。
+`#bear-ride`、`#bear-boat` 為 `<div class="bear-sprite">` 內含使用者提供的動畫 WebP（`bear-ride-anim.webp`、`bear-boat-anim.webp`，後者用 `data-src` 延遲到有搭船行程才載入）；`game.js` 設定外層位置、大小與 `--flip`。搭船動畫以 `BOAT_FIT={s:.8207,tx:61,ty:29}` 換算 `BOAT_SCALE`、`BOAT_DX`、`BOAT_DY`（翻轉時水平位移跟著反向）。第15版的 CSS 假動畫已移除。
 
 ## 南海遊客中心東側上船（第15版）
 
@@ -123,3 +123,4 @@ WASD／方向鍵沿路移動、Shift加速、點道路沿路前往；點地標�
 
 第15版：`npm run check` 八組 PASS（Node 22.22.0）；無頭 Chromium 以模擬 GPS 檢查手機 393×760、360×640 與桌機 1366×800。實體手機 GPS、APK 內定位權限未驗證。
 第16版：`npm run check` 九組 PASS（Node 22.22.0）；無頭 Chromium 檢查測速圖層、提醒與模擬 GPS。實體手機震動／提示音未驗證。
+第17版：`npm run check` 九組 PASS；無頭 Chromium 檢查騎車／搭船動畫位置。實體手機動畫順暢度未驗證。

@@ -1,6 +1,6 @@
 {
   "project": "熊熊澎湖之旅",
-  "exportedAt": "2026-10-16T19:28:37+08:00",
+  "exportedAt": "2026-10-16T19:49:45+08:00",
   "siteVersion": 14,
   "deploymentDirectory": "dist",
   "recordCount": 977,
@@ -49,28 +49,28 @@
     },
     {
       "path": "CLAUDE.md",
-      "bytes": 7718,
-      "sha256": "e3c17589b19b77a128df85584bb203b5696728f077f931b313c6ba7953bcf644"
+      "bytes": 8211,
+      "sha256": "532f8459036b504d32f28fceb3435e4b4be82534673d50653d2a14ef75d23d72"
     },
     {
       "path": "DEVELOPMENT.md",
-      "bytes": 20272,
-      "sha256": "14b2eafc3c743f97d6ff9a9e7ed19c19b81967ac705e3e4aee280d7ebc4aed6f"
+      "bytes": 20557,
+      "sha256": "06b0662d6cc53571a00b8c6e271bb55549d087a3d4935113b6557fe5da43e6d1"
     },
     {
       "path": "HANDOFF_CLAUDE_GEMINI.md",
-      "bytes": 22261,
-      "sha256": "56d5c6b8fcbc851ce8241c5fbd8ea7adfed601555a1c1c44da497fb211863519"
+      "bytes": 23812,
+      "sha256": "30603273ca6c4024d8e50d504687f0832d3b5a92326d854642c1776720f5fc71"
     },
     {
       "path": "README.md",
-      "bytes": 10836,
-      "sha256": "cc2eac46cfc242b04f14ccd2cc6bf87b32a1f4840cf593c37b88f10d66e50697"
+      "bytes": 11141,
+      "sha256": "3b5c78583146658589284608dfd2d03ec061a22be305d63cbc6135a1ea5a1d72"
     },
     {
       "path": "START_HERE.txt",
-      "bytes": 2129,
-      "sha256": "b60dd152864de46c7b025f4409bea1deb46b7805ac0a1c6a2c1e5166a2b5dc80"
+      "bytes": 2340,
+      "sha256": "7a6893bd8901b000e7e63b671e7befb261a2c37830cd01b95bd58ebb813f23e7"
     },
     {
       "path": "dist/.nojekyll",
@@ -83,9 +83,19 @@
       "sha256": "92cf3c492c3d113116b4ff9fe70b2d7750f3cef470c4a7e577eb30222dca4610"
     },
     {
+      "path": "dist/assets/bear-boat-anim.webp",
+      "bytes": 3109168,
+      "sha256": "f1032611db44419b049e84f5c3ce8267da14c83f6e51fab93bf7691167de1ad6"
+    },
+    {
       "path": "dist/assets/bear-boat.webp",
       "bytes": 68138,
       "sha256": "fc5f982dff53b562ffba317c000fa89e801e3a7a4e8e33573cdcfe8f52c05b25"
+    },
+    {
+      "path": "dist/assets/bear-ride-anim.webp",
+      "bytes": 594344,
+      "sha256": "ecca9e4c186593e89b23d5270e8f3794f7bc1fba4af42d11969ec107b4a76b7d"
     },
     {
       "path": "dist/assets/bear-ride.webp",
@@ -839,8 +849,8 @@
     },
     {
       "path": "dist/game.js",
-      "bytes": 70931,
-      "sha256": "d284c5375e77ceb909c4f9c1c09e562ca1db70cfd8dbdf2fd3ba86c2efbf2058"
+      "bytes": 72772,
+      "sha256": "3c5675f09e330f642857ee4bf81c6283f10e5c18cd2c029a814eb620e99bdf8f"
     },
     {
       "path": "dist/geo/MIRROR-LICENSE.txt",
@@ -904,8 +914,8 @@
     },
     {
       "path": "dist/index.html",
-      "bytes": 11966,
-      "sha256": "7dea4c8d0cf53df194176221c14319533385081f2d0e099e852ddb948b5dfc20"
+      "bytes": 11704,
+      "sha256": "7ef73a630b049fb9b468a83533c271cc4b3873376c3d0524ef8689736347db2d"
     },
     {
       "path": "dist/manifest.json",
@@ -954,8 +964,8 @@
     },
     {
       "path": "dist/style.css",
-      "bytes": 53188,
-      "sha256": "c6019aacf01a9537968774c4d5c6ab30bb2443a33f639a68048747fb19276e3b"
+      "bytes": 51424,
+      "sha256": "ccc4d463b23b8de4c54e7c0f3cb01226118031ef365c894017b144fc9fd2ac51"
     },
     {
       "path": "dist/sw.js",
@@ -985,7 +995,7 @@
     {
       "path": "package.json",
       "bytes": 511,
-      "sha256": "20811bfdfdf5b2ff7b69a070c2cc5bcb053d77fa1fd6a1655d88989a4dcc9c04"
+      "sha256": "d484cc008d32c0c27daf7df84e61f8f66ea60ebc73697baa2c2c000b339916f8"
     },
     {
       "path": "sources/app-icon-travel-bear.png",
@@ -998,9 +1008,19 @@
       "sha256": "6eb9e5c78c54f512f11b7a71e3d4effb7307e3f8f3f834fce8bccd207ad7f176"
     },
     {
+      "path": "sources/characters/bear-boat-anim-original.webp",
+      "bytes": 5929302,
+      "sha256": "075753f393a9f82e9bb3a09e5aee379f0226a8af1863bc62cdb7c913be24fcb2"
+    },
+    {
       "path": "sources/characters/bear-boat-original.png",
       "bytes": 1261958,
       "sha256": "f325d6488be4553380d7b040398218f50547ccceeb673227868c443424b18df1"
+    },
+    {
+      "path": "sources/characters/bear-ride-anim-original.webp",
+      "bytes": 594344,
+      "sha256": "ecca9e4c186593e89b23d5270e8f3794f7bc1fba4af42d11969ec107b4a76b7d"
     },
     {
       "path": "sources/characters/bear-ride-original.png",
@@ -1084,8 +1104,8 @@
     },
     {
       "path": "tools/build-character-sprites.py",
-      "bytes": 1077,
-      "sha256": "3e81fea77eda84bb24367693f764d29be080690567b5c78ef9d7bab06e865918"
+      "bytes": 3018,
+      "sha256": "ffe9bc0d97c5345001d7715fab3b73e2ff68f186c22b2644ca696c722f791f4d"
     },
     {
       "path": "tools/build-enforcement.mjs",
@@ -1161,7 +1181,8 @@
     "Character sprites: scooter bear while moving on land, boat bear at sea, original bearbao when stopped or at port transfers; bear size matched across sprites",
     "Scooter/boat bear sprites flip horizontally by on-screen travel direction; original bearbao never flipped",
     "2026-10-16 第15版：GPS我的位置（熊寶沿路跟上，不瞬移）、點鄉市顯示地區資訊並清除問熊寶關鍵字、手機版面v2、騎車／搭船熊寶CSS動畫、南海諸島交通船改由南海遊客中心東側上船、測速照相與科技執法草案",
-    "2026-10-16 第16版：測速照相與科技執法圖層（澎湖縣警察局開放資料；試算表「測速與科技執法」即時讀取＋內建檔），熊寶／GPS 前方提醒，每週排程改為交通船與測速週檢"
+    "2026-10-16 第16版：測速照相與科技執法圖層（澎湖縣警察局開放資料；試算表「測速與科技執法」即時讀取＋內建檔），熊寶／GPS 前方提醒，每週排程改為交通船與測速週檢",
+    "2026-10-16 第17版：騎車／搭船改用使用者提供的動畫WebP；測速詳情合併、固定測速不標科技執法；測速提醒不與一般提示重疊"
   ],
   "previousSiteVersion": 13,
   "previousExportSha256": "31529d562278dad55686203c1d2c902d9090c9687437422f4c8913a14c0592e9",
@@ -1175,5 +1196,5 @@
     "signingKey": "shared with 熊熊綜合系統 (fingerprint B4:D3:...:3A:3A); keystore kept outside repository",
     "assetlinks": "https://bearbabybaby-ai.github.io/.well-known/assetlinks.json lists both apps"
   },
-  "version": "16"
+  "version": "17"
 }

@@ -166,25 +166,8 @@ button,select,a,#touch-action{touch-action:manipulation}.place-label,#joystick,#
 .region-sub{font-size:12px;color:#5d7569;margin:10px 2px 6px;font-weight:600}
 .region-card{margin-bottom:2px}
 
-/* ===== 2026-10-16 騎車／搭船熊寶動畫（原圖不改繪，只用 CSS 動態與水花、煙塵、速度線特效） ===== */
-.bear-sprite img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;transform-origin:50% 92%;pointer-events:none;user-select:none}
-.bear-sprite .fx{position:absolute;pointer-events:none;opacity:0}
-.bear-sprite.ride img{animation:ride-bump .34s ease-in-out infinite}
-@keyframes ride-bump{0%,100%{transform:translateY(0) rotate(0)}30%{transform:translateY(-1.8%) rotate(-.9deg)}60%{transform:translateY(-.4%) rotate(.5deg)}}
-.ride .puff{left:9%;top:76%;width:10%;height:10%;border-radius:50%;background:radial-gradient(circle,#fffffff2 0 38%,#eef0e6aa 52%,#ffffff00 70%);animation:ride-puff .9s linear infinite}
-.ride .puff.p2{animation-delay:.3s;top:80%}.ride .puff.p3{animation-delay:.6s;top:73%}
-@keyframes ride-puff{0%{transform:translate(0,0) scale(.35);opacity:.95}100%{transform:translate(-170%,-70%) scale(1.9);opacity:0}}
-.ride .lines{left:-8%;top:44%;width:24%;height:30%;background:repeating-linear-gradient(180deg,#ffffff00 0 18%,#5f8279a6 18% 23%,#ffffff00 23% 40%);border-radius:40%;animation:ride-lines .5s linear infinite}
-@keyframes ride-lines{0%{transform:translateX(35%) scaleX(.6);opacity:0}35%{opacity:.85}100%{transform:translateX(-45%) scaleX(1);opacity:0}}
-.bear-sprite.boat img{animation:boat-bob 2.4s ease-in-out infinite}
-@keyframes boat-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-2.2%)}}
-.boat .wake{left:4%;top:80%;width:34%;height:10%;border-radius:50%;border:3px solid #fffffff0;border-color:#fffffff0 #ffffff00 #ffffff00;animation:boat-wake 1.7s ease-out infinite}
-.boat .wake.w2{animation-delay:.57s}.boat .wake.w3{animation-delay:1.13s}
-@keyframes boat-wake{0%{transform:translateX(10%) scale(.45);opacity:.95}100%{transform:translateX(-55%) scale(1.3);opacity:0}}
-.boat .spray{left:84%;top:70%;width:8%;height:8%;border-radius:50%;background:radial-gradient(circle,#fff 0 38%,#d9f4f7cc 50%,#ffffff00 70%);animation:boat-spray 1.2s ease-out infinite}
-.boat .spray.s2{left:80%;top:74%;animation-delay:.6s}
-@keyframes boat-spray{0%{transform:translate(0,0) scale(.4);opacity:1}100%{transform:translate(70%,-140%) scale(1.4);opacity:0}}
-@media(prefers-reduced-motion:reduce){.bear-sprite img,.bear-sprite .fx,#gps-marker .gps-dot{animation:none!important}}
+/* ===== 2026-10-16 騎車／搭船熊寶動畫：使用者提供的動畫 WebP（輪胎旋轉、船體航行與破浪），只縮放不改繪 ===== */
+.bear-sprite img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none;user-select:none}
 
 /* ===== 2026-10-16 手機版面 v2（只影響 700px 以下；桌機不變）=====
    不再每樣都整條橫幅：右側直排工具（跟隨熊寶、我的位置、地圖選單）＋縮放；
@@ -253,11 +236,14 @@ button,select,a,#touch-action{touch-action:manipulation}.place-label,#joystick,#
 .enforce-marker.suspect{border-style:dashed;border-color:#9a8f86;opacity:.75}
 .enforce-toggle{display:flex;align-items:center;gap:5px;font-size:10px;padding:0 8px;white-space:nowrap;cursor:pointer;order:7}
 .enforce-toggle input{width:14px;height:14px;margin:0;accent-color:#d8382f}
-#enforce-alert{position:absolute;z-index:31;left:50%;top:84px;transform:translateX(-50%);max-width:min(460px,calc(100vw - 32px));padding:10px 16px;border-radius:14px;background:#d8382f;color:#fff;font-size:14px;font-weight:700;box-shadow:0 6px 20px #0000003d;text-align:center;line-height:1.5}
+#enforce-alert{position:absolute;z-index:61;left:50%;top:auto;bottom:104px;transform:translateX(-50%);max-width:min(460px,calc(100vw - 32px));padding:10px 16px;border-radius:14px;background:#d8382f;color:#fff;font-size:14px;font-weight:700;box-shadow:0 6px 20px #0000003d;text-align:center;line-height:1.5}
 .enforce-warn{color:#a25b3a;font-size:12px}
 @media(max-width:700px){
  .map-extra .enforce-toggle{width:100%;min-height:42px;border-radius:12px;font-size:14px;padding:0 12px;background:#eef1e2;border:1px solid #fff;box-sizing:border-box}
  .map-extra .enforce-toggle input{width:18px;height:18px}
- #enforce-alert{top:calc(110px + env(safe-area-inset-top));font-size:15px}
+ #enforce-alert{top:calc(110px + env(safe-area-inset-top));bottom:auto;font-size:15px}.gps-on #enforce-alert{top:calc(156px + env(safe-area-inset-top))}
  .enforce-marker{width:30px;height:30px}
 }
+/* 測速提醒顯示時先隱藏一般提示，避免兩個疊在一起 */
+.enforce-alerting #toast{opacity:0!important;visibility:hidden}
+@media(prefers-reduced-motion:reduce){#gps-marker .gps-dot{animation:none!important}}
