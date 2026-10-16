@@ -8,6 +8,7 @@ import {mapPlaces,placeCounts,shownPlaces,categoryKinds,labelLayout,regionalSpaw
 import {placeImages,imageSource} from './media.js?v=20261015-travel8';
 import {TravelPlanner,Journey,loadFerries} from './travel.js?v=20261016-ferry4';
 import {askPlaces} from './ask.js?v=20261016-ask1';
+import {loadFerrySheet} from './ferry-sheet.js?v=20261016-sheet1';
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const escape=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const today=()=>new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Taipei',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
@@ -161,11 +162,19 @@ function openPanel(name){
  $('#panel-kicker').textContent=titles[name][0];$('#panel-title').textContent=titles[name][1];
  ({atlas:renderAtlas,stamps:renderStamps,tides:renderTides,ferries:renderFerries})[name]();
 }
+/* 交通船資訊：優先即時讀試算表「交通船資訊」；讀不到就用內建航線檔。搭船路線（港口位置、海路）一律用內建檔，不因表格變動而瞬移 */
+let ferrySheet=null,ferrySheetState='idle';
+function refreshFerrySheet(){if(ferrySheetState==='loading')return;ferrySheetState='loading';loadFerrySheet().then(rows=>{ferrySheet=rows;ferrySheetState=rows?'ok':'failed';if(currentPanel==='ferries')renderFerries()})}
 function renderFerries(){
  const planner=journey?.planner;
  if(!planner){$('#panel-body').innerHTML='<p class="empty">道路與港口資料載入中，請稍後再開啟。</p>';return}
- const short=p=>p.name.replace(/（.*?）/,'');const groups=new Map();for(const l of planner.links){if(!groups.has(l.operator))groups.set(l.operator,[]);groups.get(l.operator).push(l)}
- $('#panel-body').innerHTML=`<p>遊戲收錄 ${planner.links.length} 條交通船航線、${planner.ports.length} 個港口。按「前往」熊寶會從目前位置沿路走到該港；選離島的港口就會自動搭船過去。</p>${[...groups].map(([operator,links])=>`<section class="ferry-group"><h3>${escape(operator||'交通船')}</h3>${links.map(l=>{const a=planner.port(l.from),b=planner.port(l.to);return `<div class="ferry-route"><div class="ferry-name"><b>${escape(short(a))} ⇄ ${escape(short(b))}</b>${l.vessel?`<small>船名：${escape(l.vessel)}</small>`:''}</div><div class="ferry-actions"><button data-ferry-port="${a.id}">前往${escape(short(a))}</button><button data-ferry-port="${b.id}">前往${escape(short(b))}</button>${safeURL(l.source)?`<a href="${escape(safeURL(l.source))}" target="_blank" rel="noopener noreferrer">官方時刻表 ↗</a>`:''}</div></div>`}).join('')}</section>`).join('')}<p class="small-note">${escape(planner.notice||'')} 班次、票價、停航與實際碼頭請以官方公告為準；資料同步存於熊熊綜合系統試算表「交通船資訊」工作表。</p>`;
+ if(ferrySheetState==='idle')refreshFerrySheet();
+ const short=s=>String(s).replace(/（.*?）/,''),byName=name=>planner.ports.find(p=>p.name===name||short(p.name)===short(name));
+ const bundled=planner.links.map(l=>{const a=planner.port(l.from),b=planner.port(l.to);return{operator:l.operator,vessel:l.vessel,from:a.name,to:b.name,source:l.source}});
+ const rows=ferrySheet||bundled,groups=new Map();for(const r of rows){const k=r.operator||'交通船';if(!groups.has(k))groups.set(k,[]);groups.get(k).push(r)}
+ const sailable=(a,b)=>a&&b&&planner.links.some(l=>l.from===a.id&&l.to===b.id||l.to===a.id&&l.from===b.id);
+ const status=ferrySheet?`即時讀取試算表「交通船資訊」${rows[0]?.date?`（整理日期 ${escape(rows[0].date)}）`:''}`:ferrySheetState==='loading'?'正在讀取試算表「交通船資訊」…':'試算表暫時讀不到，顯示遊戲內建資料';
+ $('#panel-body').innerHTML=`<p class="ferry-status">${status}</p><p>共 ${rows.length} 條航線。按「前往」熊寶會從目前位置沿路走到該港；選離島的港口就會自動搭船過去。</p>${[...groups].map(([operator,list])=>`<section class="ferry-group"><h3>${escape(operator)}</h3>${list.map(r=>{const a=byName(r.from),b=byName(r.to),ok=sailable(a,b),src=safeURL(r.source);return `<div class="ferry-route"><div class="ferry-name"><b>${escape(short(r.from))} ⇄ ${escape(short(r.to))}</b>${r.vessel?`<small>船名：${escape(r.vessel)}</small>`:''}${ok?'':'<small class="ferry-warn">遊戲尚未收錄此航線的海路，暫時無法搭船前往</small>'}</div><div class="ferry-actions">${a?`<button data-ferry-port="${a.id}">前往${escape(short(a.name))}</button>`:''}${b&&ok?`<button data-ferry-port="${b.id}">前往${escape(short(b.name))}</button>`:''}${src?`<a href="${escape(src)}" target="_blank" rel="noopener noreferrer">官方時刻表 ↗</a>`:''}</div></div>`}).join('')}</section>`).join('')}<p class="small-note">${escape(planner.notice||'')} 班次、票價、停航與實際碼頭請以官方公告為準。</p>`;
  $$('[data-ferry-port]').forEach(b=>b.onclick=()=>goToPort(planner.port(b.dataset.ferryPort)));
 }
 function renderAtlas(){

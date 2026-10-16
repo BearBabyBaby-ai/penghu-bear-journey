@@ -140,7 +140,7 @@ button,select,a,#touch-action{touch-action:manipulation}.place-label,#joystick,#
 }
 
 /* ===== 2026-10-16 交通船資訊面板 ===== */
-.ferry-group{margin:16px 0 4px}.ferry-group h3{font-size:12px;letter-spacing:1px;color:#5d7569;margin:0 0 8px}
+.ferry-status{font-size:11px!important;color:#507f8b;background:#eef1e2;border-radius:8px;padding:6px 10px;margin:0 0 6px}.ferry-warn{color:#a25b3a!important}.ferry-group{margin:16px 0 4px}.ferry-group h3{font-size:12px;letter-spacing:1px;color:#5d7569;margin:0 0 8px}
 .ferry-route{background:#fffdf4;border:1px solid #e2e4d5;border-radius:12px;padding:11px 12px;margin-bottom:8px}
 .ferry-name b{font-size:14px;font-weight:600}.ferry-name small{display:block;font-size:11px;color:var(--muted);margin-top:2px}
 .ferry-actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}

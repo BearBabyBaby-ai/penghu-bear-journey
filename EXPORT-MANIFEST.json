@@ -1,6 +1,6 @@
 {
   "project": "熊熊澎湖之旅",
-  "exportedAt": "2026-10-16T11:37:43+08:00",
+  "exportedAt": "2026-10-16T11:41:37+08:00",
   "siteVersion": 14,
   "deploymentDirectory": "dist",
   "recordCount": 977,
@@ -18,14 +18,16 @@
     "Service worker registers, controls page, and offline reload still opens game (headless Chromium, localhost)",
     "問熊寶: 玄天上帝 query lists 25 temples, 前往 navigates by road; 想去七美 shows area summary and ferry route; tested at 393x760 and 1366x800",
     "travel: 吉貝/鳥嶼/員貝 arrival without teleport; 吉貝→七美 multi-port trip",
-    "travel: 桶盤/虎井 arrival without teleport; ferry panel shows 8 routes at 393x760, 360x640, 1366x800"
+    "travel: 桶盤/虎井 arrival without teleport; ferry panel shows 8 routes at 393x760, 360x640, 1366x800",
+    "ferry-sheet: simulated live sheet shows 9 routes incl. unsailable new route warning; offline shows bundled 8"
   ],
   "unverified": [
     "Node.js 24 run (will run in GitHub Actions)",
     "GitHub Actions has not run in the destination repository",
     "External map tiles (NLSC/OSM) could not be reached from this environment",
     "No physical Android/iOS device testing",
-    "APK full-screen (no URL bar) on a physical device"
+    "APK full-screen (no URL bar) on a physical device",
+    "Live CSV fetch from docs.google.com in a real browser (blocked in this environment; same method as 熊熊綜合系統)"
   ],
   "files": [
     {
@@ -45,28 +47,28 @@
     },
     {
       "path": "CLAUDE.md",
-      "bytes": 4557,
-      "sha256": "77940124e16090976e61c032e53eb4c8e640a652786f0bec2cb811674cbc979e"
+      "bytes": 4836,
+      "sha256": "b9a21d2191551d2bb17c7a7370b8c4301baac8409ccbe90d49b46478c2cb1831"
     },
     {
       "path": "DEVELOPMENT.md",
-      "bytes": 15466,
-      "sha256": "0a117e149185916a6e3d9b02673aa3c26be383b76dae531b92662de32bed721f"
+      "bytes": 16069,
+      "sha256": "a44946452686245cc8b4052e827b91394e91baaccd09fc1df3f43f22f759260c"
     },
     {
       "path": "HANDOFF_CLAUDE_GEMINI.md",
-      "bytes": 15974,
-      "sha256": "8e65777f5452764282272511cd95bd281ad8846dfbdb7da573066cb0dd5af305"
+      "bytes": 16320,
+      "sha256": "2e616af752e51934e086d9aed77958369db698939ba18078ca7d1d1aa6f37ecb"
     },
     {
       "path": "README.md",
-      "bytes": 9518,
-      "sha256": "c57bd36df43c4519dfda2b5b360a20816be8566ca428038ebd675fc1b78e0525"
+      "bytes": 9563,
+      "sha256": "86fdac606d035a1fb909634178fe6a1c03b70af1153d3bc75ec057ad652755b0"
     },
     {
       "path": "START_HERE.txt",
-      "bytes": 1335,
-      "sha256": "389e164b49f662b09702554ca0624a19de5f50fc05c5d821782badeeebe4bfc7"
+      "bytes": 1365,
+      "sha256": "ae9cba4b24829fc380d0b3d1b07850f164f42d678ca4d4a1a7468960f30fc3c4"
     },
     {
       "path": "dist/.nojekyll",
@@ -814,9 +816,14 @@
       "sha256": "84ec8a274e963141fd409da476aa2d65b83209a68864514c0ddbd639a8fda4aa"
     },
     {
+      "path": "dist/ferry-sheet.js",
+      "bytes": 2079,
+      "sha256": "fbf6753304cf4c541e189fc222ea673e3f45fd049da2bd4d5baaa65e1c79b410"
+    },
+    {
       "path": "dist/game.js",
-      "bytes": 50639,
-      "sha256": "15302f202ddfb04b091ecf3800b7ff85562a96dc0817aedcfcc21fcc0b29dfe4"
+      "bytes": 51893,
+      "sha256": "901265f8e6174816a3d09cd868713b476454270bb12902f3277aff59a314df92"
     },
     {
       "path": "dist/geo/MIRROR-LICENSE.txt",
@@ -876,7 +883,7 @@
     {
       "path": "dist/index.html",
       "bytes": 9633,
-      "sha256": "fb8ea22cd712411ba928de2ff61864decb08baad1d2b13fa8f13c87b63fddcd4"
+      "sha256": "6db29861c6741f461e667a414582658494f9f54b59390f29d19187a5603b0424"
     },
     {
       "path": "dist/manifest.json",
@@ -925,8 +932,8 @@
     },
     {
       "path": "dist/style.css",
-      "bytes": 41781,
-      "sha256": "ea51ddd290aee1093c0b99ebed1413031a8af8c4f95b38b845c21351c69a1bb9"
+      "bytes": 41939,
+      "sha256": "0cf2227fd85349a027d7a160fe683e16901d2e979a66534c13c395abe87bb546"
     },
     {
       "path": "dist/sw.js",
@@ -950,8 +957,8 @@
     },
     {
       "path": "package.json",
-      "bytes": 451,
-      "sha256": "fb1783343b094e9f892ddf7d85fd5ea62a825be7b3c22c4bed61cde74cb66643"
+      "bytes": 481,
+      "sha256": "c939e19fa4f7aa47a7a73c05d59c0e952d9441873f0c80a96008631080431c3e"
     },
     {
       "path": "sources/app-icon-travel-bear.png",
@@ -982,6 +989,11 @@
       "path": "tests/controls.mjs",
       "bytes": 5573,
       "sha256": "c64370808d68679a57193260164f7d4ad02cf588cec3cb661829ec35242fb60d"
+    },
+    {
+      "path": "tests/ferry-sheet.mjs",
+      "bytes": 1718,
+      "sha256": "a61cb37dd62cd6ecd795ecfb51e0be76544a9954dcd7acfb171ed587cc7d5fae"
     },
     {
       "path": "tests/places.mjs",
@@ -1071,7 +1083,8 @@
     "Ferries: added 重光碼頭⇄大倉漁港 (大倉 CGA coordinate; 重光 referenced to 重光-威靈殿, non-official)",
     "Ferries: added 馬公⇄桶盤 (桶盤之星) and 馬公⇄虎井 (馬公市公所); routes carry operator/vessel/source (v3)",
     "交通船 dock panel listing all 8 routes with go-to-port buttons",
-    "All ferry info written to 熊熊綜合系統 sheet 交通船資訊"
+    "All ferry info written to 熊熊綜合系統 sheet 交通船資訊",
+    "交通船 panel reads 熊熊綜合系統 sheet 交通船資訊 live (public CSV, no API key) with bundled fallback; weekly scheduled verification task"
   ],
   "previousSiteVersion": 13,
   "previousExportSha256": "31529d562278dad55686203c1d2c902d9090c9687437422f4c8913a14c0592e9",
