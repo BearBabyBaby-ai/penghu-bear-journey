@@ -1,6 +1,6 @@
 {
   "project": "熊熊澎湖之旅",
-  "exportedAt": "2026-10-16T16:14:33+08:00",
+  "exportedAt": "2026-10-16T18:46:17+08:00",
   "siteVersion": 14,
   "deploymentDirectory": "dist",
   "recordCount": 977,
@@ -49,28 +49,28 @@
     },
     {
       "path": "CLAUDE.md",
-      "bytes": 5443,
-      "sha256": "26ec24dee973f956ca1e662c353e253b50661bad53137544e3e4c0f0de630954"
+      "bytes": 6651,
+      "sha256": "c544b15a9f424fb904394076a358fc975006243838649dc4492032b0b25f1cf5"
     },
     {
       "path": "DEVELOPMENT.md",
-      "bytes": 16712,
-      "sha256": "508d0572938f723b327b4249f296bbaa9a4f8f6f8b53c67f16ec5d0096fadf6e"
+      "bytes": 19010,
+      "sha256": "03193c272833f7fc9afd7141fb6ed79311502b7847875f67f1e39decaf6411b9"
     },
     {
       "path": "HANDOFF_CLAUDE_GEMINI.md",
-      "bytes": 16977,
-      "sha256": "9e5bc565cda6472c97371bf8c02cbce8aa09d24457dfc0ad981807cb95b4102b"
+      "bytes": 20067,
+      "sha256": "d26ac9b6661972c379ff42947de49674226bf37a6c8d6002b67c79dd06a4ace6"
     },
     {
       "path": "README.md",
-      "bytes": 9692,
-      "sha256": "4088c196703e0a667148046b41c45254bad814759dee1f88c8565ace056ffdf5"
+      "bytes": 10466,
+      "sha256": "4e7471d766b4d26f8f0859707fee5d068395f3cb2b521e2a8cfb1d527e5bb5ef"
     },
     {
       "path": "START_HERE.txt",
-      "bytes": 1503,
-      "sha256": "f64b9f7e8eb5ef6435eecb3ca556c61e076c035381fc9656b01fbd75d439fdc5"
+      "bytes": 1840,
+      "sha256": "e363e5fb897d28800e3f815324952b1bc4e7a8029027c09afb9f86a047512d97"
     },
     {
       "path": "dist/.nojekyll",
@@ -834,8 +834,8 @@
     },
     {
       "path": "dist/game.js",
-      "bytes": 53232,
-      "sha256": "69a2559af48a079560c29fece181cf518c4d43784abac28d84ae6f035f685c11"
+      "bytes": 63642,
+      "sha256": "b4af1001c24773e9b0fbad716d4286c2507e77413be91e9f10fb172de72bcf29"
     },
     {
       "path": "dist/geo/MIRROR-LICENSE.txt",
@@ -849,8 +849,8 @@
     },
     {
       "path": "dist/geo/penghu-ferries-20261016.json",
-      "bytes": 9604,
-      "sha256": "97e4f8574952512ef0f8759c49c1e2df0fd40dcb62d691a3793ead1faf8e2460"
+      "bytes": 9856,
+      "sha256": "226541f9fde8ae44b5fb07e53476cd4612989807a6b0f88d706b13580fdf334d"
     },
     {
       "path": "dist/geo/penghu-grid-20260407.json",
@@ -894,8 +894,8 @@
     },
     {
       "path": "dist/index.html",
-      "bytes": 9859,
-      "sha256": "2861b32102829a49a3bc31aa1d3d74ea304aaa29c9c600afe8d196e15d68bdce"
+      "bytes": 11487,
+      "sha256": "a248874f3bec9542cb60ff8393dc914e8a6dac0610b48634a5e078913565b709"
     },
     {
       "path": "dist/manifest.json",
@@ -944,8 +944,8 @@
     },
     {
       "path": "dist/style.css",
-      "bytes": 42311,
-      "sha256": "c728b8d7c18431374753b3b24a8308c4bdd7715c323f94306238e1d3ba6be046"
+      "bytes": 51408,
+      "sha256": "088eba641684a6c007f1460ce81f431e1c29c5c5b9e02e0b99faac38eafe114b"
     },
     {
       "path": "dist/sw.js",
@@ -960,7 +960,12 @@
     {
       "path": "dist/travel.js",
       "bytes": 9449,
-      "sha256": "63538e7a91dc6624d9e13a4c6414dfb4516e651386fff4f36a394634a45d111f"
+      "sha256": "7074660d3870388e5d3deae4e8101db0e298123bfa52b716a7eb9da9c20f5c5c"
+    },
+    {
+      "path": "docs/草案-測速照相與科技執法.md",
+      "bytes": 4282,
+      "sha256": "f9054ecd0a1d448192bc03ee3aa9f45bd645d15e5cea1af54ff1b065e53e0d02"
     },
     {
       "path": "index.html",
@@ -970,7 +975,7 @@
     {
       "path": "package.json",
       "bytes": 481,
-      "sha256": "c939e19fa4f7aa47a7a73c05d59c0e952d9441873f0c80a96008631080431c3e"
+      "sha256": "00fc9b0cae1d837b46aed23a71e9cbf8fc2f3b5543376aa9bacb712b8bdcc5b5"
     },
     {
       "path": "sources/app-icon-travel-bear.png",
@@ -1009,8 +1014,8 @@
     },
     {
       "path": "tests/controls.mjs",
-      "bytes": 5573,
-      "sha256": "c64370808d68679a57193260164f7d4ad02cf588cec3cb661829ec35242fb60d"
+      "bytes": 7154,
+      "sha256": "49dce2479cb0e76ed5f885e8fcb7f0aa3bbb34a3b317a113073d0387dd789805"
     },
     {
       "path": "tests/ferry-sheet.mjs",
@@ -1029,8 +1034,8 @@
     },
     {
       "path": "tests/travel.mjs",
-      "bytes": 6457,
-      "sha256": "496afc26dd6327deba9e46d412a73e1bf990cc82fccb46cdd897a252cc84c0bd"
+      "bytes": 6937,
+      "sha256": "6d44933fcf93b456435d71fefc6fabd260b664388eb1a4aeb1b62f67c7aac6d7"
     },
     {
       "path": "tests/verify.mjs",
@@ -1049,8 +1054,8 @@
     },
     {
       "path": "tools/build-ferry-routes.mjs",
-      "bytes": 9403,
-      "sha256": "fb45e6e7d8dde1b5a6147d8b8c171db7635a17d16096822b1a868b1ac2773f8a"
+      "bytes": 9753,
+      "sha256": "86800f26ead1415c9cb6bfc30dfb5db037c6b12d90d5bef16f1ce2aba5826bcc"
     },
     {
       "path": "tools/build-land.mjs",
@@ -1114,7 +1119,8 @@
     "交通船 panel reads 熊熊綜合系統 sheet 交通船資訊 live (public CSV, no API key) with bundled fallback; weekly scheduled verification task",
     "Character sprites: scooter bear while moving on land, boat bear at sea, original bearbao when stopped or at port transfers",
     "Character sprites: scooter bear while moving on land, boat bear at sea, original bearbao when stopped or at port transfers; bear size matched across sprites",
-    "Scooter/boat bear sprites flip horizontally by on-screen travel direction; original bearbao never flipped"
+    "Scooter/boat bear sprites flip horizontally by on-screen travel direction; original bearbao never flipped",
+    "2026-10-16 第15版：GPS我的位置（熊寶沿路跟上，不瞬移）、點鄉市顯示地區資訊並清除問熊寶關鍵字、手機版面v2、騎車／搭船熊寶CSS動畫、南海諸島交通船改由南海遊客中心東側上船、測速照相與科技執法草案"
   ],
   "previousSiteVersion": 13,
   "previousExportSha256": "31529d562278dad55686203c1d2c902d9090c9687437422f4c8913a14c0592e9",
@@ -1127,5 +1133,6 @@
     "displayMode": "standalone",
     "signingKey": "shared with 熊熊綜合系統 (fingerprint B4:D3:...:3A:3A); keystore kept outside repository",
     "assetlinks": "https://bearbabybaby-ai.github.io/.well-known/assetlinks.json lists both apps"
-  }
+  },
+  "version": "15"
 }

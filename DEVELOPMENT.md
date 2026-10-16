@@ -93,6 +93,28 @@ WASD／方向鍵沿路移動、Shift加速、點道路沿路前往；點地標�
 
 `manifest.json`、`sw.js`、`pwa.js` 與 `icons/` 全部在 `dist/`，相對路徑，子目錄部署相容。service worker 只處理同源 GET：導覽與 .html 一律 `no-store` 先連網，其他程式與 JSON 先連網後備快取，`assets/`、`icons/` 先用快取。外部圖磚不攔截、不離線打包。已以無頭Chromium驗證：註冊並接管頁面、離線重新整理仍能開啟遊戲與載入資料。
 
+## GPS 我的位置（第15版）
+
+`game.js` 的 `toggleGps()`／`onGps()`／`gpsFollowBear()`／`placeGpsMarker()`／`updateGpsUI()`。定位點以 `mapPosition({lat,lng})` 換成世界座標，`navigation.snap(x,z,1.5)`（約 150 公尺）找最近收錄道路，再用 `journey.request(player,road,{name:'你的位置',gps:true})` 規劃（同一般導航，含港口搭船）；不改 `player` 座標。重新規劃節流：新定位 2.5 秒、其他 6 秒，你移動不到約 30 公尺且已在跟隨路線上就不重算；船上不重算（靠港後接續）。有 `target`、或正在走使用者選的非 GPS 路線時不搶導航。`gps` 物件不進存檔（`meta.gps` 也會被 `cleanSave` 濾掉）。
+
+## 地區資訊（第15版）
+
+`navigateRegion()` 最後呼叫 `showRegionInfo(area)`：清空 `#ask-input`、收起問熊寶膠囊，`#ask-results` 加 `region-info` 類別顯示地區卡；精選依底部類別下拉，有照片優先、最多 6 筆，「前往」仍走 `navigateTo()`。
+
+## 手機版面 v2（第15版）
+
+`index.html`：地圖工具改為 `#map-follow`、`#gps-toggle`、`#map-more` 加 `.map-extra`（全圖、北寮、底圖、重新載入）；桌機 `.map-extra{display:contents}` 並以 `order` 維持原順序。問熊寶表單多 `.ask-pill`；`body.ask-expanded` 控制手機展開。CSS 在 `style.css` 末段「手機版面 v2」。`mobile-layout.js` 不變（類別下拉移到上方後不再計入 `--ui-bottom`）。
+
+## 角色動畫（第15版）
+
+`#bear-ride`、`#bear-boat` 由 `<img>` 改為 `<div class="bear-sprite">` 內含原圖與 `.fx` 特效元素；`game.js` 仍設定外層的位置、大小、`--rock`、`--flip`。動畫在 `style.css`「騎車／搭船熊寶動畫」區塊，`prefers-reduced-motion` 時停用。
+
+## 南海遊客中心東側上船（第15版）
+
+`tools/build-ferry-routes.mjs` 的港口可設 `board:[lng,lat]`，作為找道路與海面上船點的中心（沒有就用官方 `geo`）；輸出時移除 `board`。目前只有 magong 設定（使用者指正：南海諸島交通船由遊客中心右側出發）。
+
 ## 驗證範圍
 
 第13版以無頭Chromium（SwiftShader）截圖檢查桌機1366×800與手機393×760、360×640、393×850；外部圖磚因環境網路限制未載入，畫面為陸域備援底圖。`npm run check` 在 Node.js 22.22.0 執行（Node 24 未實測）。實體手機與GitHub Actions尚未驗證。
+
+第15版：`npm run check` 八組 PASS（Node 22.22.0）；無頭 Chromium 以模擬 GPS 檢查手機 393×760、360×640 與桌機 1366×800。實體手機 GPS、APK 內定位權限未驗證。
