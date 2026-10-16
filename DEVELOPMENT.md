@@ -113,8 +113,13 @@ WASD／方向鍵沿路移動、Shift加速、點道路沿路前往；點地標�
 
 `tools/build-ferry-routes.mjs` 的港口可設 `board:[lng,lat]`，作為找道路與海面上船點的中心（沒有就用官方 `geo`）；輸出時移除 `board`。目前只有 magong 設定（使用者指正：南海諸島交通船由遊客中心右側出發）。
 
+## 測速照相與科技執法（第16版）
+
+`dist/enforcement.js`：`loadEnforcement()` 先讀試算表（`ENFORCE_SHEET` gid 777020，export／gviz 兩種 CSV 網址），失敗改讀 `ENFORCE_FILE`。`normalizeRecord()` 只在緯度欄 >90 時對調欄位；`groupPoints()` 依座標（小數 5 位）合併同路口；`parseDirection('東南向西北')` 回傳行進方向單位向量（x 向東、z 向南）；`checkAlerts(points,pos,heading,{unit,range=300,techRange=50,rearm=600},alerted)` 判斷前方提醒（測速：夾角 45° 內、方向夾角 60° 內；科技執法：50 公尺內不分方向；`suspect` 不提醒）。`game.js` 的 `toggleEnforce()`、`prepareEnforcePoints()`（`alertAt`＝0.6 世界單位內最近收錄道路點，只用來算距離）、`placeEnforceMarkers()`、`enforceBearTick()`（4Hz，熊寶移動方向）、`enforceGpsCheck()`（GPS 連續定位，移動 ≥8 公尺才更新方向，時速 ≥5 公里才提醒）。重新產生資料：`node tools/build-enforcement.mjs`（同時輸出 `sources/enforcement/sheet-rows.json` 供寫回工作表）。
+
 ## 驗證範圍
 
 第13版以無頭Chromium（SwiftShader）截圖檢查桌機1366×800與手機393×760、360×640、393×850；外部圖磚因環境網路限制未載入，畫面為陸域備援底圖。`npm run check` 在 Node.js 22.22.0 執行（Node 24 未實測）。實體手機與GitHub Actions尚未驗證。
 
 第15版：`npm run check` 八組 PASS（Node 22.22.0）；無頭 Chromium 以模擬 GPS 檢查手機 393×760、360×640 與桌機 1366×800。實體手機 GPS、APK 內定位權限未驗證。
+第16版：`npm run check` 九組 PASS（Node 22.22.0）；無頭 Chromium 檢查測速圖層、提醒與模擬 GPS。實體手機震動／提示音未驗證。

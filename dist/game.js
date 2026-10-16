@@ -9,6 +9,7 @@ import {placeImages,imageSource} from './media.js?v=20261015-travel8';
 import {TravelPlanner,Journey,loadFerries} from './travel.js?v=20261016-ferry5';
 import {askPlaces} from './ask.js?v=20261016-ask1';
 import {loadFerrySheet} from './ferry-sheet.js?v=20261016-sheet1';
+import {loadEnforcement,groupPoints,checkAlerts,alertText} from './enforcement.js?v=20261016-enf1';
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const escape=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const today=()=>new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Taipei',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
@@ -276,13 +277,14 @@ function frame(now){
   if(spritePrev){const wx=player.x-spritePrev.x,wz=player.z-spritePrev.z;if(Math.hypot(wx,wz)>1e-4){const k=1/Math.hypot(wx,wz),ahead=engine.project([player.x+wx*k,1.05,player.z+wz*k]);if(ahead&&Math.abs(ahead.x-feet.x)>.5)spriteFlip=ahead.x<feet.x?-1:1}}
   boatBear.style.setProperty('--flip',spriteFlip);rideBear.style.setProperty('--flip',spriteFlip)}
  spritePrev={x:player.x,z:player.z};
- placeGpsMarker();
+ placeGpsMarker();placeEnforceMarkers();
  const layout=labelLayout(displayedNodes(),p=>engine.project(p),innerWidth,innerHeight,mapMode()?engine.zoom:10,target?.record.id,mapMode()?MAP_MARKER_LABEL_Y:2);
  for(const n of nodes){const p=layout.get(n.index),el=n.label;if(!el)continue;el.hidden=!p;if(!p)continue;n.cluster=p.members||[n];const count=n.cluster.length,dot=el.querySelector('.dot'),text=count>1?String(count):KINDS[n.record.kind].symbol;if(dot.textContent!==text)dot.textContent=text;el.classList.toggle('cluster',count>1);el.setAttribute('aria-label',count>1?`查看此處 ${count} 個地點`:`選取${n.record.name}`);el.style.left=p.x+'px';el.style.top=p.y+'px';el.classList.toggle('compact',p.compact);el.style.zIndex=p.selected?'3000':String(100+Math.round(p.y));}
  const compass=$('.compass svg');compass.style.transform=`rotate(${-engine.angle*180/Math.PI}deg)`;
  if(Math.floor(elapsed*4)!==Math.floor((elapsed-dt)*4)){
   if(mapMode()){$('#terrain-state').textContent=journey?.active?journey.label:navigation?(navigation.isOnRoad(player)?`熊寶：${navigation.isLand(player.x,player.z)?'陸地道路':'已收錄橋面'} · ${player.roadName}`:'等待道路起點'):'道路與港口載入中';if(journey?.error){toast(journey.error);journey.error=''}}else $('#terrain-state').textContent='分海動畫：獨立示意場景';
   if(gps.on){gpsFollowBear();updateGpsUI()}
+  if(enforce.on&&!gps.on)enforceBearTick();
   if(started){if(!mapMode()){const best=nodes.map(n=>({n,d:distanceTo(n)})).sort((a,b)=>a.d-b.d)[0];if(!destination&&best?.d<interactionRange()&&target!==best.n)target=best.n}updateDestination()}
  }
  requestAnimationFrame(frame);
@@ -296,7 +298,7 @@ function bindControls(){
  $('#region').onchange=e=>navigateRegion(e.target.value);
  $('#gps-toggle').onclick=()=>{closeMapMenu();toggleGps()};$('#gps-chip').onclick=gpsRecenter;
  $('#map-more').onclick=e=>{e.stopPropagation();const open=!$('#map-tools').classList.contains('open');$('#map-tools').classList.toggle('open',open);$('#map-more').setAttribute('aria-expanded',String(open))};
- $('#north-liao').addEventListener('click',closeMapMenu);$('#map-retry').addEventListener('click',closeMapMenu);
+ $('#north-liao').addEventListener('click',closeMapMenu);$('#enforce-toggle').onchange=e=>toggleEnforce(e.target.checked);setupEnforcement();$('#map-retry').addEventListener('click',closeMapMenu);
  document.addEventListener('pointerdown',e=>{if($('#map-tools').classList.contains('open')&&!e.target.closest('#map-tools'))closeMapMenu()});
  setupAsk();
  window.addEventListener('keydown',e=>{if(['INPUT','SELECT','TEXTAREA'].includes(document.activeElement.tagName))return;const k=e.key.toLowerCase();if(k==='escape'){closePanel();return}if(['w','a','s','d','arrowup','arrowdown','arrowleft','arrowright','shift','e'].includes(k)){e.preventDefault();if(k==='e'&&!e.repeat)interact();else keys.add(k)}});
@@ -380,7 +382,7 @@ function toggleGps(){
  if(gps.on){gpsStop('已關閉 GPS 位置追蹤，熊寶停在目前位置。');return}
  if(!('geolocation' in navigator)){toast('這個裝置或瀏覽器不支援定位。');return}
  if(!isSecureContext){toast('定位需要 https 網址才能使用。');return}
- returnToMap();start();Object.assign(gps,{on:true,follow:true,camera:true,lastPlan:0,planned:null,warned:'',message:'正在取得你的位置…'});updateGpsUI();
+ if(enforce.on)ensureEnforceAudio();returnToMap();start();Object.assign(gps,{on:true,follow:true,camera:true,lastPlan:0,planned:null,warned:'',message:'正在取得你的位置…'});updateGpsUI();
  toast('正在取得你的位置；第一次使用請允許「位置」權限。');
  gps.watch=navigator.geolocation.watchPosition(onGps,onGpsError,{enableHighAccuracy:true,maximumAge:5000,timeout:30000});
 }
@@ -390,7 +392,7 @@ function onGps(pos){
  if(!gps.world){gps.road=null;gpsWarn('outside','你目前不在澎湖圖資範圍內，熊寶留在原位。');updateGpsUI();return}
  gps.road=navigation?.snap(gps.world.x,gps.world.z,GPS_ROAD_RANGE)||null;
  if(!gps.road)gpsWarn('noroad','你附近約 150 公尺內沒有已收錄道路（或正在海上），熊寶先在原地等你。');else if(gps.warned==='outside'||gps.warned==='noroad'){gps.warned='';gps.message=''}
- gpsFollowBear(true);updateGpsUI();
+ enforceGpsCheck(pos);gpsFollowBear(true);updateGpsUI();
 }
 function onGpsError(err){
  if(err.code===1){gpsStop('沒有定位權限。請到瀏覽器或 App 設定允許「位置」後再按一次。');return}
@@ -431,11 +433,64 @@ function placeGpsMarker(){
  const acc=(gps.fix?.accuracy||0)/WORLD_METRES/Math.cos(23.55*Math.PI/180),edge=engine.project([gps.world.x+acc,1.05,gps.world.z]),r=edge?Math.min(160,Math.max(10,Math.hypot(edge.x-p.x,edge.y-p.y))):10;
  el.style.setProperty('--acc',r*2+'px');
 }
+/* 測速照相與科技執法：資料來自試算表「測速與科技執法」（讀不到用內建檔，來源為澎湖縣警察局開放資料）。
+   只顯示與提醒，不移動熊寶。圖層預設關閉；開關狀態另存（不寫入遊戲存檔格式）。 */
+const ENFORCE_KEY='bear-penghu-enforce-layer';
+let enforce={on:false,loading:false,points:[],from:'',meta:null,alerted:new Set(),gpsAlerted:new Set(),last:null,gpsLast:null,audio:null,alertTimer:0};
+/* 提示音需在使用者點按時建立（瀏覽器限制）：開圖層或開 GPS 時建立 */
+function ensureEnforceAudio(){if(enforce.audio)return;try{const A=window.AudioContext||window.webkitAudioContext;if(A)enforce.audio=new A()}catch{}}
+const realMetres=()=>WORLD_METRES*Math.cos(23.55*Math.PI/180);
+function setupEnforcement(){let saved=false;try{saved=localStorage.getItem(ENFORCE_KEY)==='1'}catch{}if(saved){$('#enforce-toggle').checked=true;toggleEnforce(true,true)}}
+async function toggleEnforce(on,silent=false){
+ enforce.on=on;try{localStorage.setItem(ENFORCE_KEY,on?'1':'0')}catch{}
+ document.body.classList.toggle('enforce-on',on);
+ if(on&&!silent)ensureEnforceAudio();
+ if(!on){$('#enforce-labels').innerHTML='';$('#enforce-alert').hidden=true;if(!silent)toast('已關閉測速／科技執法圖層與提醒。');return}
+ if(!enforce.points.length&&!enforce.loading){enforce.loading=true;const res=await loadEnforcement();enforce.loading=false;enforce.from=res.from;enforce.meta=res.meta||null;enforce.points=groupPoints(res.records);prepareEnforcePoints()}
+ renderEnforceMarkers();
+ if(!silent){const n=enforce.points.length;toast(n?`已顯示 ${n} 處測速照相／科技執法（${enforce.from==='sheet'?'即時讀取試算表':'遊戲內建資料'}，澎湖縣警察局公布）。騎車請勿操作手機，以現場標誌與速限為準。`:'測速／科技執法資料暫時讀不到。')}
+}
+/* 世界座標與「提醒點」（附近收錄道路，只用來算距離；標記仍在原始座標） */
+function prepareEnforcePoints(){for(const p of enforce.points){p.world=mapPosition({lat:p.lat,lng:p.lng});p.alertAt=p.world&&navigation?.snap(p.world.x,p.world.z,.6)||p.world}}
+function renderEnforceMarkers(){
+ const box=$('#enforce-labels');if(!box)return;if(!enforce.on){box.innerHTML='';return}
+ box.innerHTML=enforce.points.filter(p=>p.world).map(p=>`<button class="enforce-marker${p.tech?' tech':''}${p.suspect?' suspect':''}" data-enf="${p.id}" hidden aria-label="${escape((p.tech?'路口科技執法':'測速照相')+' '+p.name)}"><b>${p.suspect?'?':escape(p.limit??'')}</b>${p.tech?'<i>科</i>':''}</button>`).join('');
+ box.querySelectorAll('[data-enf]').forEach(b=>b.onclick=()=>showEnforceDetail(enforce.points.find(p=>p.id===b.dataset.enf)));
+}
+function placeEnforceMarkers(){
+ if(!enforce.on||!engine)return;const box=$('#enforce-labels');if(!box)return;const show=mapMode()&&engine.zoom<=220;
+ for(const el of [...(box.children||[])]){const p=enforce.points.find(q=>q.id===el.dataset.enf);if(!show||!p?.world){el.hidden=true;continue}const s=engine.project([p.world.x,1.05,p.world.z]);if(!s||s.x<-30||s.x>innerWidth+30||s.y<-30||s.y>innerHeight+30){el.hidden=true;continue}el.hidden=false;el.style.left=s.x+'px';el.style.top=s.y+'px'}
+}
+function showEnforceDetail(p){
+ if(!p)return;keys.clear();const rows=p.records.map(r=>`<dl class="detail-fields"><dt>類型</dt><dd>${r.type==='tech'?'科技執法（'+escape(r.techKind||'路口')+'）':'固定測速照相'}</dd><dt>設置地點</dt><dd>${escape(r.name)}</dd><dt>鄉市</dt><dd>${escape(r.area)}</dd>${r.limit?`<dt>速限</dt><dd>${r.limit} 公里／小時</dd>`:''}${r.direction?`<dt>受測方向</dt><dd>${escape(r.direction)}</dd>`:''}${r.items?`<dt>取締項目</dt><dd>${escape(r.items)}</dd>`:''}<dt>管轄分局</dt><dd>${escape(r.dept)}</dd><dt>座標</dt><dd>${r.lat}, ${r.lng}</dd><dt>資料</dt><dd>${escape(r.updated?'警察局資料更新 '+r.updated:'')}${r.date?'・整理 '+escape(r.date):''}</dd>${r.note?`<dt>備註</dt><dd>${escape(r.note)}</dd>`:''}</dl>${safeURL(r.source)?`<p><a href="${escape(safeURL(r.source))}" target="_blank" rel="noopener noreferrer">澎湖縣政府開放資料 ↗</a></p>`:''}`).join('');
+ $('#detail-body').innerHTML=`<div class="detail-tag"><span class="tag">${p.tech?'路口科技執法':'測速照相'}</span><span class="eyebrow">ENFORCEMENT</span></div><h2>${escape(p.name)}</h2>${p.suspect?'<p class="enforce-warn">原始座標與地名不符，位置可能有誤，遊戲不以此點提醒。</p>':''}${rows}<p class="small-note">資料來源：澎湖縣政府警察局（澎湖縣政府開放資料平台），${enforce.from==='sheet'?'即時讀取熊熊綜合系統試算表「測速與科技執法」':'遊戲內建資料'}。實際設置與速限以現場標誌為準；騎車請勿操作手機。</p>`;
+ if(!$('#details').open)$('#details').showModal();
+}
+function showEnforceAlert(list,{sound=false}={}){
+ if(!list.length)return;const el=$('#enforce-alert');el.textContent=alertText(list[0]);el.hidden=false;clearTimeout(enforce.alertTimer);enforce.alertTimer=setTimeout(()=>el.hidden=true,4500);
+ if(sound){try{navigator.vibrate?.([140,80,140])}catch{}try{const a=enforce.audio;if(a){a.resume?.();const t=a.currentTime;for(const [f,d] of [[880,0],[1175,.18]]){const o=a.createOscillator(),g=a.createGain();o.frequency.value=f;g.gain.setValueAtTime(.0001,t+d);g.gain.exponentialRampToValueAtTime(.25,t+d+.02);g.gain.exponentialRampToValueAtTime(.0001,t+d+.15);o.connect(g).connect(a.destination);o.start(t+d);o.stop(t+d+.16)}}}catch{}}
+}
+/* 熊寶行進：以 0.25 秒間的移動方向判斷前方（GPS 開啟時改用你的實際位置） */
+function enforceBearTick(){
+ if(!mapMode()||!enforce.points.length)return;const prev=enforce.last;enforce.last={x:player.x,z:player.z};if(!prev)return;
+ const dx=player.x-prev.x,dz=player.z-prev.z,n=Math.hypot(dx,dz),heading=n>1e-4&&!journey?.inTransit?{x:dx/n,z:dz/n}:null;
+ showEnforceAlert(checkAlerts(enforce.points,player,heading,{unit:realMetres()},enforce.alerted));
+}
+/* GPS：連續定位算出你的行進方向與速度；時速低於 5 公里（步行、停車）不提醒 */
+function enforceGpsCheck(pos){
+ if(!enforce.on||!gps.world||!enforce.points.length)return;const now={x:gps.world.x,z:gps.world.z,t:pos.timestamp||Date.now()},prev=enforce.gpsLast;
+ const moved=prev?Math.hypot(now.x-prev.x,now.z-prev.z)*realMetres():0;if(prev&&moved<8){checkAlerts(enforce.points,now,null,{unit:realMetres()},enforce.gpsAlerted);return}
+ enforce.gpsLast=now;if(!prev)return;
+ const speed=Number.isFinite(pos.coords.speed)&&pos.coords.speed!==null?pos.coords.speed:moved/Math.max(.5,(now.t-prev.t)/1000);
+ const heading=speed>=5/3.6?{x:(now.x-prev.x)*realMetres()/moved,z:(now.z-prev.z)*realMetres()/moved}:null;
+ showEnforceAlert(checkAlerts(enforce.points,now,heading,{unit:realMetres()},enforce.gpsAlerted),{sound:true});
+}
 let coastLoading=false;
 async function prepareCoastline(){
  if(coastLoading)return;coastLoading=true;$('#coast-retry').disabled=true;$('#coast-retry').hidden=true;$('.geo-status').classList.remove('error');$('#coast-state').textContent='載入道路與陸域資料…';
  try{
   const previousTrip=journey?.snapshot();const [{geo,grid},graph,ferries]=await Promise.all([loadTerrain(),loadRoads(),loadFerries()]);const coast=new Coastline(geo);navigation=new RoadNavigation(graph,coast);journey=new Journey(new TravelPlanner(navigation,ferries,grid.sourceSHA256));if(previousTrip)journey.restore(mapReturn?.player||player,previousTrip);engine.configureMap(MAP,coast);engine.setRoads(navigation.geometry());
+  if(enforce.points.length){prepareEnforcePoints();renderEnforceMarkers()}
   $('#coast-state').textContent='沿道路移動已啟用';$('.geo-status').classList.add('ready');$('#coast-retry').hidden=true;
   if(!observingSea)setRegion($('#region').value,target?.record);if(started)toast('道路已就緒，熊寶會沿路線轉彎前進。');
  }catch(e){$('.geo-status').classList.add('error');$('#coast-state').textContent='道路或陸域未載入，請重試';$('#coast-retry').hidden=false;toast(e.message||'道路或陸域檔案未載入，請按重試。')}
