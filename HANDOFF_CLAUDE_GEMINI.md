@@ -25,6 +25,7 @@
   - 說明視窗相關文字同步更新；viewport 禁止頁面縮放，避免誤觸放大整個介面。
   - 2026-10-16 修正：第13版一條觸控規則誤把搖桿的 `touch-action` 由 none 改成 manipulation，手機拖曳搖桿時瀏覽器可能接手捲動／下拉重新整理而中斷操作；已改回 none，另加 `overscroll-behavior:none`，並在按下時固定搖桿中心，拖曳中卡片高度改變也不會讓方向跳動。實體手機尚未重測。
 - 2026-10-16 依白沙鄉公所交通船新增航線：赤崁漁港⇄吉貝漁港、岐頭漁港⇄鳥嶼漁港、岐頭漁港⇄員貝漁港、重光碼頭⇄大倉漁港（座標為海巡署安檢所公告值；重光碼頭無安檢所資料，暫以「重光-威靈殿」座標為參考點，見DEVELOPMENT.md）。`TravelPlanner` 改為港口圖最短路，可在本島不同港口間沿路轉乘。航線檔改名 `penghu-ferries-20261016.json`（版本 v2）。`tests/travel.mjs` 檢查三島抵達、每幀不瞬移及吉貝→七美多港行程。
+- 2026-10-16 角色圖：海上搭船改顯示使用者提供的「熊熊搭觀光遊艇」（`assets/bear-boat.webp`，Drive 1ZcCgq0plukScgjsEjyxlpSOEdryuh9CL），沿路移動改顯示「熊熊騎機車」（`assets/bear-ride.webp`，Drive 1MIU_UAVYMLhwqAVJVGx6f5x7jlZKUZ6m）；停下、港區上下船（剛上岸）維持原始 `bearbao.png`。原圖存 `sources/characters/`，`tools/build-character-sprites.py` 只縮成512px WebP。SVG 船體不再顯示。
 - 2026-10-16「交通船」面板改為即時讀取試算表「交通船資訊」（`dist/ferry-sheet.js`），讀不到時用內建檔；設定每週一排程任務查核官方交通船資料並同步工作表與航線檔。
 - 2026-10-16 新增馬公市公所交通船：馬公南海交通船碼頭 ⇄ 桶盤漁港（桶盤之星）、⇄ 虎井漁港；底部新增「交通船」面板列出全部8條航線與前往港口按鈕；全部交通船資訊寫入熊熊綜合系統試算表新工作表「交通船資訊」（sheetId 777010）。
 - 2026-10-16 鄉市選單選離島鄉市，目的地直接為港口（`REGION_PORTS`）：望安鄉→望安潭門港、七美鄉→七美南滬港，下船即抵達；本島四鄉市不變。`tests/controls.mjs` 檢查兩者終點。
