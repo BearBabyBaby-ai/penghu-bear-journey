@@ -11,7 +11,7 @@ import * as media from '../dist/media.js';
 import {RoadNavigation} from '../dist/roads.js';
 import {Coastline} from '../dist/coastline.js';
 import {TravelPlanner,Journey} from '../dist/travel.js';
-const read=f=>JSON.parse(fs.readFileSync(new URL('../dist/'+f,import.meta.url))),data=read('data.json'),nav=new RoadNavigation(read('geo/penghu-roads-20211217.json'),new Coastline(read('geo/penghu-land-20260407.geojson'))),planner=new TravelPlanner(nav,read('geo/penghu-ferries-20261015.json'),read('geo/penghu-grid-20260407.json').sourceSHA256);
+const read=f=>JSON.parse(fs.readFileSync(new URL('../dist/'+f,import.meta.url))),data=read('data.json'),nav=new RoadNavigation(read('geo/penghu-roads-20211217.json'),new Coastline(read('geo/penghu-land-20260407.geojson'))),planner=new TravelPlanner(nav,read('geo/penghu-ferries-20261016.json'),read('geo/penghu-grid-20260407.json').sourceSHA256);
 class Element{
  constructor(){this.value='';this.innerHTML='';this.open=false;this.style={setProperty(){}};this.classList={add(){},remove(){},toggle(){}}}
  querySelector(){return new Element()}

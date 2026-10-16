@@ -6,7 +6,7 @@ import {Coastline,loadTerrain} from './coastline.js?v=20261015-travel8';
 import {TileMap} from './tiles.js?v=20261015-travel8';
 import {mapPlaces,placeCounts,shownPlaces,categoryKinds,labelLayout,regionalSpawn,REGION_STARTS,MAP_MARKER_LABEL_Y} from './places.js?v=20261015-travel8';
 import {placeImages,imageSource} from './media.js?v=20261015-travel8';
-import {TravelPlanner,Journey,loadFerries} from './travel.js?v=20261015-travel8';
+import {TravelPlanner,Journey,loadFerries} from './travel.js?v=20261016-ferry2';
 import {askPlaces} from './ask.js?v=20261016-ask1';
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const escape=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));

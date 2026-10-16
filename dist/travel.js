@@ -1,32 +1,46 @@
 import {geoToWorld} from './map.js?v=20261015-travel8';
 import {Geometry} from './engine.js?v=20261015-travel8';
-export const FERRY_FILE='geo/penghu-ferries-20261015.json';
-export const FERRY_VERSION='penghu-ferry-game-20261015-v1';
+export const FERRY_FILE='geo/penghu-ferries-20261016.json';
+export const FERRY_VERSION='penghu-ferry-game-20261016-v2';
 const gap=(a,b)=>Math.hypot(a.x-b.x,a.z-b.z),same=(a,b)=>gap(a,b)<1e-6;
 const length=points=>points.slice(1).reduce((n,p,i)=>n+gap(points[i],p),0);
 export class TravelPlanner{
  constructor(roads,data,landSHA256){
   if(data.version!==FERRY_VERSION||data.landSHA256!==landSHA256)throw Error('港口航線與陸域版本不符');
   this.roads=roads;this.notice=data.notice;
-  this.ports=data.ports.map(p=>{const road=roads.point(p.road.edge,p.road.t),sea=geoToWorld(...p.seaGeo);if(!roads.isLand(road.x,road.z)||roads.isLand(sea.x,sea.z)||gap(road,sea)>1.50001)throw Error('港區接駁位置不符');return{...p,road,sea}});
+  this.ports=data.ports.map(p=>{const road=roads.point(p.road.edge,p.road.t),sea=geoToWorld(...p.seaGeo);if(!roads.isLand(road.x,road.z)||roads.isLand(sea.x,sea.z)||gap(road,sea)>2.00001)throw Error('港區接駁位置不符');return{...p,road,sea}});
   this.links=data.links.map(l=>{const from=this.port(l.from),to=this.port(l.to),points=l.points.map(p=>geoToWorld(...p));if(!from||!to||!same(points[0],from.sea)||!same(points.at(-1),to.sea)||points.slice(1).some((p,i)=>!roads.coast.seaSegment(points[i],p)))throw Error('遊戲航線穿越陸地或端點不符');return{...l,points}});
  }
  port(id){return this.ports.find(p=>p.id===id)}
  plan(start,end){
   const roads=this.roads;if(!roads.isOnRoad(start)||!roads.isOnRoad(end))return null;
   const direct=roads.path(start,end);if(direct)return{origin:{...start},end:{...end},legs:[{type:'walk',label:'沿道路前往',points:[{...start},...direct]}],distance:direct.distance,ports:[]};
-  const from=this.ports.find(p=>p.road.component===start.component),to=this.ports.find(p=>p.road.component===end.component);if(!from||!to)return null;
-  const queue=[[from.id]],seen=new Set([from.id]);let ids=null;
-  while(queue.length){const path=queue.shift(),at=path.at(-1);if(at===to.id){ids=path;break}for(const l of this.links){const next=l.from===at?l.to:l.to===at?l.from:null;if(next&&!seen.has(next)){seen.add(next);queue.push([...path,next])}}}
-  if(!ids)return null;const first=roads.path(start,from.road),last=roads.path(to.road,end);if(!first||!last)return null;
-  const legs=[{type:'walk',label:`沿道路前往${from.name}`,points:[{...start},...first]}];
-  for(let i=1;i<ids.length;i++){
-   const a=this.port(ids[i-1]),b=this.port(ids[i]),link=this.links.find(l=>l.from===a.id&&l.to===b.id||l.to===a.id&&l.from===b.id),points=link.from===a.id?link.points:[...link.points].reverse();
+  // 港口圖：起點／終點／各港口為節點；邊＝同一陸塊上的道路步行，或已收錄航線。
+  // 同一陸塊可能有多個港口（本島有馬公、赤崁、岐頭），也可能要「下船→沿路走到另一港→再搭船」（例：吉貝→赤崁→馬公→望安）。
+  // 以 Dijkstra 取「步行＋航程」總長最短者；沒有收錄航線的島嶼仍回傳 null，不推測。
+  const walkCache=this.walkCache||(this.walkCache=new Map()),portWalk=(p,q)=>{const k=p.id+'>'+q.id;if(!walkCache.has(k))walkCache.set(k,roads.path(p.road,q.road));return walkCache.get(k)};
+  const edges=new Map(),add=(u,v,cost,data)=>{if(!edges.has(u))edges.set(u,[]);edges.get(u).push({v,cost,data})};
+  for(const p of this.ports){
+   if(p.road.component===start.component){const w=roads.path(start,p.road);if(w)add('S',p.id,w.distance,{walk:w,from:{...start},to:p})}
+   if(p.road.component===end.component){const w=roads.path(p.road,end);if(w)add(p.id,'E',w.distance,{walk:w,from:p.road,to:null})}
+   for(const q of this.ports)if(q!==p&&q.road.component===p.road.component){const w=portWalk(p,q);if(w)add(p.id,q.id,w.distance,{walk:w,from:p.road,to:q})}
+  }
+  for(const l of this.links){add(l.from,l.to,length(l.points),{link:l,forward:true});add(l.to,l.from,length(l.points),{link:l,forward:false})}
+  const dist=new Map([['S',0]]),prev=new Map(),open=new Set(['S']),done=new Set();
+  while(open.size){let at=null;for(const id of open)if(at===null||dist.get(id)<dist.get(at))at=id;open.delete(at);done.add(at);if(at==='E')break;
+   for(const e of edges.get(at)||[]){if(done.has(e.v))continue;const d=dist.get(at)+e.cost;if(d<(dist.get(e.v)??Infinity)){dist.set(e.v,d);prev.set(e.v,{u:at,e});open.add(e.v)}}}
+  if(!prev.has('E'))return null;
+  const steps=[];for(let at='E';at!=='S';at=prev.get(at).u)steps.unshift(prev.get(at).e);
+  if(!steps.some(e=>e.data.link))return null;
+  const legs=[],ids=[];
+  for(const e of steps){
+   if(e.data.walk){const w=e.data.walk;legs.push({type:'walk',label:e.data.to?`沿道路前往${e.data.to.name}`:'下船後沿道路前往目的地',points:[{...e.data.from},...w]});continue}
+   const l=e.data.link,a=this.port(e.data.forward?l.from:l.to),b=this.port(e.data.forward?l.to:l.from),points=e.data.forward?l.points:[...l.points].reverse();
+   if(ids.at(-1)!==a.id)ids.push(a.id);ids.push(b.id);
    legs.push({type:'port',label:`${a.name} · 港區登船`,points:[a.road,a.sea]},
     {type:'ferry',label:`熊寶搭船：${a.name} → ${b.name}`,points,from:a.id,to:b.id},
     {type:'port',label:`${b.name} · 靠港下船`,points:[b.sea,b.road],arrival:b.id});
   }
-  legs.push({type:'walk',label:'下船後沿道路前往目的地',points:[to.road,...last]});
   return{origin:{...start},end:{...end},legs,distance:legs.reduce((n,l)=>n+length(l.points),0),ports:ids.map(id=>this.port(id).name)};
  }
 }
