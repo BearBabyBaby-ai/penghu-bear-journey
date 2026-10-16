@@ -6,7 +6,7 @@ import {Coastline,loadTerrain} from './coastline.js?v=20261015-travel8';
 import {TileMap} from './tiles.js?v=20261015-travel8';
 import {mapPlaces,placeCounts,shownPlaces,categoryKinds,labelLayout,regionalSpawn,REGION_STARTS,MAP_MARKER_LABEL_Y} from './places.js?v=20261015-travel8';
 import {placeImages,imageSource} from './media.js?v=20261015-travel8';
-import {TravelPlanner,Journey,loadFerries} from './travel.js?v=20261016-ferry3';
+import {TravelPlanner,Journey,loadFerries} from './travel.js?v=20261016-ferry4';
 import {askPlaces} from './ask.js?v=20261016-ask1';
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const escape=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -98,11 +98,13 @@ function setRegion(area,record=null,mode='map'){
  routeRevision=-1;updatePlaceLayers();persist();updateProgress();updateDestination();
 }
 function returnToMap(){if(!mapMode())setRegion(mapReturn?.area||save.area)}
+/* 沿路／搭船前往某個港口（鄉市選單的離島、交通船面板共用） */
+function goToPort(port,area=port.area){if($('#details').open)$('#details').close();closePanel();returnToMap();start();target=null;destinationKey='';$('#destination').hidden=true;document.body.classList.remove('has-target');$$('.place-label').forEach(el=>el.classList.remove('target'));if(area)$('#region').value=area;$('#scene-label').textContent=`前往${port.name}`;planTrip({...port.road});persist()}
 /* 選離島鄉市：目的地為該島下船的港口本身（望安潭門港、七美南滬港），不再續走到島上地標 */
 const REGION_PORTS={'望安鄉':'wangan','七美鄉':'qimei'};
 function navigateRegion(area){
  const port=REGION_PORTS[area]&&journey?.planner?.port(REGION_PORTS[area]);
- if(port){returnToMap();start();target=null;destinationKey='';$('#destination').hidden=true;document.body.classList.remove('has-target');$$('.place-label').forEach(el=>el.classList.remove('target'));$('#region').value=area;$('#scene-label').textContent=`前往${area} · ${port.name}`;planTrip({...port.road});persist();return}
+ if(port){goToPort(port,area);return}
  returnToMap();const point=regionalSpawn(nodes,area),record=nodes.find(n=>n.record.id===point?.startRecordId)?.record;
  if(!record){toast('此區尚無可用道路目的地，熊寶留在原位。');return}
  navigateTo(record);
@@ -155,9 +157,16 @@ function showDetail(r,atPlace=false){
 function closePanel(){currentPanel='';$('#panel').hidden=true;document.body.classList.remove('panel-open');$$('.dock button').forEach(b=>b.classList.remove('active'));keys.clear()}
 function openPanel(name){
  if(currentPanel===name){closePanel();return}stopWalking();keys.clear();currentPanel=name;$('#panel').hidden=false;document.body.classList.add('panel-open');$$('.dock button').forEach(b=>b.classList.toggle('active',b.dataset.panel===name));
- const titles={atlas:['THE ISLAND COLLECTION','澎湖探索圖鑑'],stamps:['YOUR TRAVEL MEMORIES','我的集章手帳'],tides:['THE RHYTHM OF THE SEA','海潮與摩西分海']};
+ const titles={atlas:['THE ISLAND COLLECTION','澎湖探索圖鑑'],stamps:['YOUR TRAVEL MEMORIES','我的集章手帳'],tides:['THE RHYTHM OF THE SEA','海潮與摩西分海'],ferries:['ISLAND FERRIES','交通船資訊']};
  $('#panel-kicker').textContent=titles[name][0];$('#panel-title').textContent=titles[name][1];
- ({atlas:renderAtlas,stamps:renderStamps,tides:renderTides})[name]();
+ ({atlas:renderAtlas,stamps:renderStamps,tides:renderTides,ferries:renderFerries})[name]();
+}
+function renderFerries(){
+ const planner=journey?.planner;
+ if(!planner){$('#panel-body').innerHTML='<p class="empty">道路與港口資料載入中，請稍後再開啟。</p>';return}
+ const short=p=>p.name.replace(/（.*?）/,'');const groups=new Map();for(const l of planner.links){if(!groups.has(l.operator))groups.set(l.operator,[]);groups.get(l.operator).push(l)}
+ $('#panel-body').innerHTML=`<p>遊戲收錄 ${planner.links.length} 條交通船航線、${planner.ports.length} 個港口。按「前往」熊寶會從目前位置沿路走到該港；選離島的港口就會自動搭船過去。</p>${[...groups].map(([operator,links])=>`<section class="ferry-group"><h3>${escape(operator||'交通船')}</h3>${links.map(l=>{const a=planner.port(l.from),b=planner.port(l.to);return `<div class="ferry-route"><div class="ferry-name"><b>${escape(short(a))} ⇄ ${escape(short(b))}</b>${l.vessel?`<small>船名：${escape(l.vessel)}</small>`:''}</div><div class="ferry-actions"><button data-ferry-port="${a.id}">前往${escape(short(a))}</button><button data-ferry-port="${b.id}">前往${escape(short(b))}</button>${safeURL(l.source)?`<a href="${escape(safeURL(l.source))}" target="_blank" rel="noopener noreferrer">官方時刻表 ↗</a>`:''}</div></div>`}).join('')}</section>`).join('')}<p class="small-note">${escape(planner.notice||'')} 班次、票價、停航與實際碼頭請以官方公告為準；資料同步存於熊熊綜合系統試算表「交通船資訊」工作表。</p>`;
+ $$('[data-ferry-port]').forEach(b=>b.onclick=()=>goToPort(planner.port(b.dataset.ferryPort)));
 }
 function renderAtlas(){
  $('#panel-body').innerHTML=`<input class="search" id="atlas-search" placeholder="搜尋美食、景點、廟宇、故事…" aria-label="搜尋圖鑑" value="${escape(atlasQuery)}"><div class="filters" id="kind-filters">${[['','全部'],...Object.entries(KINDS).map(([k,v])=>[k,v.label])].map(([k,v])=>`<button class="filter ${atlasKind===k?'selected':''}" data-kind="${k}">${v}</button>`).join('')}</div><div class="filters" id="area-filters">${[['','所有鄉市'],...AREAS.map(a=>[a,a])].map(([k,v])=>`<button class="filter ${atlasArea===k?'selected':''}" data-area="${k}">${v}</button>`).join('')}</div><div class="result-summary" id="atlas-summary"></div><div class="atlas-list" id="atlas-list"></div><button id="load-more" class="load-more">載入更多地點</button>${sourceFooter()}`;

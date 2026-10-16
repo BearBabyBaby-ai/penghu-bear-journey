@@ -26,6 +26,8 @@ const definitions=[
  {id:'niaoyu',name:'鳥嶼漁港',area:'白沙鄉',geo:[119.656845,23.660071],reference:'https://www.cga.gov.tw/GipOpen/wSite/public/Attachment/f114070806.pdf',positionNote:'海巡署鳥嶼漁港安檢所座標（白沙鄉鳥嶼村211號之1）；不是實測泊位'},
  {id:'chongguang',name:'重光碼頭',area:'馬公市',geo:[119.5714334,23.5846237],reference:'https://chyfun.com/penghu-transport-island/',positionNote:'海巡署名冊無重光安檢所；以旅遊資訊「碼頭在重光威靈殿後方」，採熊熊綜合系統廟宇表「重光-威靈殿」座標為參考點，再找最近道路與外海；白沙鄉公所交通船「大倉號」重光⇄大倉；不是實測泊位'},
  {id:'dacang',name:'大倉漁港',area:'白沙鄉',geo:[119.569955,23.618104],reference:'https://www.cga.gov.tw/GipOpen/wSite/public/Attachment/f114070806.pdf',positionNote:'海巡署大倉漁港安檢所座標（白沙鄉大倉村1-1號）；不是實測泊位'},
+ {id:'tongpan',name:'桶盤漁港',area:'馬公市',geo:[119.518222,23.511532],reference:'https://www.cga.gov.tw/GipOpen/wSite/public/Attachment/f114070806.pdf',positionNote:'海巡署桶盤漁港安檢所座標（馬公市桶盤里29之1號）；馬公市公所委託交通船「桶盤之星」南海遊客中心⇄桶盤；不是實測泊位'},
+ {id:'hujing',name:'虎井漁港',area:'馬公市',geo:[119.517871,23.486939],reference:'https://www.cga.gov.tw/GipOpen/wSite/public/Attachment/f114070806.pdf',positionNote:'海巡署虎井漁港安檢所座標（馬公市虎井里76-3號）；馬公市公所交通船南海遊客中心⇄虎井；不是實測泊位'},
  {id:'yuanbei',name:'員貝漁港',area:'白沙鄉',geo:[119.631760,23.647280],reference:'https://www.cga.gov.tw/GipOpen/wSite/public/Attachment/f114070806.pdf',positionNote:'海巡署員貝漁港安檢所座標（白沙鄉員貝村6鄰22之3號）；不是實測泊位'},
 ];
 const ports=definitions.map(port=>{
@@ -43,11 +45,23 @@ const ports=definitions.map(port=>{
  if(!best)throw Error(port.id+' no short boarding connector');
  const seaGeo=worldToGeo(best.x,best.z);const {maxTransfer,...clean}=port;return{...clean,road:{edge:road.edge,t:road.t},seaGeo:[seaGeo.lng,seaGeo.lat],transferMetres:score*100};
 });
-const links=[];for(const [from,to]of [['magong','wangan'],['wangan','qimei'],['chikan','jibei'],['qitou','niaoyu'],['qitou','yuanbei'],['chongguang','dacang']]){
+// 航線與營運資訊（只寫官方或已查證資料；船名未查證者留空，不推測）
+const COUNTY='https://www.phpto.gov.tw/home.jsp?id=106',BAISHA='https://www.baisha.gov.tw/ch/home.jsp?id=113',MAGONG='https://www.penghu.gov.tw/Tmakun/ch/home.jsp?id=247';
+const ROUTES=[
+ {from:'magong',to:'wangan',operator:'澎湖縣政府公共車船管理處',vessel:'',source:COUNTY},
+ {from:'wangan',to:'qimei',operator:'澎湖縣政府公共車船管理處',vessel:'',source:COUNTY},
+ {from:'chikan',to:'jibei',operator:'白沙鄉公所',vessel:'白沙之星',source:BAISHA},
+ {from:'qitou',to:'niaoyu',operator:'白沙鄉公所',vessel:'鳥嶼號',source:BAISHA},
+ {from:'qitou',to:'yuanbei',operator:'白沙鄉公所',vessel:'員貝號',source:BAISHA},
+ {from:'chongguang',to:'dacang',operator:'白沙鄉公所',vessel:'大倉號',source:BAISHA},
+ {from:'magong',to:'tongpan',operator:'馬公市公所（委託營運）',vessel:'桶盤之星',source:MAGONG},
+ {from:'magong',to:'hujing',operator:'馬公市公所',vessel:'',source:MAGONG}
+];
+const links=[];for(const {from,to,...info} of ROUTES){
  const a=ports.find(p=>p.id===from),b=ports.find(p=>p.id===to),start=geoToWorld(...a.seaGeo),end=geoToWorld(...b.seaGeo),path=sea.path(start,end);if(!path)throw Error(from+'→'+to+' sea route missing');
  let previous=start;for(const p of path){if(!coast.seaSegment(previous,p))throw Error('Sea corridor crosses land');previous=p}
- links.push({from,to,points:[start,...path].map(p=>{const geo=worldToGeo(p.x,p.z);return[geo.lng,geo.lat]})});
+ links.push({from,to,...info,points:[start,...path].map(p=>{const geo=worldToGeo(p.x,p.z);return[geo.lng,geo.lat]})});
 }
-const output={version:'penghu-ferry-game-20261016-v2',readAt:'2026-10-16',landSHA256:crypto.createHash('sha256').update(text).digest('hex'),routeReference:'https://www.phpto.gov.tw/home.jsp?id=106',routeReferences:{'馬公⇄望安⇄七美':'https://www.phpto.gov.tw/home.jsp?id=106','赤崁⇄吉貝、岐頭⇄鳥嶼、岐頭⇄員貝、重光⇄大倉（白沙鄉公所交通船）':'https://www.baisha.gov.tw/ch/home.jsp?id=113'},notice:'遊戲航線與港區登船示意，非實測航道；不代表即時船班、票價或通航狀態。',ports,links};
+const output={version:'penghu-ferry-game-20261016-v3',readAt:'2026-10-16',landSHA256:crypto.createHash('sha256').update(text).digest('hex'),routeReference:'https://www.phpto.gov.tw/home.jsp?id=106',routeReferences:{'馬公⇄望安⇄七美':'https://www.phpto.gov.tw/home.jsp?id=106','赤崁⇄吉貝、岐頭⇄鳥嶼、岐頭⇄員貝、重光⇄大倉（白沙鄉公所交通船）':'https://www.baisha.gov.tw/ch/home.jsp?id=113','南海遊客中心⇄桶盤、南海遊客中心⇄虎井（馬公市公所交通船）':'https://www.penghu.gov.tw/Tmakun/ch/home.jsp?id=247'},notice:'遊戲航線與港區登船示意，非實測航道；不代表即時船班、票價或通航狀態。',ports,links};
 fs.writeFileSync('dist/geo/penghu-ferries-20261016.json',JSON.stringify(output));
 console.log(ports.map(p=>({port:p.name,transferMetres:p.transferMetres})),links.map(l=>({from:l.from,to:l.to,points:l.points.length})));

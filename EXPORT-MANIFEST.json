@@ -1,6 +1,6 @@
 {
   "project": "熊熊澎湖之旅",
-  "exportedAt": "2026-10-16T11:27:45+08:00",
+  "exportedAt": "2026-10-16T11:37:43+08:00",
   "siteVersion": 14,
   "deploymentDirectory": "dist",
   "recordCount": 977,
@@ -17,7 +17,8 @@
     "Bearbao PNG, data.json, photos and source snapshots byte-identical to v12",
     "Service worker registers, controls page, and offline reload still opens game (headless Chromium, localhost)",
     "問熊寶: 玄天上帝 query lists 25 temples, 前往 navigates by road; 想去七美 shows area summary and ferry route; tested at 393x760 and 1366x800",
-    "travel: 吉貝/鳥嶼/員貝 arrival without teleport; 吉貝→七美 multi-port trip"
+    "travel: 吉貝/鳥嶼/員貝 arrival without teleport; 吉貝→七美 multi-port trip",
+    "travel: 桶盤/虎井 arrival without teleport; ferry panel shows 8 routes at 393x760, 360x640, 1366x800"
   ],
   "unverified": [
     "Node.js 24 run (will run in GitHub Actions)",
@@ -44,28 +45,28 @@
     },
     {
       "path": "CLAUDE.md",
-      "bytes": 4231,
-      "sha256": "936c4df3ad6222f8cf2b45f4f07910b25f47c78fdcc090213acbada44ad905d2"
+      "bytes": 4557,
+      "sha256": "77940124e16090976e61c032e53eb4c8e640a652786f0bec2cb811674cbc979e"
     },
     {
       "path": "DEVELOPMENT.md",
-      "bytes": 14514,
-      "sha256": "e87a59f2f115f6e04480dc9995cd2d084fce6ab679ff1780fae05338ffe2ab1d"
+      "bytes": 15466,
+      "sha256": "0a117e149185916a6e3d9b02673aa3c26be383b76dae531b92662de32bed721f"
     },
     {
       "path": "HANDOFF_CLAUDE_GEMINI.md",
-      "bytes": 15585,
-      "sha256": "01bc7d4426cf2027379eb20f74944d8c325a4cb944779fa566bacbcaf9a83d6a"
+      "bytes": 15974,
+      "sha256": "8e65777f5452764282272511cd95bd281ad8846dfbdb7da573066cb0dd5af305"
     },
     {
       "path": "README.md",
-      "bytes": 9308,
-      "sha256": "29724da64dbaad48eb194e259e08df3c8ee2808a7d662fd2a9415709b64f4195"
+      "bytes": 9518,
+      "sha256": "c57bd36df43c4519dfda2b5b360a20816be8566ca428038ebd675fc1b78e0525"
     },
     {
       "path": "START_HERE.txt",
-      "bytes": 1227,
-      "sha256": "0795bb301658027e686fac936941abd908426ef47e2f70651fbcd6b530979e88"
+      "bytes": 1335,
+      "sha256": "389e164b49f662b09702554ca0624a19de5f50fc05c5d821782badeeebe4bfc7"
     },
     {
       "path": "dist/.nojekyll",
@@ -814,8 +815,8 @@
     },
     {
       "path": "dist/game.js",
-      "bytes": 48772,
-      "sha256": "c1bd6f46ecb4ab85930287c7b6799de9fd428c740403b47b018dadf6da07203f"
+      "bytes": 50639,
+      "sha256": "15302f202ddfb04b091ecf3800b7ff85562a96dc0817aedcfcc21fcc0b29dfe4"
     },
     {
       "path": "dist/geo/MIRROR-LICENSE.txt",
@@ -829,8 +830,8 @@
     },
     {
       "path": "dist/geo/penghu-ferries-20261016.json",
-      "bytes": 6870,
-      "sha256": "cd23c22d345feb98423472084642f4214f5624584fee028ab04161b4295f4dca"
+      "bytes": 9604,
+      "sha256": "97e4f8574952512ef0f8759c49c1e2df0fd40dcb62d691a3793ead1faf8e2460"
     },
     {
       "path": "dist/geo/penghu-grid-20260407.json",
@@ -874,8 +875,8 @@
     },
     {
       "path": "dist/index.html",
-      "bytes": 9341,
-      "sha256": "30f0ccb8ad826236fb6637d8485121e701589ba605ca46727c730404801d1ef7"
+      "bytes": 9633,
+      "sha256": "fb8ea22cd712411ba928de2ff61864decb08baad1d2b13fa8f13c87b63fddcd4"
     },
     {
       "path": "dist/manifest.json",
@@ -924,8 +925,8 @@
     },
     {
       "path": "dist/style.css",
-      "bytes": 40850,
-      "sha256": "bebdc9d8fe14f51d4447f8cef44874481a9b5e70ed2ed2eaee366d6aa2ced95b"
+      "bytes": 41781,
+      "sha256": "ea51ddd290aee1093c0b99ebed1413031a8af8c4f95b38b845c21351c69a1bb9"
     },
     {
       "path": "dist/sw.js",
@@ -940,7 +941,7 @@
     {
       "path": "dist/travel.js",
       "bytes": 9449,
-      "sha256": "16c887512d51f731c151feac31cee55f83717c3618db9478e22177cc07ce6aeb"
+      "sha256": "63538e7a91dc6624d9e13a4c6414dfb4516e651386fff4f36a394634a45d111f"
     },
     {
       "path": "index.html",
@@ -994,8 +995,8 @@
     },
     {
       "path": "tests/travel.mjs",
-      "bytes": 6303,
-      "sha256": "49de4f547f1e5e36abb496aeb3e6b3138d30fa78108e7284ebc197380e96080f"
+      "bytes": 6457,
+      "sha256": "496afc26dd6327deba9e46d412a73e1bf990cc82fccb46cdd897a252cc84c0bd"
     },
     {
       "path": "tests/verify.mjs",
@@ -1009,8 +1010,8 @@
     },
     {
       "path": "tools/build-ferry-routes.mjs",
-      "bytes": 7641,
-      "sha256": "8667bdbea1f699e83e1b364057b0f7b07eb382f22c985b333f8790c86fc4a961"
+      "bytes": 9403,
+      "sha256": "fb45e6e7d8dde1b5a6147d8b8c171db7635a17d16096822b1a868b1ac2773f8a"
     },
     {
       "path": "tools/build-land.mjs",
@@ -1067,7 +1068,10 @@
     "Region selector 七美鄉 now navigates to 七美南滬港 (arrival port) instead of 神鷹寶塔",
     "Region selector 望安鄉 now navigates to 望安潭門港 (arrival port)",
     "Ferries: added 白沙鄉公所 routes 赤崁⇄吉貝, 岐頭⇄鳥嶼, 岐頭⇄員貝 (CGA coordinates); planner uses a port graph with walking transfers; ferry file v2",
-    "Ferries: added 重光碼頭⇄大倉漁港 (大倉 CGA coordinate; 重光 referenced to 重光-威靈殿, non-official)"
+    "Ferries: added 重光碼頭⇄大倉漁港 (大倉 CGA coordinate; 重光 referenced to 重光-威靈殿, non-official)",
+    "Ferries: added 馬公⇄桶盤 (桶盤之星) and 馬公⇄虎井 (馬公市公所); routes carry operator/vessel/source (v3)",
+    "交通船 dock panel listing all 8 routes with go-to-port buttons",
+    "All ferry info written to 熊熊綜合系統 sheet 交通船資訊"
   ],
   "previousSiteVersion": 13,
   "previousExportSha256": "31529d562278dad55686203c1d2c902d9090c9687437422f4c8913a14c0592e9",

@@ -138,3 +138,13 @@ button,select,a,#touch-action{touch-action:manipulation}.place-label,#joystick,#
  .geo-status,.geo-status.ready{top:calc(154px + env(safe-area-inset-top))}#toast{top:calc(156px + env(safe-area-inset-top))}
  .ask-open #joystick,.ask-open #touch-action{display:none}
 }
+
+/* ===== 2026-10-16 交通船資訊面板 ===== */
+.ferry-group{margin:16px 0 4px}.ferry-group h3{font-size:12px;letter-spacing:1px;color:#5d7569;margin:0 0 8px}
+.ferry-route{background:#fffdf4;border:1px solid #e2e4d5;border-radius:12px;padding:11px 12px;margin-bottom:8px}
+.ferry-name b{font-size:14px;font-weight:600}.ferry-name small{display:block;font-size:11px;color:var(--muted);margin-top:2px}
+.ferry-actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+.ferry-actions button{background:var(--green);color:#fffced;border-radius:9px;padding:8px 11px;font-size:12px}
+.ferry-actions a{background:#e9ecdb;border-radius:9px;padding:8px 11px;font-size:12px}
+@media(max-width:700px){.dock button{font-size:11px;gap:3px;padding:0 2px}.dock svg{width:17px;height:17px}.ferry-actions button,.ferry-actions a{padding:10px 12px;font-size:13px}}
+@media(max-width:360px){.dock button span{font-size:10px}.dock svg{display:none}}

@@ -1,7 +1,7 @@
 import {geoToWorld} from './map.js?v=20261015-travel8';
 import {Geometry} from './engine.js?v=20261015-travel8';
 export const FERRY_FILE='geo/penghu-ferries-20261016.json';
-export const FERRY_VERSION='penghu-ferry-game-20261016-v2';
+export const FERRY_VERSION='penghu-ferry-game-20261016-v3';
 const gap=(a,b)=>Math.hypot(a.x-b.x,a.z-b.z),same=(a,b)=>gap(a,b)<1e-6;
 const length=points=>points.slice(1).reduce((n,p,i)=>n+gap(points[i],p),0);
 export class TravelPlanner{
