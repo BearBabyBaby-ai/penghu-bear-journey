@@ -1,6 +1,6 @@
 {
   "project": "熊熊澎湖之旅",
-  "exportedAt": "2026-10-16T21:46:10+08:00",
+  "exportedAt": "2026-10-16T21:58:36+08:00",
   "siteVersion": 14,
   "deploymentDirectory": "dist",
   "recordCount": 977,
@@ -49,28 +49,28 @@
     },
     {
       "path": "CLAUDE.md",
-      "bytes": 8344,
-      "sha256": "dbab2a4daeef4c443ecea85480746180d4d9443bcd89881a56ba8754a93d196b"
+      "bytes": 8896,
+      "sha256": "86f3ea0f7e135bc9e15891fad59094689c54cb4ee8162f26bf716e871810bc00"
     },
     {
       "path": "DEVELOPMENT.md",
-      "bytes": 20879,
-      "sha256": "3533db71f16fb59ed70af185a8d842e9e5af77b963faf24bab27d89c7d9a655b"
+      "bytes": 21210,
+      "sha256": "c17dbd7df91fcd3c6ea60c8d63e9d115c9ece7ace75cf52c0b9b98edc7495b98"
     },
     {
       "path": "HANDOFF_CLAUDE_GEMINI.md",
-      "bytes": 24299,
-      "sha256": "7edfb04f7d9e5f032b9f4946dc6687ebd15fd605ea11756e518b2db327ec081f"
+      "bytes": 25806,
+      "sha256": "20ac6f56eacbdc67a9cd6239055e12bab18c5a898184da43c49e6f7810b554cd"
     },
     {
       "path": "README.md",
-      "bytes": 11174,
-      "sha256": "a7f021edb9be637133542b7217224b8002c5b88acf9a91c091cbe6c4355e25ca"
+      "bytes": 11470,
+      "sha256": "d807b7187ec851ba099ab51e2d90013184df918512670ac26291296cc9dda223"
     },
     {
       "path": "START_HERE.txt",
-      "bytes": 2428,
-      "sha256": "7e74ccc1a1a00fc358d9524067296682130712615585121373d844f399479b97"
+      "bytes": 2638,
+      "sha256": "7dbc3d321e2dc9bf7063cc2b235d66ac0172e5ec3aaaa7d76e5d99bffdf4a5f1"
     },
     {
       "path": "dist/.nojekyll",
@@ -849,8 +849,8 @@
     },
     {
       "path": "dist/game.js",
-      "bytes": 73046,
-      "sha256": "aa03e383fa1f2bd8d0afe0aa81775724edd5c0cd535272f8759aa69945247887"
+      "bytes": 74640,
+      "sha256": "0cd3c511ca285fcccc0a8ccbdea3550c9df9562dd67fbbf1f812b4b93ecb15cd"
     },
     {
       "path": "dist/geo/MIRROR-LICENSE.txt",
@@ -914,8 +914,8 @@
     },
     {
       "path": "dist/index.html",
-      "bytes": 11797,
-      "sha256": "3c290668f7215443ceb49046315136f379654bdcfabbbd9c4938121583c11716"
+      "bytes": 12474,
+      "sha256": "9ba8b3505dedcbafb04df21f70808cbff02008b8a294e2e5d7fc047a4e9a0cb0"
     },
     {
       "path": "dist/manifest.json",
@@ -934,8 +934,8 @@
     },
     {
       "path": "dist/mobile-layout.js",
-      "bytes": 1134,
-      "sha256": "7a32b4a36784b93db7bc4701405891d25ce4f91805120b3f2803e89731ee9686"
+      "bytes": 1146,
+      "sha256": "f30acfa5cf687778a49cc2c563a59438a3b2005a094033c681bf4b8e78e77235"
     },
     {
       "path": "dist/model.js",
@@ -964,8 +964,8 @@
     },
     {
       "path": "dist/style.css",
-      "bytes": 52482,
-      "sha256": "4c6f7adb0619a13f3e8c584127797f2b09576f6c026f7fbe4de89d25d03aa279"
+      "bytes": 53634,
+      "sha256": "307f8fb2545d91cf4b187b076db95ca82742cfa2eec117c3ed33869e1bd73e4e"
     },
     {
       "path": "dist/sw.js",
@@ -995,7 +995,7 @@
     {
       "path": "package.json",
       "bytes": 511,
-      "sha256": "d484cc008d32c0c27daf7df84e61f8f66ea60ebc73697baa2c2c000b339916f8"
+      "sha256": "5485a46f40a947f91a738b84602e56fc303fb17082fc70fe147672535014747e"
     },
     {
       "path": "sources/app-icon-travel-bear.png",
@@ -1182,7 +1182,8 @@
     "Scooter/boat bear sprites flip horizontally by on-screen travel direction; original bearbao never flipped",
     "2026-10-16 第15版：GPS我的位置（熊寶沿路跟上，不瞬移）、點鄉市顯示地區資訊並清除問熊寶關鍵字、手機版面v2、騎車／搭船熊寶CSS動畫、南海諸島交通船改由南海遊客中心東側上船、測速照相與科技執法草案",
     "2026-10-16 第16版：測速照相與科技執法圖層（澎湖縣警察局開放資料；試算表「測速與科技執法」即時讀取＋內建檔），熊寶／GPS 前方提醒，每週排程改為交通船與測速週檢",
-    "2026-10-16 第17版：騎車／搭船改用使用者提供的動畫WebP；測速詳情合併、固定測速不標科技執法；測速提醒不與一般提示重疊"
+    "2026-10-16 第17版：騎車／搭船改用使用者提供的動畫WebP；測速詳情合併、固定測速不標科技執法；測速提醒不與一般提示重疊",
+    "2026-10-16 第18版：全功能逐一檢查；分海動畫鏡頭對準步道、自動播放、時間條；手機開場不被遮；提示文字更正"
   ],
   "previousSiteVersion": 13,
   "previousExportSha256": "31529d562278dad55686203c1d2c902d9090c9687437422f4c8913a14c0592e9",
@@ -1196,5 +1197,5 @@
     "signingKey": "shared with 熊熊綜合系統 (fingerprint B4:D3:...:3A:3A); keystore kept outside repository",
     "assetlinks": "https://bearbabybaby-ai.github.io/.well-known/assetlinks.json lists both apps"
   },
-  "version": "17"
+  "version": "18"
 }

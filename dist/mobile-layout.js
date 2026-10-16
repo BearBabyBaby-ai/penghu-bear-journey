@@ -1,7 +1,7 @@
 // 手機版：量出下方卡片（目的地、地圖顯示、底部選單）實際佔用的高度，
 // 寫入 CSS 變數 --ui-bottom，讓搖桿與 E 鍵永遠浮在卡片上方，不被遮住。
 const root=document.documentElement;
-const watched=()=>['#destination','#place-layers','.dock'].map(s=>document.querySelector(s)).filter(Boolean);
+const watched=()=>['#destination','#place-layers','#tide-bar','.dock'].map(s=>document.querySelector(s)).filter(Boolean);
 let frame=0;
 function update(){
   frame=0;let top=innerHeight;

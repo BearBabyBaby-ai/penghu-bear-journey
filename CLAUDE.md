@@ -15,10 +15,14 @@
 - **路徑**：所有資源用相對路徑（GitHub Pages 子目錄相容），不改成 `/assets/...`。不引入外部 CDN（`tests/verify.mjs` 會檢查）。
 - **存檔**：鍵 `bear-penghu-3d-v1`，保留 `version`、`stamps`、`observed`、`area`、`position`、`journey` 格式。
 
+## 分海動畫（第18版）
+
+分海場景只放奎壁山摩西分海（`tideNodes()`），不得再帶入其他地點或自動跳出目的地卡；鏡頭 `TIDE_VIEW` 對準奎壁山→赤嶼步道，下方 `#tide-bar` 提供拖曳／播放暫停／返回地圖。
+
 ## 每次修改後
 
 1. 根目錄執行 `npm run check`（應使用 Node.js 24；六組測試都須 PASS）。
-2. 改到畫面時，用 HTTP 伺服器開 `dist/`，實際檢查桌機（約 1366×800）與手機（約 393×760、360×640）。
+2. 改到畫面時，用 HTTP 伺服器開 `dist/`，實際檢查桌機（約 1366×800）與手機（約 393×760、360×640）。使用者要求「優化／修復」時，要把所有功能（開場、說明、地圖、類別、群組、詳情、目的地、圖鑑、集章、交通船、潮汐兩分頁、分海動畫、問熊寶、地區資訊、GPS、測速）實際走一遍，不可只改被點名的部分。
 3. 同步更新 `HANDOFF_CLAUDE_GEMINI.md`、`README.md`、`DEVELOPMENT.md`、`START_HERE.txt` 與 `EXPORT-MANIFEST.json`；`index.html` 內 `?v=` 版本參數一併更新。
 4. 沒做過的檢查（例如實機、GitHub Actions、外部圖磚連線）要寫明「未驗證」，不可宣稱通過。
 

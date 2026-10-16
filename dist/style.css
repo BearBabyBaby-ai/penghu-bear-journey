@@ -257,3 +257,15 @@ button,select,a,#touch-action{touch-action:manipulation}.place-label,#joystick,#
 /* 測速提醒顯示時先隱藏一般提示，避免兩個疊在一起 */
 .enforce-alerting #toast{opacity:0!important;visibility:hidden}
 @media(prefers-reduced-motion:reduce){#gps-marker .gps-dot{animation:none!important}}
+
+/* ===== 2026-10-16 分海場景時間條（取代目的地卡，可拖曳、播放／暫停、返回地圖） ===== */
+.tide-bar{position:absolute;z-index:11;left:50%;bottom:104px;transform:translateX(-50%);width:min(440px,calc(100vw - 32px));padding:12px 14px;border-radius:16px;pointer-events:auto;box-sizing:border-box}
+.tide-bar-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:13px}.tide-bar-head span{font-size:12px;color:#507f8b;font-variant-numeric:tabular-nums}
+.tide-bar input{width:100%;margin:8px 0 4px;accent-color:#3e6c57}
+.tide-bar small{display:block;font-size:11px;color:var(--muted);line-height:1.5}
+.tide-bar-actions{display:flex;gap:8px;margin-top:8px}.tide-bar-actions button{flex:1;min-height:40px;font-size:13px;border-radius:12px;justify-content:center}
+.tide-mode .place-layers,.tide-mode #enforce-labels{display:none!important}
+@media(max-width:700px){
+ .tide-bar{left:10px;right:10px;width:auto;transform:none;bottom:calc(84px + env(safe-area-inset-bottom))}
+ .not-started .map-tools,.not-started .geo-status,.not-started .gps-chip,.not-started .place-layers{display:none!important}
+}
