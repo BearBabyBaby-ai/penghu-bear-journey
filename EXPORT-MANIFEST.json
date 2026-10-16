@@ -1,6 +1,6 @@
 {
   "project": "熊熊澎湖之旅",
-  "exportedAt": "2026-10-16T15:35:01+08:00",
+  "exportedAt": "2026-10-16T15:37:52+08:00",
   "siteVersion": 14,
   "deploymentDirectory": "dist",
   "recordCount": 977,
@@ -20,7 +20,8 @@
     "travel: 吉貝/鳥嶼/員貝 arrival without teleport; 吉貝→七美 multi-port trip",
     "travel: 桶盤/虎井 arrival without teleport; ferry panel shows 8 routes at 393x760, 360x640, 1366x800",
     "ferry-sheet: simulated live sheet shows 9 routes incl. unsailable new route warning; offline shows bundled 8",
-    "Sprite sequence on 桶盤 trip: ride → original (boarding) → boat → original (landing) → ride → original"
+    "Sprite sequence on 桶盤 trip: ride → original (boarding) → boat → original (landing) → ride → original",
+    "Sprite sequence on 桶盤 trip: ride → original (boarding) → boat → original (landing) → ride → original; bear head size matched at 393x760"
   ],
   "unverified": [
     "Node.js 24 run (will run in GitHub Actions)",
@@ -833,8 +834,8 @@
     },
     {
       "path": "dist/game.js",
-      "bytes": 52459,
-      "sha256": "8eff79d72b4323f2f1ecd368b623ac7034333d9e27780a8fce0398dc41c1d8fa"
+      "bytes": 52697,
+      "sha256": "db4056a3911680a4fe4c2f9d42b9a510d84f03aea3fbc184095788896ac87e23"
     },
     {
       "path": "dist/geo/MIRROR-LICENSE.txt",
@@ -1111,7 +1112,8 @@
     "交通船 dock panel listing all 8 routes with go-to-port buttons",
     "All ferry info written to 熊熊綜合系統 sheet 交通船資訊",
     "交通船 panel reads 熊熊綜合系統 sheet 交通船資訊 live (public CSV, no API key) with bundled fallback; weekly scheduled verification task",
-    "Character sprites: scooter bear while moving on land, boat bear at sea, original bearbao when stopped or at port transfers"
+    "Character sprites: scooter bear while moving on land, boat bear at sea, original bearbao when stopped or at port transfers",
+    "Character sprites: scooter bear while moving on land, boat bear at sea, original bearbao when stopped or at port transfers; bear size matched across sprites"
   ],
   "previousSiteVersion": 13,
   "previousExportSha256": "31529d562278dad55686203c1d2c902d9090c9687437422f4c8913a14c0592e9",

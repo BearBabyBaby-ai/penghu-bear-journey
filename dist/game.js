@@ -164,6 +164,8 @@ function openPanel(name){
 }
 /* 交通船資訊：優先即時讀試算表「交通船資訊」；讀不到就用內建航線檔。搭船路線（港口位置、海路）一律用內建檔，不因表格變動而瞬移 */
 let ferrySheet=null,ferrySheetState='idle';
+/* 角色比例：以三張原圖的眼鏡寬度對齊（原始熊寶約575px、騎車熊寶約340px、搭船熊寶約212px，皆為1254px畫布），讓熊寶本身大小一致 */
+const RIDE_SCALE=575/340,BOAT_SCALE=575/212;
 function refreshFerrySheet(){if(ferrySheetState==='loading')return;ferrySheetState='loading';loadFerrySheet().then(rows=>{ferrySheet=rows;ferrySheetState=rows?'ok':'failed';if(currentPanel==='ferries')renderFerries()})}
 function renderFerries(){
  const planner=journey?.planner;
@@ -268,7 +270,7 @@ function frame(now){
  /* 角色圖：海上搭船＝搭船熊寶；陸上移動中＝騎車熊寶；停下來（含剛上岸）＝原始熊寶。三張都是使用者提供的原圖，只縮放不改繪 */
  const boatBear=$('#bear-boat'),rideBear=$('#bear-ride'),showBoat=!!feet&&!avatar.hidden&&sailing,showRide=!!feet&&!avatar.hidden&&!showBoat&&moving&&journey?.leg?.type!=='port';
  boat.hidden=true;boatBear.hidden=!showBoat;rideBear.hidden=!showRide;avatar.style.visibility=showBoat||showRide?'hidden':'visible';
- if(showBoat||showRide){const size=parseFloat(avatar.style.width)||30,sprite=showBoat?boatBear:rideBear,scale=showBoat?2.1:1.35;sprite.style.left=feet.x+'px';sprite.style.top=(showBoat?feet.y+size*.45:parseFloat(avatar.style.top))+'px';sprite.style.width=sprite.style.height=(size*scale)+'px';sprite.style.setProperty('--rock',showBoat?Math.sin(time*2)*2+'deg':'0deg')}
+ if(showBoat||showRide){const size=parseFloat(avatar.style.width)||30,sprite=showBoat?boatBear:rideBear,scale=showBoat?BOAT_SCALE:RIDE_SCALE;sprite.style.left=feet.x+'px';sprite.style.top=(showBoat?feet.y+size*.4:parseFloat(avatar.style.top))+'px';sprite.style.width=sprite.style.height=(size*scale)+'px';sprite.style.setProperty('--rock',showBoat?Math.sin(time*2)*2+'deg':'0deg')}
  const layout=labelLayout(displayedNodes(),p=>engine.project(p),innerWidth,innerHeight,mapMode()?engine.zoom:10,target?.record.id,mapMode()?MAP_MARKER_LABEL_Y:2);
  for(const n of nodes){const p=layout.get(n.index),el=n.label;if(!el)continue;el.hidden=!p;if(!p)continue;n.cluster=p.members||[n];const count=n.cluster.length,dot=el.querySelector('.dot'),text=count>1?String(count):KINDS[n.record.kind].symbol;if(dot.textContent!==text)dot.textContent=text;el.classList.toggle('cluster',count>1);el.setAttribute('aria-label',count>1?`查看此處 ${count} 個地點`:`選取${n.record.name}`);el.style.left=p.x+'px';el.style.top=p.y+'px';el.classList.toggle('compact',p.compact);el.style.zIndex=p.selected?'3000':String(100+Math.round(p.y));}
  const compass=$('.compass svg');compass.style.transform=`rotate(${-engine.angle*180/Math.PI}deg)`;
