@@ -36,7 +36,7 @@ for(let i=0;i<30;i++){original.advance(atSea,.06);resumed.advance(restored,.06)}
 assert.equal(cleanSave({position:{edge:-1,t:10},journey:{origin:{edge:1,t:0},end:{edge:2,t:0},elapsed:Infinity}},data.records).journey,null);
 // 白沙鄉公所交通船：赤崁⇄吉貝、岐頭⇄鳥嶼、岐頭⇄員貝；跨島需下船沿路走到另一港再搭船
 const byId=id=>nodes.find(n=>n.record.id===id);
-for(const [id,ports] of [['sight-96',['赤崁漁港（北海遊客中心）','吉貝漁港']],['sight-118',['岐頭漁港','鳥嶼漁港']],['temple-132',['岐頭漁港','員貝漁港']]]){
+for(const [id,ports] of [['sight-96',['赤崁漁港（北海遊客中心）','吉貝漁港']],['sight-118',['岐頭漁港','鳥嶼漁港']],['temple-132',['岐頭漁港','員貝漁港']],['temple-118',['重光碼頭','大倉漁港']]]){
  const target=byId(id);assert(target?.approach,id+' has a road approach');const plan=planner.plan(a,target.approach);assert(plan,id+' reachable by ferry');assert.deepEqual(plan.ports,ports);
  const actor={...a},trip=new Journey(planner);trip.request(actor,target.approach,{recordId:id});let last={...actor},guard=0;
  while(trip.active&&guard++<20000){trip.advance(actor,.06);assert(distance(last,actor)<1.2,'no teleport on '+id);last={...actor}}
@@ -45,4 +45,4 @@ for(const [id,ports] of [['sight-96',['赤崁漁港（北海遊客中心）','�
 {const jb=byId('sight-96').approach,q7=get('七美鄉'),plan=planner.plan(jb,q7);assert(plan,'吉貝→七美 via walking between main-island ports');assert.deepEqual(plan.ports,['吉貝漁港','赤崁漁港（北海遊客中心）','馬公南海交通船碼頭','望安潭門港','七美南滬港']);assert(plan.legs.some((l,i)=>l.type==='walk'&&i>0&&i<plan.legs.length-1),'walk between ports')}
 const unserved=nodes.find(n=>n.record.name==='姑婆嶼');assert.equal(planner.plan(a,unserved.approach),null,'No invented ferry to an unserved island');
 const requested=[];await loadFerries(async path=>{requested.push(path);return new Response(JSON.stringify(ferries))});assert.deepEqual(requested,[FERRY_FILE]);await assert.rejects(loadFerries(async()=>new Response('',{status:404})),/未載入/);
-console.log('PASS travel: 白沙鄉公所交通船 吉貝／鳥嶼／員貝 and 吉貝→七美 multi-port trips; all 12 regional road/ferry directions; no teleport per frame; sea corridors avoid land; port-only boarding; queued reroutes; cancel at next port; exact ship-position save/resume; unsupported islands stay put. Browser visuals were not tested.');
+console.log('PASS travel: 白沙鄉公所交通船 吉貝／鳥嶼／員貝／大倉 and 吉貝→七美 multi-port trips; all 12 regional road/ferry directions; no teleport per frame; sea corridors avoid land; port-only boarding; queued reroutes; cancel at next port; exact ship-position save/resume; unsupported islands stay put. Browser visuals were not tested.');
