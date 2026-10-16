@@ -1,6 +1,6 @@
 {
   "project": "熊熊澎湖之旅",
-  "exportedAt": "2026-10-16T21:58:36+08:00",
+  "exportedAt": "2026-10-16T22:19:41+08:00",
   "siteVersion": 14,
   "deploymentDirectory": "dist",
   "recordCount": 977,
@@ -49,28 +49,28 @@
     },
     {
       "path": "CLAUDE.md",
-      "bytes": 8896,
-      "sha256": "86f3ea0f7e135bc9e15891fad59094689c54cb4ee8162f26bf716e871810bc00"
+      "bytes": 9181,
+      "sha256": "c0d466236c5379af7b060668a8a99a39c4723c1fd43f0001aebe9ec3afec3d17"
     },
     {
       "path": "DEVELOPMENT.md",
-      "bytes": 21210,
-      "sha256": "c17dbd7df91fcd3c6ea60c8d63e9d115c9ece7ace75cf52c0b9b98edc7495b98"
+      "bytes": 21560,
+      "sha256": "b9a0d753195357a8be5cb58adca44c0a9e42093bb8abf103efadf9afd666f0e6"
     },
     {
       "path": "HANDOFF_CLAUDE_GEMINI.md",
-      "bytes": 25806,
-      "sha256": "20ac6f56eacbdc67a9cd6239055e12bab18c5a898184da43c49e6f7810b554cd"
+      "bytes": 26622,
+      "sha256": "da25c4319d54ccc024954b7f9e79129ca683e015d26ad934f91c363067be3257"
     },
     {
       "path": "README.md",
-      "bytes": 11470,
-      "sha256": "d807b7187ec851ba099ab51e2d90013184df918512670ac26291296cc9dda223"
+      "bytes": 11499,
+      "sha256": "49847502b9276657ddd5d67f44227766be574c1e2031bad02259e790ff981485"
     },
     {
       "path": "START_HERE.txt",
-      "bytes": 2638,
-      "sha256": "7dbc3d321e2dc9bf7063cc2b235d66ac0172e5ec3aaaa7d76e5d99bffdf4a5f1"
+      "bytes": 2764,
+      "sha256": "9293901a9a86a1e4a4deb7c00f40c75f80631bac901f6c35b6104ec18f6bdd15"
     },
     {
       "path": "dist/.nojekyll",
@@ -849,8 +849,8 @@
     },
     {
       "path": "dist/game.js",
-      "bytes": 74640,
-      "sha256": "0cd3c511ca285fcccc0a8ccbdea3550c9df9562dd67fbbf1f812b4b93ecb15cd"
+      "bytes": 76125,
+      "sha256": "5880f1c8df77d668941d899b30323e3aed76e5e88c75c6dcab964ea1439fac71"
     },
     {
       "path": "dist/geo/MIRROR-LICENSE.txt",
@@ -914,8 +914,8 @@
     },
     {
       "path": "dist/index.html",
-      "bytes": 12474,
-      "sha256": "9ba8b3505dedcbafb04df21f70808cbff02008b8a294e2e5d7fc047a4e9a0cb0"
+      "bytes": 12556,
+      "sha256": "24360710955639016d171ec97d3b73efbdc2919093d8a52a109f81a48ffb4aec"
     },
     {
       "path": "dist/manifest.json",
@@ -964,8 +964,8 @@
     },
     {
       "path": "dist/style.css",
-      "bytes": 53634,
-      "sha256": "307f8fb2545d91cf4b187b076db95ca82742cfa2eec117c3ed33869e1bd73e4e"
+      "bytes": 53682,
+      "sha256": "9d33f13626c7afd89a28c6a0a98a7919a0ea435aecaaa3194496beddebeb694b"
     },
     {
       "path": "dist/sw.js",
@@ -994,8 +994,8 @@
     },
     {
       "path": "package.json",
-      "bytes": 511,
-      "sha256": "5485a46f40a947f91a738b84602e56fc303fb17082fc70fe147672535014747e"
+      "bytes": 512,
+      "sha256": "3ca62d58908c8a51e218eaee27f85e296ffbcfc629f24bb8e8d3b4770de31396"
     },
     {
       "path": "sources/app-icon-travel-bear.png",
@@ -1183,7 +1183,8 @@
     "2026-10-16 第15版：GPS我的位置（熊寶沿路跟上，不瞬移）、點鄉市顯示地區資訊並清除問熊寶關鍵字、手機版面v2、騎車／搭船熊寶CSS動畫、南海諸島交通船改由南海遊客中心東側上船、測速照相與科技執法草案",
     "2026-10-16 第16版：測速照相與科技執法圖層（澎湖縣警察局開放資料；試算表「測速與科技執法」即時讀取＋內建檔），熊寶／GPS 前方提醒，每週排程改為交通船與測速週檢",
     "2026-10-16 第17版：騎車／搭船改用使用者提供的動畫WebP；測速詳情合併、固定測速不標科技執法；測速提醒不與一般提示重疊",
-    "2026-10-16 第18版：全功能逐一檢查；分海動畫鏡頭對準步道、自動播放、時間條；手機開場不被遮；提示文字更正"
+    "2026-10-16 第18版：全功能逐一檢查；分海動畫鏡頭對準步道、自動播放、時間條；手機開場不被遮；提示文字更正",
+    "2026-10-16 第19版：分海動畫改在真實地圖上播放，不再使用示意小島"
   ],
   "previousSiteVersion": 13,
   "previousExportSha256": "31529d562278dad55686203c1d2c902d9090c9687437422f4c8913a14c0592e9",
@@ -1197,5 +1198,5 @@
     "signingKey": "shared with 熊熊綜合系統 (fingerprint B4:D3:...:3A:3A); keystore kept outside repository",
     "assetlinks": "https://bearbabybaby-ai.github.io/.well-known/assetlinks.json lists both apps"
   },
-  "version": "18"
+  "version": "19"
 }

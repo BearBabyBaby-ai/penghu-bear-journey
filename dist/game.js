@@ -91,7 +91,6 @@ function setRegion(area,record=null,mode='map'){
   mapReturn=null;
  }else player={x:0,z:6,facing:0};
  target=record?nodes.find(n=>n.record.id===record.id):mapped?nodes.find(n=>n.record.id===(returning?.targetId||journey?.meta.recordId))||null:null;
- $('#tide-bar').hidden=!observingSea;document.body.classList.toggle('tide-mode',observingSea);if(!observingSea)tidePlaying=false;
  engine.setWorld(mapped?buildMapMarkers(displayedNodes()):buildWorld(nodes,area));
  engine.angle=mapped?0:.65;engine.tilt=mapped?1.12:.78;engine.focus=[player.x,0,player.z];if(started){mapOverview=false;engine.zoom=innerWidth<700?10:12}
  $('#labels').innerHTML=nodes.map(n=>`<button class="place-label" id="label-${n.index}" data-node="${n.index}" style="--tag:${KINDS[n.record.kind].color}" title="${escape(KINDS[n.record.kind].label+' · '+n.record.name)}" aria-label="選取${escape(n.record.name)}" hidden><span class="dot">${KINDS[n.record.kind].symbol}</span><span class="place-name">${escape(n.record.name)}</span></button>`).join('');
@@ -224,16 +223,32 @@ function renderTideContent(){
  if(!day){$('#tide-content').innerHTML='<div class="empty">原表沒有這個日期的資料，請選擇範圍內的日期。</div>';return}
  if(isSea){
   const pairs=[['緩慢分海',day.open],['緩慢合海',day.close]];
-  $('#tide-content').innerHTML=`<div class="tide-summary"><h3>${escape(tideDate)} · 奎壁山</h3><div class="time-pairs">${pairs.map(([a,b])=>`<div>${a}<strong>${b.length?b.map(escape).join(' / '):'原表未列'}</strong></div>`).join('')}</div><p class="small-note">日出 ${escape(day.sunrise||'未列')} · 日沒 ${escape(day.sunset||'未列')}</p></div>${day.reference.length?`<p class="small-note">原表「參考安全通行」：${day.reference.map(escape).join('、')}。此為原表欄位內容，須依現場管制。</p>`:''}<table class="tide-table"><thead><tr><th>潮汐</th><th>潮時</th><th>潮高（原表值）</th></tr></thead><tbody>${day.events.map(e=>`<tr><td class="${e.type==='乾潮'?'low':''}">${escape(e.type)}</td><td>${escape(e.time)}</td><td>${escape(e.height)}</td></tr>`).join('')}</tbody></table><div class="simulator"><h3>讓海，慢慢退去</h3><p>拖曳時間，觀察 3D 場景中礫石步道的變化。</p><div id="tide-chart-wrap">${tideChart(day.events,simMinute)}</div><input id="sim-time" type="range" min="0" max="1439" value="${simMinute}" aria-label="分海示意時間"><div class="slider-labels"><span>00:00</span><span>12:00</span><span>23:59</span></div><output id="sim-output"></output><button id="observe-sea" class="small-button" style="margin-top:14px">${save.observed?'再看一次分海動畫':'觀察分海動畫'}</button><p>潮高以原表極值平滑插值，場景水位為遊戲示意。動畫不判定實際通行條件，赤嶼禁止登島，請遵守現場管制。</p></div><p class="small-note">來源：奎壁山摩西分海。資料範圍 2025/12/31–2027/12/31。</p>`;
+  $('#tide-content').innerHTML=`<div class="tide-summary"><h3>${escape(tideDate)} · 奎壁山</h3><div class="time-pairs">${pairs.map(([a,b])=>`<div>${a}<strong>${b.length?b.map(escape).join(' / '):'原表未列'}</strong></div>`).join('')}</div><p class="small-note">日出 ${escape(day.sunrise||'未列')} · 日沒 ${escape(day.sunset||'未列')}</p></div>${day.reference.length?`<p class="small-note">原表「參考安全通行」：${day.reference.map(escape).join('、')}。此為原表欄位內容，須依現場管制。</p>`:''}<table class="tide-table"><thead><tr><th>潮汐</th><th>潮時</th><th>潮高（原表值）</th></tr></thead><tbody>${day.events.map(e=>`<tr><td class="${e.type==='乾潮'?'low':''}">${escape(e.type)}</td><td>${escape(e.time)}</td><td>${escape(e.height)}</td></tr>`).join('')}</tbody></table><div class="simulator"><h3>讓海，慢慢退去</h3><p>按「觀察分海動畫」，在地圖上看奎壁山到赤嶼的礫石步道隨潮汐露出、淹沒。</p><div id="tide-chart-wrap">${tideChart(day.events,simMinute)}</div><input id="sim-time" type="range" min="0" max="1439" value="${simMinute}" aria-label="分海示意時間"><div class="slider-labels"><span>00:00</span><span>12:00</span><span>23:59</span></div><output id="sim-output"></output><button id="observe-sea" class="small-button" style="margin-top:14px">${save.observed?'再看一次分海動畫':'觀察分海動畫'}</button><p>潮高以原表極值平滑插值，步道露出程度為遊戲示意。動畫不判定實際通行條件，赤嶼禁止登島，請遵守現場管制。</p></div><p class="small-note">來源：奎壁山摩西分海。資料範圍 2025/12/31–2027/12/31。</p>`;
   $('#sim-time').oninput=e=>{simMinute=Number(e.target.value);updateSimulation(day);$('#tide-chart-wrap').innerHTML=tideChart(day.events,simMinute)};
-  $('#observe-sea').onclick=()=>{start();save.observed=true;closePanel();setRegion('湖西鄉',null,'tide');persist();updateProgress();player.x=16.5;player.z=1;destination=null;engine.angle=TIDE_VIEW.angle;engine.tilt=TIDE_VIEW.tilt;engine.zoom=innerWidth<700?TIDE_VIEW.zoomMobile:TIDE_VIEW.zoom;engine.focus=[...TIDE_VIEW.focus];tidePlaying=true;updateTideBar();toast(`分海動畫播放中（${tideDate}，一天潮汐約 12 秒）。可拖曳下方時間或暫停，按「返回地圖」回到原位。`)};updateSimulation(day);
+  $('#observe-sea').onclick=()=>{start();save.observed=true;persist();updateProgress();enterTideView()};updateSimulation(day);
  }else{
   const group=data.forecasts[forecastBlock];
   $('#tide-content').innerHTML=`<div class="tide-summary"><h3>${escape(tideDate)} · 區塊 ${group.index}</h3><p class="small-note">${escape(day.label).replace(/\n/g,'<br>')}</p></div><p class="small-note">原表重複六組表頭，未提供各區塊的站名。這裡保留原始分組，不對應任何鄉市。日期年份依本次讀取日期推定為 2026。</p><table class="tide-table"><thead><tr><th>潮汐</th><th>時間</th><th>臺灣高程</th><th>當地平均</th><th>海圖</th></tr></thead><tbody>${day.events.map(e=>`<tr><td class="${e.type==='乾潮'?'low':''}">${escape(e.type)}</td><td>${escape(e.time)}</td><td>${escape(e.heightTW)}</td><td>${escape(e.heightLocal)}</td><td>${escape(e.heightChart)}</td></tr>`).join('')}</tbody></table><p class="small-note">高度保留原表值，原表未標單位。區塊表頭位於第 ${group.headerRow} 列。本區資料涵蓋 ${Object.keys(group.days).sort()[0]}–${Object.keys(group.days).sort().at(-1)}，共 ${Object.keys(group.days).length} 日。</p><h4 style="font-size:12px">本區塊所列分／合海欄位</h4><p class="small-note">${day.events.filter(e=>e.open||e.close).map(e=>`${e.open?'緩慢分海 '+escape(e.open):''}${e.close?'緩慢合海 '+escape(e.close):''}（第 ${e.row} 列）`).join('<br>')||'原表未列。'}</p>`;
  }
 }
 /* 分海場景：鏡頭對準奎壁山→赤嶼礫石步道，自動播放一天的潮汐（約 12 秒），下方時間條可拖曳／暫停／返回地圖 */
-const TIDE_VIEW={focus:[26,0,-1.5],angle:0,tilt:.9,zoom:24,zoomMobile:34};let tidePlaying=false;
+/* 分海動畫在真實地圖上播放：鏡頭移到奎壁山，依潮高在奎壁山岸邊→赤嶼之間畫出礫石步道（退潮露出、漲潮淹沒）。
+   熊寶留在原位，不移動、不切換場景。步道線為示意（依國土測繪陸域輪廓取岸邊與赤嶼，非實測），實際通行依現場管制。 */
+const TIDE_PATH_GEO=[[119.671901,23.598244],[119.67271,23.598161],[119.673429,23.598738],[119.674237,23.599314],[119.675225,23.599314]];
+let tideView=false,tidePlaying=false,tidePath=null;
+function tidePathPoints(){if(tidePath)return tidePath;const pts=TIDE_PATH_GEO.map(([lng,lat])=>mapPosition({lat,lng})),out=[];for(let i=0;i<pts.length-1;i++){const a=pts[i],b=pts[i+1],n=Math.ceil(Math.hypot(b.x-a.x,b.z-a.z)/.05);for(let k=0;k<n;k++)out.push({x:a.x+(b.x-a.x)*k/n,z:a.z+(b.z-a.z)*k/n})}out.push(pts.at(-1));return tidePath=out}
+function enterTideView(){
+ closePanel();returnToMap();if($('#details').open)$('#details').close();const pts=tidePathPoints(),mid=pts[Math.floor(pts.length/2)];
+ tideView=true;tidePlaying=true;document.body.classList.add('tide-mode');$('#tide-bar').hidden=false;mapOverview=false;inspectPoint={x:mid.x,z:mid.z};engine.angle=0;engine.tilt=1.12;engine.zoom=innerWidth<700?8:9;
+ updateTideBar();toast(`奎壁山摩西分海：自動播放 ${tideDate} 一天的潮汐（約 12 秒），退潮時步道露出。可拖曳下方時間或暫停，按「返回地圖」回到熊寶身邊。`);
+}
+function exitTideView(){tideView=false;tidePlaying=false;document.body.classList.remove('tide-mode');$('#tide-bar').hidden=true;inspectPoint=null;engine.zoom=innerWidth<700?10:12;toast('已返回地圖，熊寶在原來的位置。')}
+/* 步道露出比例：原表潮高 -10 以下開始露出，-80 以下全露（由兩岸往中間） */
+function drawTidePath(g){
+ if(!tideView||!mapMode())return;const day=data.seaDays[tideDate]||Object.values(data.seaDays)[0],h=day?interpolateTide(day.events,simMinute):null;if(h===null)return;
+ const shown=clamp((-10-h)/70,0,1),pts=tidePathPoints();if(shown<=0)return;
+ pts.forEach((p,i)=>{const t=i/(pts.length-1);if(Math.abs(t-.5)<.5*(1-shown))return;g.cylinder(p.x,1.02,p.z,.07,.03,.07,i%3?'#d9c7a0':'#c4b087',7)});
+}
 function updateTideBar(){
  const day=data.seaDays[tideDate]||Object.values(data.seaDays)[0];if(!day)return;updateSimulation(day);const h=interpolateTide(day.events,simMinute);
  const r=$('#tide-bar-range');if(r&&Number(r.value)!==Math.round(simMinute))r.value=Math.round(simMinute);
@@ -261,8 +276,7 @@ function frame(now){
  const mobile=innerWidth<700;
  let focus=mapMode()?(mapOverview?[(MAP.minX+MAP.maxX)/2,0,(MAP.minZ+MAP.maxZ)/2]:inspectPoint?[inspectPoint.x,0,inspectPoint.z]:gps.on&&gps.camera&&gps.world?[gps.world.x,0,gps.world.z]:[player.x,0,player.z]):started?[player.x*.35,0,player.z*.25]:[mobile?2:-11,0,mobile?8:5];
  // Observation viewpoint stays near the tidal causeway until the player moves.
- if(observingSea&&started&&save.observed&&player.x>15&&!moving)focus=TIDE_VIEW.focus;
- if(observingSea&&tidePlaying&&!paused){simMinute=(simMinute+dt*120)%1440;updateTideBar()}
+  if(tideView&&tidePlaying&&!paused){simMinute=(simMinute+dt*120)%1440;updateTideBar()}
  for(const i of [0,2])engine.focus[i]+=(focus[i]-engine.focus[i])*Math.min(1,dt*2);
  if(mapMode()&&mapOverview)engine.zoom=Math.max(MAP.height*Math.sin(engine.tilt)/2,MAP.width/(innerWidth/innerHeight)/2)*1.12;else if(!started)engine.zoom=mapMode()?(mobile?12:20):(mobile?27:24);
  if(mapMode()&&journey?.revision!==routeRevision){engine.setRoute(journey?.active?journey.geometry(player):null);routeRevision=journey?.revision}
@@ -282,6 +296,7 @@ function frame(now){
  // Slightly submerged / exposed causeway segments show the selected tide state.
  const waterY=tideHeight*.7;
  if(Math.abs((engine.lastWater??99)-waterY)>.015){const water=new Geometry();water.quad([-160,waterY,-160],[-160,waterY,160],[160,waterY,160],[160,waterY,-160],'#70bbb9');engine.gl.deleteBuffer(engine.water.buffer);engine.water=engine.upload(water);engine.lastWater=waterY}
+ drawTidePath(g);
  engine.render(time,g);
  const feet=engine.project([player.x,1.05,player.z]),head=engine.project([player.x,4.8,player.z]),avatar=$('#bearbao-avatar');
  if(feet&&head){const size=clamp(Math.abs(head.y-feet.y)*.82,8,100),bob=moving?Math.sin(time*12)*2:Math.sin(time*2)*.3;avatar.style.left=feet.x+'px';avatar.style.top=(feet.y-bob)+'px';avatar.style.width=size+'px';avatar.style.height=size+'px';avatar.style.setProperty('--lean',moving?Math.sin(player.facing+engine.angle)*3+'deg':'0deg');avatar.hidden=(mapMode()&&(!navigation||!navigation.isOnRoad(player)&&!journey?.inTransit))||feet.x< -size||feet.x>innerWidth+size||feet.y<0||feet.y>innerHeight+size}
@@ -314,7 +329,7 @@ function bindControls(){
  $$('.dialog-close').forEach(b=>b.onclick=()=>b.closest('dialog').close());$$('dialog').forEach(d=>d.addEventListener('click',e=>{if(e.target===d){const r=d.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)d.close()}}));
  $('#close-panel').onclick=closePanel;$$('[data-panel]').forEach(b=>b.onclick=()=>openPanel(b.dataset.panel));
  $('#region').onchange=e=>navigateRegion(e.target.value);
- $('#tide-bar-range').oninput=e=>{tidePlaying=false;simMinute=Number(e.target.value);updateTideBar()};$('#tide-play').onclick=()=>{tidePlaying=!tidePlaying;updateTideBar()};$('#tide-exit').onclick=()=>{tidePlaying=false;returnToMap();toast('已返回地圖，熊寶在原來的位置。')};
+ $('#tide-bar-range').oninput=e=>{tidePlaying=false;simMinute=Number(e.target.value);updateTideBar()};$('#tide-play').onclick=()=>{tidePlaying=!tidePlaying;updateTideBar()};$('#tide-exit').onclick=exitTideView;
  $('#gps-toggle').onclick=()=>{closeMapMenu();toggleGps()};$('#gps-chip').onclick=gpsRecenter;
  $('#map-more').onclick=e=>{e.stopPropagation();const open=!$('#map-tools').classList.contains('open');$('#map-tools').classList.toggle('open',open);$('#map-more').setAttribute('aria-expanded',String(open))};
  $('#north-liao').addEventListener('click',closeMapMenu);$('#enforce-toggle').onchange=e=>toggleEnforce(e.target.checked);setupEnforcement();$('#map-retry').addEventListener('click',closeMapMenu);

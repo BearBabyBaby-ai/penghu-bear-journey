@@ -126,3 +126,4 @@ WASD／方向鍵沿路移動、Shift加速、點道路沿路前往；點地標�
 第17版：`npm run check` 九組 PASS；無頭 Chromium 檢查騎車／搭船動畫位置。實體手機動畫順暢度未驗證。
 分海動畫場景（第17版修正）：`setRegion(area,null,'tide')` 的地點改用 `tideNodes()`，只有奎壁山摩西分海一筆；`makeTour()` 保留但遊戲不再使用。
 分海場景（第18版）：`TIDE_VIEW`（鏡頭）、`tidePlaying`（frame 內每秒推進 120 分鐘）、`updateTideBar()`（同步 `#tide-bar` 與 `updateSimulation`）；`setRegion` 在 `observingSea` 時顯示 `#tide-bar`、body 加 `tide-mode`、不設目的地；`mobile-layout.js` 把 `#tide-bar` 計入 `--ui-bottom`。
+分海動畫（第19版）：`enterTideView()` 設 `tideView`、`inspectPoint`（步道中點）、`tide-mode`；`drawTidePath(g)` 每格依 `interpolateTide` 決定露出比例（潮高 -10 開始、-80 全露）畫小圓石；`exitTideView()` 還原鏡頭。示意小島（`setRegion(area,null,'tide')`、`buildWorld`）已不再由介面使用。
