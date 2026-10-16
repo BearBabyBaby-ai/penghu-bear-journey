@@ -1,6 +1,6 @@
 {
   "project": "熊熊澎湖之旅",
-  "exportedAt": "2026-10-16T15:39:19+08:00",
+  "exportedAt": "2026-10-16T16:14:33+08:00",
   "siteVersion": 14,
   "deploymentDirectory": "dist",
   "recordCount": 977,
@@ -49,18 +49,18 @@
     },
     {
       "path": "CLAUDE.md",
-      "bytes": 5323,
-      "sha256": "15858ee7c765a6a441f998d50f72561f39889687d3ef2e5a9e5b20da3eb0a301"
+      "bytes": 5443,
+      "sha256": "26ec24dee973f956ca1e662c353e253b50661bad53137544e3e4c0f0de630954"
     },
     {
       "path": "DEVELOPMENT.md",
-      "bytes": 16469,
-      "sha256": "608b7b2d18ea4de59cd54064778c52b090ddef06f3ffacfe10acc140e8519b84"
+      "bytes": 16712,
+      "sha256": "508d0572938f723b327b4249f296bbaa9a4f8f6f8b53c67f16ec5d0096fadf6e"
     },
     {
       "path": "HANDOFF_CLAUDE_GEMINI.md",
-      "bytes": 16902,
-      "sha256": "55ee57e2e6f37d8569c3d3b263f4dea71596cc5b30891132b6c0c01680871e93"
+      "bytes": 16977,
+      "sha256": "9e5bc565cda6472c97371bf8c02cbce8aa09d24457dfc0ad981807cb95b4102b"
     },
     {
       "path": "README.md",
@@ -834,8 +834,8 @@
     },
     {
       "path": "dist/game.js",
-      "bytes": 52697,
-      "sha256": "db4056a3911680a4fe4c2f9d42b9a510d84f03aea3fbc184095788896ac87e23"
+      "bytes": 53232,
+      "sha256": "69a2559af48a079560c29fece181cf518c4d43784abac28d84ae6f035f685c11"
     },
     {
       "path": "dist/geo/MIRROR-LICENSE.txt",
@@ -895,7 +895,7 @@
     {
       "path": "dist/index.html",
       "bytes": 9859,
-      "sha256": "851d469c73c7bfbccce6348d6b8aae168ba5168c1654cc70a8f0767057b2de03"
+      "sha256": "2861b32102829a49a3bc31aa1d3d74ea304aaa29c9c600afe8d196e15d68bdce"
     },
     {
       "path": "dist/manifest.json",
@@ -944,8 +944,8 @@
     },
     {
       "path": "dist/style.css",
-      "bytes": 42289,
-      "sha256": "a0851451d8aaf97dafcb0e2712676b8fc11f2d42f93249bdd164dc48e49e6460"
+      "bytes": 42311,
+      "sha256": "c728b8d7c18431374753b3b24a8308c4bdd7715c323f94306238e1d3ba6be046"
     },
     {
       "path": "dist/sw.js",
@@ -1113,7 +1113,8 @@
     "All ferry info written to 熊熊綜合系統 sheet 交通船資訊",
     "交通船 panel reads 熊熊綜合系統 sheet 交通船資訊 live (public CSV, no API key) with bundled fallback; weekly scheduled verification task",
     "Character sprites: scooter bear while moving on land, boat bear at sea, original bearbao when stopped or at port transfers",
-    "Character sprites: scooter bear while moving on land, boat bear at sea, original bearbao when stopped or at port transfers; bear size matched across sprites"
+    "Character sprites: scooter bear while moving on land, boat bear at sea, original bearbao when stopped or at port transfers; bear size matched across sprites",
+    "Scooter/boat bear sprites flip horizontally by on-screen travel direction; original bearbao never flipped"
   ],
   "previousSiteVersion": 13,
   "previousExportSha256": "31529d562278dad55686203c1d2c902d9090c9687437422f4c8913a14c0592e9",
