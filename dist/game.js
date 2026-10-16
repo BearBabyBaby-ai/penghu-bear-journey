@@ -278,7 +278,7 @@ function frame(now){
  /* 搭船動畫檔較大（約 3MB），排到有搭船的旅程時才載入 */
  if(showBoat||journey?.plan?.ports?.length){const img=boatBear.firstElementChild;if(img&&!img.getAttribute('src')&&img.dataset.src)img.src=img.dataset.src}
  boat.hidden=true;boatBear.hidden=!showBoat;rideBear.hidden=!showRide;avatar.style.visibility=showBoat||showRide?'hidden':'visible';
- if(showBoat||showRide){const size=parseFloat(avatar.style.width)||30,sprite=showBoat?boatBear:rideBear,scale=showBoat?BOAT_SCALE:RIDE_SCALE;const w=size*scale;sprite.style.left=(showBoat?feet.x+BOAT_DX*w*spriteFlip:feet.x)+'px';sprite.style.top=(showBoat?feet.y+size*.4+BOAT_DY*w:parseFloat(avatar.style.top))+'px';sprite.style.width=sprite.style.height=w+'px';sprite.style.setProperty('--rock','0deg');
+ if(showBoat||showRide){const size=parseFloat(avatar.style.width)||30,sprite=showBoat?boatBear:rideBear,scale=showBoat?BOAT_SCALE:RIDE_SCALE;const w=size*scale;sprite.style.left=(showBoat?feet.x+BOAT_DX*w*spriteFlip:feet.x)+'px';sprite.style.top=(showBoat?feet.y+size*.4+BOAT_DY*w:parseFloat(avatar.style.top))+'px';sprite.style.width=sprite.style.height=w+'px';sprite.style.setProperty('--rock',showBoat?Math.sin(time*2)*2+'deg':'0deg');
   if(spritePrev){const wx=player.x-spritePrev.x,wz=player.z-spritePrev.z;if(Math.hypot(wx,wz)>1e-4){const k=1/Math.hypot(wx,wz),ahead=engine.project([player.x+wx*k,1.05,player.z+wz*k]);if(ahead&&Math.abs(ahead.x-feet.x)>.5)spriteFlip=ahead.x<feet.x?-1:1}}
   boatBear.style.setProperty('--flip',spriteFlip);rideBear.style.setProperty('--flip',spriteFlip)}
  spritePrev={x:player.x,z:player.z};

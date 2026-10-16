@@ -1,6 +1,6 @@
 {
   "project": "熊熊澎湖之旅",
-  "exportedAt": "2026-10-16T19:49:45+08:00",
+  "exportedAt": "2026-10-16T19:53:35+08:00",
   "siteVersion": 14,
   "deploymentDirectory": "dist",
   "recordCount": 977,
@@ -49,23 +49,23 @@
     },
     {
       "path": "CLAUDE.md",
-      "bytes": 8211,
-      "sha256": "532f8459036b504d32f28fceb3435e4b4be82534673d50653d2a14ef75d23d72"
+      "bytes": 8344,
+      "sha256": "dbab2a4daeef4c443ecea85480746180d4d9443bcd89881a56ba8754a93d196b"
     },
     {
       "path": "DEVELOPMENT.md",
-      "bytes": 20557,
-      "sha256": "06b0662d6cc53571a00b8c6e271bb55549d087a3d4935113b6557fe5da43e6d1"
+      "bytes": 20696,
+      "sha256": "7f7128f8bf98c5f90e99bb7ff5576098ddac2bc65bf06c6ad199e6f662bab08b"
     },
     {
       "path": "HANDOFF_CLAUDE_GEMINI.md",
-      "bytes": 23812,
-      "sha256": "30603273ca6c4024d8e50d504687f0832d3b5a92326d854642c1776720f5fc71"
+      "bytes": 24018,
+      "sha256": "5ce5f14faffd7b5db69b1ce3827bb1b2633edb15247914ac968b301daa0a79db"
     },
     {
       "path": "README.md",
-      "bytes": 11141,
-      "sha256": "3b5c78583146658589284608dfd2d03ec061a22be305d63cbc6135a1ea5a1d72"
+      "bytes": 11174,
+      "sha256": "a7f021edb9be637133542b7217224b8002c5b88acf9a91c091cbe6c4355e25ca"
     },
     {
       "path": "START_HERE.txt",
@@ -849,8 +849,8 @@
     },
     {
       "path": "dist/game.js",
-      "bytes": 72772,
-      "sha256": "3c5675f09e330f642857ee4bf81c6283f10e5c18cd2c029a814eb620e99bdf8f"
+      "bytes": 72806,
+      "sha256": "bced9e8d0d159e5260d094bf134634918e3f9a7cb9aa40dece2f2cb8e097123e"
     },
     {
       "path": "dist/geo/MIRROR-LICENSE.txt",
@@ -914,8 +914,8 @@
     },
     {
       "path": "dist/index.html",
-      "bytes": 11704,
-      "sha256": "7ef73a630b049fb9b468a83533c271cc4b3873376c3d0524ef8689736347db2d"
+      "bytes": 11797,
+      "sha256": "40dfe257b56d894a755cec138074eea152edb9d59f2cfb787c4b30bcaa73dca7"
     },
     {
       "path": "dist/manifest.json",
@@ -964,8 +964,8 @@
     },
     {
       "path": "dist/style.css",
-      "bytes": 51424,
-      "sha256": "ccc4d463b23b8de4c54e7c0f3cb01226118031ef365c894017b144fc9fd2ac51"
+      "bytes": 52482,
+      "sha256": "4c6f7adb0619a13f3e8c584127797f2b09576f6c026f7fbe4de89d25d03aa279"
     },
     {
       "path": "dist/sw.js",

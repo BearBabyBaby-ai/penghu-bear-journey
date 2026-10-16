@@ -167,7 +167,17 @@ button,select,a,#touch-action{touch-action:manipulation}.place-label,#joystick,#
 .region-card{margin-bottom:2px}
 
 /* ===== 2026-10-16 騎車／搭船熊寶動畫：使用者提供的動畫 WebP（輪胎旋轉、船體航行與破浪），只縮放不改繪 ===== */
-.bear-sprite img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none;user-select:none}
+.bear-sprite img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none;user-select:none;transform-origin:50% 92%}
+/* 疊在動畫上的晃動與煙塵（只動外框與加特效，不改圖） */
+.bear-sprite .fx{position:absolute;pointer-events:none;opacity:0}
+.bear-sprite.ride img{animation:ride-bump .34s ease-in-out infinite}
+@keyframes ride-bump{0%,100%{transform:translateY(0) rotate(0)}30%{transform:translateY(-1.8%) rotate(-.9deg)}60%{transform:translateY(-.4%) rotate(.5deg)}}
+.ride .puff{left:9%;top:76%;width:10%;height:10%;border-radius:50%;background:radial-gradient(circle,#fffffff2 0 38%,#eef0e6aa 52%,#ffffff00 70%);animation:ride-puff .9s linear infinite}
+.ride .puff.p2{animation-delay:.3s;top:80%}.ride .puff.p3{animation-delay:.6s;top:73%}
+@keyframes ride-puff{0%{transform:translate(0,0) scale(.35);opacity:.95}100%{transform:translate(-170%,-70%) scale(1.9);opacity:0}}
+.bear-sprite.boat img{animation:boat-bob 2.4s ease-in-out infinite}
+@keyframes boat-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-2.2%)}}
+@media(prefers-reduced-motion:reduce){.bear-sprite img,.bear-sprite .fx{animation:none!important}}
 
 /* ===== 2026-10-16 手機版面 v2（只影響 700px 以下；桌機不變）=====
    不再每樣都整條橫幅：右側直排工具（跟隨熊寶、我的位置、地圖選單）＋縮放；

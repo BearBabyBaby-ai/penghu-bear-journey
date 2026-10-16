@@ -107,7 +107,7 @@ WASD／方向鍵沿路移動、Shift加速、點道路沿路前往；點地標�
 
 ## 角色動畫（第17版起）
 
-`#bear-ride`、`#bear-boat` 為 `<div class="bear-sprite">` 內含使用者提供的動畫 WebP（`bear-ride-anim.webp`、`bear-boat-anim.webp`，後者用 `data-src` 延遲到有搭船行程才載入）；`game.js` 設定外層位置、大小與 `--flip`。搭船動畫以 `BOAT_FIT={s:.8207,tx:61,ty:29}` 換算 `BOAT_SCALE`、`BOAT_DX`、`BOAT_DY`（翻轉時水平位移跟著反向）。第15版的 CSS 假動畫已移除。
+`#bear-ride`、`#bear-boat` 為 `<div class="bear-sprite">` 內含使用者提供的動畫 WebP（`bear-ride-anim.webp`、`bear-boat-anim.webp`，後者用 `data-src` 延遲到有搭船行程才載入）；`game.js` 設定外層位置、大小與 `--flip`。搭船動畫以 `BOAT_FIT={s:.8207,tx:61,ty:29}` 換算 `BOAT_SCALE`、`BOAT_DX`、`BOAT_DY`（翻轉時水平位移跟著反向）。另依使用者要求疊加 CSS：騎車 `ride-bump` 顛簸＋`.puff` 排氣煙塵，搭船 `boat-bob` 起伏＋`--rock` 左右搖晃（`prefers-reduced-motion` 時停用）。
 
 ## 南海遊客中心東側上船（第15版）
 
