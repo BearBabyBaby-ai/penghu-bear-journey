@@ -1,6 +1,6 @@
 {
   "project": "熊熊澎湖之旅",
-  "exportedAt": "2026-10-16T15:37:52+08:00",
+  "exportedAt": "2026-10-16T15:39:19+08:00",
   "siteVersion": 14,
   "deploymentDirectory": "dist",
   "recordCount": 977,
@@ -49,18 +49,18 @@
     },
     {
       "path": "CLAUDE.md",
-      "bytes": 5206,
-      "sha256": "1de331b6047407f1b93e4ad6648dbc35e9fa4f4608a689aea6512ec330fe88d4"
+      "bytes": 5323,
+      "sha256": "15858ee7c765a6a441f998d50f72561f39889687d3ef2e5a9e5b20da3eb0a301"
     },
     {
       "path": "DEVELOPMENT.md",
-      "bytes": 16467,
-      "sha256": "c54259debc5c3dab5256948cfd4f82aabfa0e5e72028bb4b02b266362c0d9fd8"
+      "bytes": 16469,
+      "sha256": "608b7b2d18ea4de59cd54064778c52b090ddef06f3ffacfe10acc140e8519b84"
     },
     {
       "path": "HANDOFF_CLAUDE_GEMINI.md",
-      "bytes": 16786,
-      "sha256": "b8ad3cb62f5c879b0670cfb998ea854171a25646db014a9c5cdf2a1faac159ba"
+      "bytes": 16902,
+      "sha256": "55ee57e2e6f37d8569c3d3b263f4dea71596cc5b30891132b6c0c01680871e93"
     },
     {
       "path": "README.md",
