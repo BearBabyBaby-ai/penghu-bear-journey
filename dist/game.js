@@ -7,6 +7,7 @@ import {TileMap} from './tiles.js?v=20261015-travel8';
 import {mapPlaces,placeCounts,shownPlaces,categoryKinds,labelLayout,regionalSpawn,REGION_STARTS,MAP_MARKER_LABEL_Y} from './places.js?v=20261015-travel8';
 import {placeImages,imageSource} from './media.js?v=20261015-travel8';
 import {TravelPlanner,Journey,loadFerries} from './travel.js?v=20261015-travel8';
+import {askPlaces} from './ask.js?v=20261016-ask1';
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const escape=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const today=()=>new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Taipei',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
@@ -260,6 +261,7 @@ function bindControls(){
  $$('.dialog-close').forEach(b=>b.onclick=()=>b.closest('dialog').close());$$('dialog').forEach(d=>d.addEventListener('click',e=>{if(e.target===d){const r=d.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)d.close()}}));
  $('#close-panel').onclick=closePanel;$$('[data-panel]').forEach(b=>b.onclick=()=>openPanel(b.dataset.panel));
  $('#region').onchange=e=>navigateRegion(e.target.value);
+ setupAsk();
  window.addEventListener('keydown',e=>{if(['INPUT','SELECT','TEXTAREA'].includes(document.activeElement.tagName))return;const k=e.key.toLowerCase();if(k==='escape'){closePanel();return}if(['w','a','s','d','arrowup','arrowdown','arrowleft','arrowright','shift','e'].includes(k)){e.preventDefault();if(k==='e'&&!e.repeat)interact();else keys.add(k)}});
  window.addEventListener('keyup',e=>keys.delete(e.key.toLowerCase()));window.addEventListener('blur',()=>{keys.clear();joystick={x:0,y:0};persist()});document.addEventListener('visibilitychange',()=>{keys.clear();joystick={x:0,y:0};last=0;persist()});
  let drag=null;$('#world').addEventListener('pointerdown',e=>{if(currentPanel)return;drag={x:e.clientX,y:e.clientY,lastX:e.clientX,lastY:e.clientY,moved:0};$('#world').setPointerCapture(e.pointerId)});
@@ -277,6 +279,33 @@ function bindControls(){
  const updateJoy=e=>{if(!joyCenter){const r=joy.getBoundingClientRect();joyCenter={x:r.left+r.width/2,y:r.top+r.height/2}}const x=e.clientX-joyCenter.x,y=e.clientY-joyCenter.y,scale=Math.min(1,30/Math.hypot(x,y));joystick={x:x*scale/30,y:y*scale/30};stick.style.transform=`translate(${x*scale}px,${y*scale}px)`};
  joy.addEventListener('pointerdown',e=>{e.preventDefault();joyId=e.pointerId;joyCenter=null;joy.setPointerCapture(joyId);updateJoy(e)});joy.addEventListener('pointermove',e=>{if(joyId===e.pointerId)updateJoy(e)});const resetJoy=()=>{joyId=null;joyCenter=null;joystick={x:0,y:0};stick.style.transform=''};joy.addEventListener('pointerup',resetJoy);joy.addEventListener('pointercancel',resetJoy);$('#touch-action').onclick=interact;
  $('#world').addEventListener('webglcontextlost',e=>{e.preventDefault();toast('3D 顯示中斷。進度已保留，請重新載入遊戲。')});
+}
+/* 問熊寶：本機文字查詢。只列原表地點；「前往」沿用 navigateTo（沿道路／港口搭船，不瞬移） */
+const FERRY_AREAS=['望安鄉','七美鄉'];
+function closeAsk(){const box=$('#ask-results');if(box){box.hidden=true;box.innerHTML=''}document.body.classList.remove('ask-open')}
+function renderAsk(text){
+ const box=$('#ask-results');if(!box||!data)return;
+ const lat=Math.cos(23.55*Math.PI/180),res=askPlaces(text,data.records,{distanceOf:r=>{const p=mapPosition(r);return p?Math.hypot(p.x-player.x,p.z-player.z):Infinity}});
+ if(!res.raw){closeAsk();return}
+ const km=d=>Number.isFinite(d)?`直線約 ${(d*WORLD_METRES*lat/1000).toFixed(d*WORLD_METRES*lat<10000?1:0)} 公里`:'無座標';
+ const head=res.summary?`<div class="ask-area"><div><strong>${escape(res.area)}</strong><span>${Object.entries(KINDS).map(([k,v])=>`${v.label} ${res.summary[k]}`).join('・')}</span>${FERRY_AREAS.includes(res.area)?'<small>離島：會先沿路到馬公南海交通船碼頭，再搭船前往</small>':''}</div><button class="primary" data-ask-region="${escape(res.area)}">前往${escape(res.area)} <span>↗</span></button></div>`:'';
+ const items=res.results.map(({record:r,reason,distance})=>{const photo=placeImages(r)[0],mapped=!!mapPosition(r);return `<li class="ask-item"><button class="ask-info" data-ask-detail="${r.id}">${photo?`<img data-place-photo src="${escape(photo.src)}" alt="" loading="lazy" decoding="async">`:`<span class="ask-symbol" style="--tag:${KINDS[r.kind].color}">${KINDS[r.kind].symbol}</span>`}<span class="ask-text"><b>${escape(r.name)}</b><small>${KINDS[r.kind].label} · ${escape(r.area)} · ${km(distance)}</small>${reason?`<em>${escape(reason)}</em>`:''}</span></button><button class="ask-go" data-ask-go="${r.id}" ${mapped?'':'disabled'}>${mapped?'前往':'缺座標'}</button></li>`}).join('');
+ const more=res.total>res.results.length?`<button class="ask-more" data-ask-atlas>共 ${res.total} 筆，在圖鑑看全部 ↗</button>`:'';
+ const empty=!res.results.length?`<p class="ask-empty">找不到符合「${escape(res.raw)}」的地點。可以試試地區（七美）、類別（美食、廟）、神明（玄天上帝、媽祖）或地點名稱。</p>`:'';
+ box.innerHTML=`<div class="ask-head"><span>熊寶找到 ${res.total} 個地點</span><button class="ask-close" aria-label="關閉查詢結果">×</button></div>${head}${empty}<ul class="ask-list">${items}</ul>${more}`;
+ box.hidden=false;document.body.classList.add('ask-open');bindPhotoErrors(box);
+ box.querySelector('.ask-close').onclick=closeAsk;
+ box.querySelector('[data-ask-region]')?.addEventListener('click',e=>{closeAsk();start();$('#region').value=e.currentTarget.dataset.askRegion;navigateRegion(e.currentTarget.dataset.askRegion)});
+ box.querySelectorAll('[data-ask-go]').forEach(b=>b.onclick=()=>{const r=data.records.find(x=>x.id===b.dataset.askGo);closeAsk();navigateTo(r)});
+ box.querySelectorAll('[data-ask-detail]').forEach(b=>b.onclick=()=>showDetail(data.records.find(x=>x.id===b.dataset.askDetail)));
+ box.querySelector('[data-ask-atlas]')?.addEventListener('click',()=>{closeAsk();atlasQuery=res.keyword;atlasArea=res.area;atlasKind=res.kind;atlasLimit=24;openPanel('atlas')});
+}
+function setupAsk(){
+ const form=$('#ask'),input=$('#ask-input');if(!form||!input)return;let timer=0;
+ form.addEventListener('submit',e=>{e.preventDefault();clearTimeout(timer);renderAsk(input.value);input.blur()});
+ input.addEventListener('input',()=>{clearTimeout(timer);const v=input.value.trim();if(!v){closeAsk();return}if(v.length>=2)timer=setTimeout(()=>renderAsk(v),350)});
+ input.addEventListener('keydown',e=>{if(e.key==='Escape'){closeAsk();input.blur()}});
+ $('#world').addEventListener('pointerdown',()=>{if(!$('#ask-results').hidden)closeAsk()});
 }
 let coastLoading=false;
 async function prepareCoastline(){

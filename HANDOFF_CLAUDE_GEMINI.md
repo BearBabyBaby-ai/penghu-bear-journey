@@ -24,6 +24,11 @@
   - 目的地卡行進中只更新距離數字，不再每幀重建整張卡（舊版行進中按卡片按鈕可能點不到）。
   - 說明視窗相關文字同步更新；viewport 禁止頁面縮放，避免誤觸放大整個介面。
   - 2026-10-16 修正：第13版一條觸控規則誤把搖桿的 `touch-action` 由 none 改成 manipulation，手機拖曳搖桿時瀏覽器可能接手捲動／下拉重新整理而中斷操作；已改回 none，另加 `overscroll-behavior:none`，並在按下時固定搖桿中心，拖曳中卡片高度改變也不會讓方向跳動。實體手機尚未重測。
+- 2026-10-16「問熊寶」本機文字查詢（不連任何 AI／API）：
+  - 畫面上方文字框（手機在地圖工具列下方），例如「想去玄天上帝廟」「想去七美」「馬公好吃的」「附近的廟」「雙心石滬」。
+  - `dist/ask.js` 從句子判斷地區（六鄉市）、類別（美食／景點／廟宇的常用說法）、「附近」與關鍵字，並有神明別名（玄天上帝＝北極／真武／上帝、媽祖＝天后／天上聖母等）。只在 `data.json` 原表資料裡比對名稱、特色、類別、村里、簡介、傳說，不會產生不存在的地點。
+  - 結果卡片的「前往」直接呼叫既有 `navigateTo()`：沿道路、離島經港口搭船，不瞬移；缺座標地點顯示「缺座標」不可前往。只輸入地區時另顯示該區各類數量與「前往○○」（同鄉市選單導航）。超過12筆可「在圖鑑看全部」。
+  - 測試：`tests/ask.mjs`（已加入 `npm run check`）。
 - 2026-10-16（第14版）App設定與GitHub上線：
   - 儲存庫 `BearBabyBaby-ai/penghu-bear-journey`（main），GitHub Pages 由 Actions 發布 `dist/`，網址 https://bearbabybaby-ai.github.io/penghu-bear-journey/ 。
   - `dist/manifest.json`（直向、standalone）、`dist/sw.js`（畫面／程式／JSON先連網、相片與圖示快取；外部圖磚不攔截）、`dist/pwa.js`（只在HTTPS或localhost註冊）。
@@ -53,6 +58,7 @@
 | `dist/index.html` | 遊戲DOM、探索圖鑑、集章及潮汐入口 |
 | `dist/game.js` | 操作、面板、資料呈現、相片載入、保存／匯入進度 |
 | `dist/style.css` | 桌機及手機響應式版面；手機版以檔尾「2026-10-16 手機版面整理」區塊為準 |
+| `dist/ask.js` | 問熊寶：本機文字查詢（地區／類別／附近／關鍵字／神明別名），只回傳原表地點 |
 | `dist/mobile-layout.js` | 手機：量測下方卡片高度寫入 `--ui-bottom`，讓搖桿與E鍵不被遮住 |
 | `dist/manifest.json`、`dist/sw.js`、`dist/pwa.js` | App 安裝設定、離線快取與註冊；更換圖示或manifest時改 `sw.js` 的 `VERSION` |
 | `dist/engine.js` | 本地WebGL繪製，無外部3D函式庫 |

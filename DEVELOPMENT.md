@@ -81,6 +81,10 @@ WASD／方向鍵沿路移動、Shift加速、點道路沿路前往；點地標�
 
 搖桿 `#joystick`／`#stick` 必須維持 `touch-action:none`（觸控規則不可把它併入 manipulation），按下時記住中心點計算方向。`game.js` 主要變更：兩指縮放（window 層 pointer 事件，只接受落在地圖或地標上的觸控，比例尺範圍與滾輪相同），以及 `updateDestination()` 的重繪鍵不含距離，行進中只改距離數字，不再每幀重建卡片 DOM。
 
+## 問熊寶（本機文字查詢）
+
+`ask.js` 的 `parseAsk()` 依序取出地區（六鄉市全名或簡稱）、類別詞（美食／景點／廟宇各一組常用說法，長詞優先）、「附近／最近」，其餘去掉贅字後為關鍵字；`SYNONYMS` 為神明與常見景物別名。`askPlaces()` 在原表紀錄中以欄位權重（名稱12、特色6、類別與村里4、簡介2、傳說與節慶1）計分，完整字串優先，否則以兩字片段重疊率（≥60%）比對；只有地區／類別時以景點、有照片者優先；「附近」且無關鍵字時依與熊寶的直線距離排序。結果只來自 `data.records`，`tests/ask.mjs` 檢查不會產生不存在的地點。UI 在 `game.js` 的 `renderAsk()`／`setupAsk()`，前往一律走 `navigateTo()`。
+
 ## App（第14版）
 
 `manifest.json`、`sw.js`、`pwa.js` 與 `icons/` 全部在 `dist/`，相對路徑，子目錄部署相容。service worker 只處理同源 GET：導覽與 .html 一律 `no-store` 先連網，其他程式與 JSON 先連網後備快取，`assets/`、`icons/` 先用快取。外部圖磚不攔截、不離線打包。已以無頭Chromium驗證：註冊並接管頁面、離線重新整理仍能開啟遊戲與載入資料。

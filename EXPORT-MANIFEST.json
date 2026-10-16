@@ -1,6 +1,6 @@
 {
   "project": "熊熊澎湖之旅",
-  "exportedAt": "2026-10-16T07:57:56+08:00",
+  "exportedAt": "2026-10-16T08:41:30+08:00",
   "siteVersion": 14,
   "deploymentDirectory": "dist",
   "recordCount": 977,
@@ -15,7 +15,8 @@
     "Destination card, ferry journey card, atlas, tides, detail and help dialogs checked at phone size",
     "Two-finger pinch zoom simulated via touch events; tapping card buttons while walking works",
     "Bearbao PNG, data.json, photos and source snapshots byte-identical to v12",
-    "Service worker registers, controls page, and offline reload still opens game (headless Chromium, localhost)"
+    "Service worker registers, controls page, and offline reload still opens game (headless Chromium, localhost)",
+    "問熊寶: 玄天上帝 query lists 25 temples, 前往 navigates by road; 想去七美 shows area summary and ferry route; tested at 393x760 and 1366x800"
   ],
   "unverified": [
     "Node.js 24 run (will run in GitHub Actions)",
@@ -42,33 +43,38 @@
     },
     {
       "path": "CLAUDE.md",
-      "bytes": 3690,
-      "sha256": "5a11580141780cea6e8a3713174e4e38c423f1ed562337617a678b89cdfe8a5e"
+      "bytes": 3944,
+      "sha256": "12b9ca655a430f3717ae05438b69b3953a59d831bbbb8d75d4dcc2b507e5faa4"
     },
     {
       "path": "DEVELOPMENT.md",
-      "bytes": 11926,
-      "sha256": "b594363fbf2af3f578169b3af19482c1437a0c52adf106c2526c9d019ff5f8dc"
+      "bytes": 12721,
+      "sha256": "d1d4c44b121d1a4c25440319b469cc6060dd6560b7193ca7a4b74906965b37ca"
     },
     {
       "path": "HANDOFF_CLAUDE_GEMINI.md",
-      "bytes": 13587,
-      "sha256": "7e2710f880aa6d6fe381c54c4904565f8307fd24b27090f28b29a2e17d495797"
+      "bytes": 14706,
+      "sha256": "974c5594cbbabbfd815d31b5782a1fb6821e5a4bc3067f08642991be59c8e5f6"
     },
     {
       "path": "README.md",
-      "bytes": 8776,
-      "sha256": "fd189b196c86f4a2355ec42e5827996b9da4dec6f8246e846dfe47ee07c00b66"
+      "bytes": 9063,
+      "sha256": "0750a9ca47f96cfdf9988e7199dedcb4d1ee14f6c0cd7975eeaff0103615c636"
     },
     {
       "path": "START_HERE.txt",
-      "bytes": 1009,
-      "sha256": "c503b7459112ab3ecdb03d1417179e9c2713dfa3f2c0acaeb07bb366954c1990"
+      "bytes": 1100,
+      "sha256": "9cd780897746d8126d28fcef45c962e25b470b1bcce4a5c4d2c9bb3ddfe16d8a"
     },
     {
       "path": "dist/.nojekyll",
       "bytes": 0,
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dist/ask.js",
+      "bytes": 4801,
+      "sha256": "92cf3c492c3d113116b4ff9fe70b2d7750f3cef470c4a7e577eb30222dca4610"
     },
     {
       "path": "dist/assets/bearbao.png",
@@ -807,8 +813,8 @@
     },
     {
       "path": "dist/game.js",
-      "bytes": 44319,
-      "sha256": "4aa568c3483b4177b3c17b76cee71b1f358c1f91f8597ca9f4a5ae8637ae9d9e"
+      "bytes": 48173,
+      "sha256": "226e77b0668a5da9c9c5aeb67d9935118799879ad24b7f03e4ccaf86f070cf93"
     },
     {
       "path": "dist/geo/MIRROR-LICENSE.txt",
@@ -867,8 +873,8 @@
     },
     {
       "path": "dist/index.html",
-      "bytes": 8726,
-      "sha256": "72c6d1c8a14098f75cf38d1982600ea6ecd273321af477a68697fc573187f158"
+      "bytes": 9279,
+      "sha256": "9a97c985d24fb8614a7e2129f39f9b30fd09690a3c5eec67b26f47c4b17f269a"
     },
     {
       "path": "dist/manifest.json",
@@ -917,8 +923,8 @@
     },
     {
       "path": "dist/style.css",
-      "bytes": 36904,
-      "sha256": "1c46bcbf415fbd65e20019a1894aa52cd9ca02846f23b8b862a5a0cf452c6cc7"
+      "bytes": 40850,
+      "sha256": "bebdc9d8fe14f51d4447f8cef44874481a9b5e70ed2ed2eaee366d6aa2ced95b"
     },
     {
       "path": "dist/sw.js",
@@ -942,8 +948,8 @@
     },
     {
       "path": "package.json",
-      "bytes": 429,
-      "sha256": "84235499071c532ce66a81c5c9a13d0809554e32dcddb34857462087283d9cb8"
+      "bytes": 451,
+      "sha256": "fb1783343b094e9f892ddf7d85fd5ea62a825be7b3c22c4bed61cde74cb66643"
     },
     {
       "path": "sources/app-icon-travel-bear.png",
@@ -959,6 +965,11 @@
       "path": "sources/photo-assets-20261015.json",
       "bytes": 71966,
       "sha256": "9becd68e50c981c5450fe6b3c8b3e9b57b534cb363b5a12548a88e3b73fa8dee"
+    },
+    {
+      "path": "tests/ask.mjs",
+      "bytes": 1816,
+      "sha256": "276ce9d7becdb94ffcf6bba595ca6f2a3423133bb4789e9bbda4ce898f2cd71c"
     },
     {
       "path": "tests/content.mjs",
@@ -1050,7 +1061,8 @@
     "CLAUDE.md core constraints; handoff documents updated",
     "App setup: manifest.json, sw.js, pwa.js, icons generated from original Bearbao PNG",
     "App/APK icon replaced with user-supplied 旅遊熊熊.png (sources/app-icon-travel-bear.png); sw.js VERSION v2",
-    "Fix mobile joystick: touch-action none restored, overscroll-behavior none, joystick center fixed during drag"
+    "Fix mobile joystick: touch-action none restored, overscroll-behavior none, joystick center fixed during drag",
+    "問熊寶 local text query (dist/ask.js, tests/ask.mjs); results only from source records; 前往 uses navigateTo"
   ],
   "previousSiteVersion": 13,
   "previousExportSha256": "31529d562278dad55686203c1d2c902d9090c9687437422f4c8913a14c0592e9",

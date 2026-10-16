@@ -4,6 +4,8 @@
 
 此版本保留熊寶原圖、道路移動、608筆美食、景點與廟宇、探索圖鑑、集章手帳、潮汐與分海工具；已刪除島嶼任務及介面的試算表資料來源／工作表清單。
 
+新增「問熊寶」（2026-10-16）：上方文字框輸入「想去玄天上帝廟」「想去七美」「附近的廟」等，列出原表地點，點「前往」沿道路或搭船出發。純本機比對，不連 AI 或任何 API。
+
 第14版（2026-10-16）：加入 App 設定（`manifest.json`、`sw.js`、`pwa.js`、`icons/`），可安裝到手機桌面，也可用 PWABuilder 打包成 Android APK（做法同熊熊綜合系統）。GitHub 儲存庫：`BearBabyBaby-ai/penghu-bear-journey`，網址 https://bearbabybaby-ai.github.io/penghu-bear-journey/ 。
 
 第13版（2026-10-16）：手機版面整理。地圖工具改為一列膠囊按鈕，目的地卡改為全寬精簡卡，搖桿與 E 鍵浮在卡片上方不被遮住，新增兩指縮放；桌機版面不變。
@@ -81,6 +83,7 @@ python -m http.server 4173 --directory dist
 | `dist/index.html` | 遊戲畫面及工具入口 |
 | `dist/style.css` | 電腦與手機版面 |
 | `dist/mobile-layout.js` | 手機搖桿／E鍵避開下方卡片 |
+| `dist/ask.js` | 問熊寶本機文字查詢 |
 | `CLAUDE.md` | 接手模型必讀的核心限制 |
 | `dist/manifest.json`、`dist/sw.js`、`dist/pwa.js` | App 安裝設定與離線快取 |
 | `dist/icons/` | App 圖示，由 `sources/app-icon-travel-bear.png`（旅遊熊熊）產生（`tools/build-app-icons.py`） |

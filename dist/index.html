@@ -5,7 +5,7 @@
  <meta name="theme-color" content="#faf9ee"><meta name="description" content="跟著熊熊探索澎湖。以熊熊綜合系統指定工作表製作的 3D 島嶼探索與集章遊戲。">
  <title>熊熊澎湖之旅 · 3D 島嶼探索</title>
  <!-- App（PWA／APK）設定 -->
- <link rel="manifest" href="manifest.json"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="熊熊澎湖之旅"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="apple-touch-icon" href="icons/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png"><link rel="stylesheet" href="style.css?v=20261016-mobile2">
+ <link rel="manifest" href="manifest.json"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="熊熊澎湖之旅"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="apple-touch-icon" href="icons/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png"><link rel="stylesheet" href="style.css?v=20261016-ask1">
 </head>
 <body>
  <canvas id="world" aria-label="澎湖 3D 探索場景，可用方向鍵或 WASD 移動熊寶"></canvas>
@@ -24,6 +24,8 @@
   </section>
   <div class="map-tools glass"><button id="map-overview">全圖</button><button id="map-follow">跟隨熊寶</button><button id="north-liao">北寮</button><select id="map-layer" aria-label="底圖來源"><option value="nlsc">臺灣通用電子地圖</option><option value="osm">OpenStreetMap</option></select><button id="map-retry" aria-label="重新載入底圖">↻</button></div><div class="map-zoom glass"><button id="zoom-in" aria-label="放大地圖">＋</button><button id="zoom-out" aria-label="縮小地圖">−</button></div><div class="compass" aria-hidden="true"><span>N</span><svg viewBox="0 0 60 60"><path d="M30 7 38 40 30 34 22 40Z" fill="#55766a"/><path d="M30 7 30 34 22 40Z" fill="#f4f2dc"/></svg></div>
   <section class="destination glass" id="destination" hidden></section>
+  <form class="ask glass" id="ask" role="search" autocomplete="off"><img class="ask-bear" src="assets/bearbao.png" alt=""><input id="ask-input" type="search" enterkeyhint="search" placeholder="問熊寶：想去哪？例：玄天上帝廟、七美" aria-label="問熊寶想去哪裡"><button type="submit">查詢</button></form>
+  <section class="ask-results glass" id="ask-results" hidden aria-live="polite" aria-label="問熊寶查詢結果"></section>
   <section class="place-layers glass" id="place-layers" aria-label="地圖地標顯示">
    <div><label for="place-kind">地圖顯示</label><select id="place-kind" aria-label="地圖地點類別"><option value="sight" selected>景點（181）</option><option value="food">美食（608）</option><option value="temple">廟宇（188）</option><option value="all">全部地點（977）</option></select><button id="places-catalog">開啟圖鑑 ↗</button></div>
    <small id="places-summary">數字標記可點開查看地點</small>
@@ -40,10 +42,10 @@
  <div id="joystick" aria-label="觸控方向搖桿"><div id="stick"></div></div><button id="touch-action" aria-label="地點互動">E</button>
  <aside id="panel" class="panel" hidden aria-label="旅程工具面板"><div class="panel-head"><div><span class="eyebrow" id="panel-kicker"></span><h2 id="panel-title"></h2></div><button id="close-panel" class="icon-button" aria-label="關閉面板">×</button></div><div id="panel-body"></div></aside>
  <dialog id="details"><button class="dialog-close icon-button" aria-label="關閉詳情">×</button><div id="detail-body"></div></dialog>
- <dialog id="help-dialog"><button class="dialog-close icon-button" aria-label="關閉說明">×</button><span class="eyebrow">WELCOME TO PENGHU</span><h2>你的島嶼，慢慢探索。</h2><p>下方下拉選單可選美食、景點、廟宇或全部；預設顯示景點。密集地點合併為數字標記，點開數字即可查看所有地點。上方鄉市選單會從熊寶目前位置自動導航，保留當前位置。目的地卡可按 × 關閉；桌機在右側，手機在下方，搖桿與 E 鍵會浮在卡片上方不被遮住。走到道路互動點後可蓋下旅行印章。</p><div class="help-grid"><span>WASD / 方向鍵</span><b>沿道路移動熊寶</b><span>Shift</span><b>加速行走</b><span>滑鼠點道路</span><b>沿路自動前往</b><span>拖曳 / 滾輪</span><b>旋轉 / 縮放視角</b><span>E</span><b>閱讀附近地點、集章</b><span>手機</span><b>左側搖桿移動、右側 E 互動、兩指縮放</b></div><p class="small-note">陸海以內建國土測繪圖資的陸域輪廓判定，海面無法步行。手機可按＋／−或用兩指縮放地圖。點「北寮」會導航前往北寮保安宮。自動尋路和搖桿都沿收錄的道路中心線行走，無道路處會停止。橘線為規劃路線。道路快照為 2021-12-17，可能缺少新路；地標互動點設在附近道路，原表標記不移動。離島採港口對港口：先沿路到馬公南海交通船碼頭，搭船到望安潭門港或七美南滬港，再沿路到目的地。藍色虛線為遊戲航線示意，航行中顯示熊寶搭船。航行時改目的地會在下一港口下船後接續，取消也會靠港後才停止。沒有已收錄交通路線時不移動。37 筆資料缺座標，保留在完整圖鑑。進度儲存在這個瀏覽器。潮汐採本次讀取的試算表快照；遊戲場景與分海動畫供探索體驗，實際通行請依現場管制。</p><button class="primary" id="help-go">知道了，出發</button></dialog>
+ <dialog id="help-dialog"><button class="dialog-close icon-button" aria-label="關閉說明">×</button><span class="eyebrow">WELCOME TO PENGHU</span><h2>你的島嶼，慢慢探索。</h2><p>下方下拉選單可選美食、景點、廟宇或全部；預設顯示景點。密集地點合併為數字標記，點開數字即可查看所有地點。上方鄉市選單會從熊寶目前位置自動導航，保留當前位置。目的地卡可按 × 關閉；桌機在右側，手機在下方，搖桿與 E 鍵會浮在卡片上方不被遮住。走到道路互動點後可蓋下旅行印章。</p><div class="help-grid"><span>WASD / 方向鍵</span><b>沿道路移動熊寶</b><span>Shift</span><b>加速行走</b><span>滑鼠點道路</span><b>沿路自動前往</b><span>拖曳 / 滾輪</span><b>旋轉 / 縮放視角</b><span>E</span><b>閱讀附近地點、集章</b><span>問熊寶</span><b>輸入地區、類別、神明或地點名稱，點「前往」沿路出發</b><span>手機</span><b>左側搖桿移動、右側 E 互動、兩指縮放</b></div><p class="small-note">陸海以內建國土測繪圖資的陸域輪廓判定，海面無法步行。手機可按＋／−或用兩指縮放地圖。點「北寮」會導航前往北寮保安宮。自動尋路和搖桿都沿收錄的道路中心線行走，無道路處會停止。橘線為規劃路線。道路快照為 2021-12-17，可能缺少新路；地標互動點設在附近道路，原表標記不移動。離島採港口對港口：先沿路到馬公南海交通船碼頭，搭船到望安潭門港或七美南滬港，再沿路到目的地。藍色虛線為遊戲航線示意，航行中顯示熊寶搭船。航行時改目的地會在下一港口下船後接續，取消也會靠港後才停止。沒有已收錄交通路線時不移動。37 筆資料缺座標，保留在完整圖鑑。進度儲存在這個瀏覽器。潮汐採本次讀取的試算表快照；遊戲場景與分海動畫供探索體驗，實際通行請依現場管制。</p><button class="primary" id="help-go">知道了，出發</button></dialog>
  <div id="toast" role="status" aria-live="polite"></div>
  <div id="loading"><img class="brand-bear" src="assets/bearbao.png" alt="熊寶"><p>熊寶正在準備旅行手帳…</p><small>載入地點與陸域輪廓</small></div>
- <script type="module" src="game.js?v=20261016-mobile2"></script>
+ <script type="module" src="game.js?v=20261016-ask1"></script>
  <script type="module" src="mobile-layout.js?v=20261016-mobile1"></script>
  <script src="pwa.js?v=20261016-app1"></script>
 </body></html>
