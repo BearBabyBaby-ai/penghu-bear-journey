@@ -290,6 +290,8 @@ button,select,a,#touch-action{touch-action:manipulation}.place-label,#joystick,#
  .ask-results.region-info .region-card strong{display:inline;font-size:15px;margin-right:6px}.ask-results.region-info .region-card span{display:inline;font-size:11px}
  .ask-results.region-info .region-card small{font-size:11px;margin-top:2px;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
  .ask-results.region-info.collapsed .region-close{display:grid;place-items:center}
+ /* 地區精選清單展開時，搖桿與 E 鍵先收起（不被推到畫面上方） */
+ body:has(.ask-results.region-info:not(.collapsed):not([hidden])) #joystick,body:has(.ask-results.region-info:not(.collapsed):not([hidden])) #touch-action{display:none}
 
  /* 4. 目的地卡兩列 */
  .destination,.destination:has(#destination-start),.destination:has(.destination-photo){bottom:calc(84px + env(safe-area-inset-bottom));padding:8px 10px;row-gap:2px;column-gap:6px;grid-template-columns:minmax(0,1fr) auto auto;grid-template-areas:"name name name" "phase phase phase" "ports ports ports" "dist story act";max-height:none;overflow:visible}

@@ -1,4 +1,4 @@
-熊熊澎湖之旅｜第19版 Claude／Gemini接手入口
+熊熊澎湖之旅｜第20版 Claude／Gemini接手入口
 
 先讀CLAUDE.md（核心限制），再讀HANDOFF_CLAUDE_GEMINI.md、README.md與DEVELOPMENT.md。
 Node.js 24：npm run check。發布目錄dist/，GitHub主分支main。
@@ -19,3 +19,4 @@ Node.js 24：npm run check。發布目錄dist/，GitHub主分支main。
 分海動畫場景只顯示奎壁山摩西分海，不再帶入湖西鄉其他地點。
 第18版：全功能逐一檢查；分海動畫改為對準礫石步道、自動播放一天潮汐、下方時間條（拖曳／暫停／返回地圖）；手機開場不被工具列遮；提示文字更正。
 第19版：分海動畫改在真實地圖上（奎壁山→赤嶼步道依潮高露出），不再使用示意小島場景。
+第20版：手機版面 v3（下方單一卡片、提示一條、目的地卡兩列、地區資訊預設一列）。

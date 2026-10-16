@@ -5,7 +5,7 @@
   "scripts": {
     "check": "node tests/verify.mjs && node tests/roads.mjs && node tests/places.mjs && node tests/content.mjs && node tests/travel.mjs && node tests/controls.mjs && node tests/ask.mjs && node tests/ferry-sheet.mjs && node tests/enforcement.mjs"
   },
-  "version": "1.10.0",
+  "version": "1.11.0",
   "description": "熊熊澎湖之旅：美食、景點、廟宇、道路探索、相片、集章與潮汐工具",
   "engines": {
     "node": ">=22"
