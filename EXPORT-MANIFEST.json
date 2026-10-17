@@ -1,6 +1,6 @@
 {
   "project": "熊熊澎湖之旅",
-  "exportedAt": "2026-10-17T10:19:39+08:00",
+  "exportedAt": "2026-10-17T10:24:41+08:00",
   "siteVersion": 14,
   "deploymentDirectory": "dist",
   "recordCount": 977,
@@ -59,18 +59,18 @@
     },
     {
       "path": "HANDOFF_CLAUDE_GEMINI.md",
-      "bytes": 28688,
-      "sha256": "372afdbd0a6745a1077c9413b13caf48b0107a20d4014cf4dafb372b24adfcdb"
+      "bytes": 29059,
+      "sha256": "85521c96ae2fb5b84e02e90ec780077c91ae74c90d5f523df1f5cf0fcaf72470"
     },
     {
       "path": "README.md",
-      "bytes": 12259,
-      "sha256": "38af2660b9a2dbbc003369e770d4e95e710cb3bbaa2eb2495f6593163f61c3ff"
+      "bytes": 12356,
+      "sha256": "2bab424c86f3860b50142fae9cb286c455698e36dbbe4cf997ec6a839f1017c3"
     },
     {
       "path": "START_HERE.txt",
-      "bytes": 3097,
-      "sha256": "c6ce663d2b5c781a1c82f45563f6109bba3fc364c8cd513cfdcde48deb7916e9"
+      "bytes": 3174,
+      "sha256": "aba38f24afe46d4ce6acc49e37fb8c370d476f10b09658d02afaded4e7f28d6b"
     },
     {
       "path": "dist/.nojekyll",
@@ -989,8 +989,8 @@
     },
     {
       "path": "google-sites/index.html",
-      "bytes": 1135,
-      "sha256": "d4d409b7c0cb1eddd21db27d301b175b8569eba9c6b68acbb6864b4b860ea748"
+      "bytes": 218704,
+      "sha256": "03c259e5bd1d5f375b09d05fa0f7268af8aaad1bfa5a6a5ba6c2af088ad44dad"
     },
     {
       "path": "index.html",
@@ -1121,6 +1121,11 @@
       "path": "tools/build-ferry-routes.mjs",
       "bytes": 9753,
       "sha256": "86800f26ead1415c9cb6bfc30dfb5db037c6b12d90d5bef16f1ce2aba5826bcc"
+    },
+    {
+      "path": "tools/build-google-sites.mjs",
+      "bytes": 2577,
+      "sha256": "fef5df5f20256766346d9fd533e16a2b46a657db2da200afeeb6e3719802c468"
     },
     {
       "path": "tools/build-land.mjs",

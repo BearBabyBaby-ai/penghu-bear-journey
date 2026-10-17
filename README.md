@@ -153,4 +153,4 @@ https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-
 
 ## Google 協作平台嵌入（開放測試）
 
-`google-sites/index.html`：在 Google 協作平台「插入 → 嵌入 → 嵌入程式碼」貼上全部內容，嵌入框拉到整頁。內容是整頁 iframe 載入正式網址，遊戲更新後不必改這個檔案。嵌在協作平台裡時，GPS「我的位置」可能被協作平台外框擋住而無法使用（未驗證），要用 GPS 請開正式網址或 App。
+`google-sites/index.html`（約 200KB）：Google 協作平台「全頁嵌入 → 嵌入程式碼」用。遊戲的 HTML、CSS、全部程式碼都內嵌在這一個檔案；資料、道路、相片、角色圖等大型檔案以 `<base>` 從正式網址讀取。由 `node tools/build-google-sites.mjs` 從 `dist/` 產生，**遊戲每次更新後要重新產生並重貼**。嵌在協作平台裡時 GPS、進度保存（與正式網址分開存）是否可用未驗證。
