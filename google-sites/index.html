@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>熊熊澎湖之旅（開放測試）</title>
+<!--
+  Google 協作平台（Google Sites）嵌入用：插入 → 嵌入 → 嵌入程式碼，貼上本檔全部內容，
+  再把嵌入框拉到整頁大小。遊戲本體在 GitHub Pages，更新遊戲不需改這個檔案。
+-->
+<style>
+ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#faf8ed}
+ #game{position:fixed;inset:0;width:100%;height:100%;border:0;display:block}
+ #wait{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;font:15px/1.6 "Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;color:#3e6c57;pointer-events:none}
+</style>
+</head>
+<body>
+<div id="wait">熊寶正在準備旅行手帳…</div>
+<iframe id="game"
+  src="https://bearbabybaby-ai.github.io/penghu-bear-journey/"
+  title="熊熊澎湖之旅"
+  allow="geolocation *; fullscreen *; autoplay *"
+  allowfullscreen
+  onload="document.getElementById('wait').remove()"></iframe>
+</body>
+</html>

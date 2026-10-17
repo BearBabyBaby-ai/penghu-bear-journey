@@ -1,6 +1,6 @@
 {
   "project": "熊熊澎湖之旅",
-  "exportedAt": "2026-10-17T07:39:39+08:00",
+  "exportedAt": "2026-10-17T10:19:39+08:00",
   "siteVersion": 14,
   "deploymentDirectory": "dist",
   "recordCount": 977,
@@ -59,18 +59,18 @@
     },
     {
       "path": "HANDOFF_CLAUDE_GEMINI.md",
-      "bytes": 28488,
-      "sha256": "a4d1108601ace183920c05b718ea07be5261842b61a4c708f99a87038b653a8f"
+      "bytes": 28688,
+      "sha256": "372afdbd0a6745a1077c9413b13caf48b0107a20d4014cf4dafb372b24adfcdb"
     },
     {
       "path": "README.md",
-      "bytes": 11834,
-      "sha256": "61139efd2f152cf31c646a7e07eb78877ba0a274c44e5fea855c39445d273c57"
+      "bytes": 12259,
+      "sha256": "38af2660b9a2dbbc003369e770d4e95e710cb3bbaa2eb2495f6593163f61c3ff"
     },
     {
       "path": "START_HERE.txt",
-      "bytes": 3004,
-      "sha256": "b1fa6271d78a903ffb7b4e90e020f700b3814cd56404879d60068201056b4612"
+      "bytes": 3097,
+      "sha256": "c6ce663d2b5c781a1c82f45563f6109bba3fc364c8cd513cfdcde48deb7916e9"
     },
     {
       "path": "dist/.nojekyll",
@@ -986,6 +986,11 @@
       "path": "docs/草案-測速照相與科技執法.md",
       "bytes": 4658,
       "sha256": "421b97463fa2683f5f2c392ccca51b39e1d383265d255ddc95155c9b346ff206"
+    },
+    {
+      "path": "google-sites/index.html",
+      "bytes": 1135,
+      "sha256": "d4d409b7c0cb1eddd21db27d301b175b8569eba9c6b68acbb6864b4b860ea748"
     },
     {
       "path": "index.html",

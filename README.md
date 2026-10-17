@@ -150,3 +150,7 @@ python -m http.server 4173 --directory dist
 
 部署設定依 GitHub 官方文件整理：
 https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages
+
+## Google 協作平台嵌入（開放測試）
+
+`google-sites/index.html`：在 Google 協作平台「插入 → 嵌入 → 嵌入程式碼」貼上全部內容，嵌入框拉到整頁。內容是整頁 iframe 載入正式網址，遊戲更新後不必改這個檔案。嵌在協作平台裡時，GPS「我的位置」可能被協作平台外框擋住而無法使用（未驗證），要用 GPS 請開正式網址或 App。
