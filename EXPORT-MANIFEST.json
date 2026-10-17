@@ -1,6 +1,6 @@
 {
   "project": "熊熊澎湖之旅",
-  "exportedAt": "2026-10-17T10:24:41+08:00",
+  "exportedAt": "2026-10-17T10:28:15+08:00",
   "siteVersion": 14,
   "deploymentDirectory": "dist",
   "recordCount": 977,
@@ -59,8 +59,8 @@
     },
     {
       "path": "HANDOFF_CLAUDE_GEMINI.md",
-      "bytes": 29059,
-      "sha256": "85521c96ae2fb5b84e02e90ec780077c91ae74c90d5f523df1f5cf0fcaf72470"
+      "bytes": 29587,
+      "sha256": "3e248487320fc69209d37b3e633fb905174d81f66323f881af2814fefbece23a"
     },
     {
       "path": "README.md",
@@ -989,8 +989,8 @@
     },
     {
       "path": "google-sites/index.html",
-      "bytes": 218704,
-      "sha256": "03c259e5bd1d5f375b09d05fa0f7268af8aaad1bfa5a6a5ba6c2af088ad44dad"
+      "bytes": 219437,
+      "sha256": "aad0779f7697fb210847f52530a4e2c325289b5df53f3ebe5b614e161ca34c0c"
     },
     {
       "path": "index.html",
@@ -1124,8 +1124,8 @@
     },
     {
       "path": "tools/build-google-sites.mjs",
-      "bytes": 2577,
-      "sha256": "fef5df5f20256766346d9fd533e16a2b46a657db2da200afeeb6e3719802c468"
+      "bytes": 3198,
+      "sha256": "0a17dde420b8da09a3c26be165e978c91caf07d3843be7906c28831e67d9a9b9"
     },
     {
       "path": "tools/build-land.mjs",

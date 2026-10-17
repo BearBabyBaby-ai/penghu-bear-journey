@@ -22,6 +22,9 @@ html=html.replace(/<link rel="stylesheet" href="style\.css[^"]*">/,()=>`<style>\
 html=html.replace(/<link rel="manifest"[^>]*>/,'');
 html=html.replace(/\s*<script type="module" src="game\.js[^"]*"><\/script>/,'').replace(/\s*<script type="module" src="mobile-layout\.js[^"]*"><\/script>/,'').replace(/\s*<script src="pwa\.js[^"]*"><\/script>/,'');
 if(/<script[^>]+src=/.test(html)||/href="style\.css/.test(html))throw Error('external script/style left');
+// 協作平台會把嵌入碼包進它自己的頁面，原本的 <base> 可能失效：靜態網址全部改成絕對網址，執行時再把 <base> 插到最前面，並讓相對路徑的 fetch 一律指向正式網址
+html=html.replace(/(src|href|data-src)="(?![a-z]+:|#|\/\/)([^"]+)"/gi,(_,attr,url)=>`${attr}="${BASE}${url}"`);
+bundle=`(()=>{const ROOT=${JSON.stringify(BASE)};try{const b=document.createElement('base');b.href=ROOT;document.head.prepend(b)}catch{}const f=window.fetch.bind(window);window.fetch=(u,o)=>f(typeof u==='string'&&!/^[a-z][a-z0-9+.-]*:/i.test(u)?new URL(u,ROOT).href:u,o)})();\n`+bundle;
 html=html.replace('<head>',()=>`<head>\n <!-- Google 協作平台全頁嵌入版（由 tools/build-google-sites.mjs 從 dist/ 產生，程式碼全部內嵌；資料與圖片從正式網址讀取） -->\n <base href="${BASE}">`);
 html=html.replace('</body>',()=>`<script>\n${bundle}</script>\n<script>\n${mobile}\n</script>\n</body>`);
 const out=process.argv[3]||'google-sites/index.html';fs.mkdirSync(out.replace(/[^/]+$/,''),{recursive:true});fs.writeFileSync(out,html);
