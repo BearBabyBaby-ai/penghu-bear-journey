@@ -35,4 +35,31 @@ assert.equal(checkAlerts([{...p,suspect:true}],{x:2,z:0},{x:-1,z:0},{unit:100},n
 const t={...p,id:'k',speed:false,tech:true,items:['闖紅燈']};assert.equal(checkAlerts([t],{x:0,z:.4},{x:0,z:-1},{unit:100},new Set()).length,1,'科技執法路口 50 公尺內不分方向提醒');
 assert.equal(checkAlerts([t],{x:0,z:1},{x:0,z:-1},{unit:100},new Set()).length,0);
 assert.match(alertText({point:{...p,tech:true},distance:287}),/前方 290 公尺｜測速 50・路口科技執法/);
-console.log(`PASS enforcement: ${records.length} official rows (${points.length} points, 4 tech, 27 swapped lat/lng columns restored without changing values, 1 suspect not alerted); sheet CSV round-trip and bundled fallback; ahead/direction/once/rearm/range alerts.`);
+// 沿路線判斷（第22版修正誤報）：旁邊平行道路、路口另一條路、反方向都不提醒；檢查間隔中經過的點不漏
+{const q={id:'r',world:{x:0,z:0},alertAt:{x:0,z:0},speed:true,tech:false,limit:50,dir:{x:-1,z:0},items:[]};
+ assert.equal(checkAlerts([q],{x:2,z:.5},{x:-1,z:0},{unit:100,route:[{x:2,z:.5},{x:-3,z:.5}]},new Set()).length,0,'平行道路（橫向 50 公尺）不提醒');
+ assert.equal(checkAlerts([q],{x:2,z:0},{x:-1,z:0},{unit:100,route:[{x:2,z:0},{x:-3,z:0}]},new Set())[0]?.distance,200,'同一路線前方 200 公尺');
+ assert.equal(checkAlerts([q],{x:0,z:2},{x:0,z:-1},{unit:100,route:[{x:0,z:2},{x:0,z:-3}]},new Set()).length,0,'交叉方向經過路口不提醒');
+ assert.equal(checkAlerts([q],{x:-2,z:0},{x:1,z:0},{unit:100,route:[{x:-2,z:0},{x:3,z:0}]},new Set()).length,0,'反方向不提醒');
+ const k={...q,id:'k2',speed:false,tech:true};assert.equal(checkAlerts([k],{x:-.2,z:0},{x:-1,z:0},{unit:100,route:[{x:.6,z:0},{x:-.2,z:0},{x:-3,z:0}],step:80},new Set()).length,1,'兩次檢查之間經過的科技執法路口仍提醒');}
+// 真實道路模擬：熊寶沿路前往經過每個測速點附近（各 6 趟），提醒必須都在路線上、方向正確，且不漏
+{const {RoadNavigation}=await import('../dist/roads.js'),{Coastline}=await import('../dist/coastline.js'),{mapPosition}=await import('../dist/map.js'),{TravelPlanner,Journey}=await import('../dist/travel.js'),{alongRoute}=await import('../dist/enforcement.js');
+ const read=f=>JSON.parse(fs.readFileSync(new URL('../dist/'+f,import.meta.url)));const nav=new RoadNavigation(read('geo/penghu-roads-20211217.json'),new Coastline(read('geo/penghu-land-20260407.geojson'))),planner=new TravelPlanner(nav,read('geo/penghu-ferries-20261016.json'),read('geo/penghu-grid-20260407.json').sourceSHA256),unit=100*Math.cos(23.55*Math.PI/180);
+ const P=points.filter(p=>!p.suspect).map(p=>{const q={...p,world:mapPosition(p)},near=nav.nearby(q.world.x,q.world.z,.6),al=q.dir&&near.find(r=>Math.abs(r.axis.x*q.dir.x+r.axis.z*q.dir.z)>=.7),pk=al||near[0];return{...q,alertAt:pk?{x:pk.x,z:pk.z}:q.world,axis:pk?.axis||null}});
+ let seed=7;const rnd=()=>(seed=(seed*1103515245+12345)%2147483648)/2147483648;let trips=0,tp=0,bad=[];
+ for(const cam of P){const cand=nav.nodes.map((n,i)=>i).filter(i=>Math.hypot(nav.nodes[i].x-cam.world.x,nav.nodes[i].z-cam.world.z)<25);
+  for(let k=0;k<6;k++){const pick=()=>{const n=nav.nodes[cand[Math.floor(rnd()*cand.length)]];return nav.snap(n.x,n.z,.5)},a=pick(),b=pick();if(!a||!b)continue;const j=new Journey(planner),pl={...a};if(!j.request(pl,b)?.plan||j.plan.legs.some(l=>l.type!=='walk'))continue;
+   const full=[{...pl},...j.plan.legs[0].points.slice(1)];trips++;const truth=new Map();for(const p of P){const r=alongRoute(full,p.alertAt,unit,15,1e9);if(r)truth.set(p.id,!p.dir||p.tech||(r.dir.x*p.dir.x+r.dir.z*p.dir.z)>=.5)}
+   const seen=new Set(),al=new Set();let last=j.ahead(pl),rev=j.revision;for(let t=0;t<4000&&j.active;t++){j.advance(pl,.25);if(!j.active)break;const ah=j.ahead(pl);const same=ah&&last&&rev===j.revision,route=same?last:ah,step=same?(alongRoute(last,pl,unit,5,1e9)?.s??0):0;last=ah;rev=j.revision;if(!route)continue;for(const r of checkAlerts(P,pl,null,{unit,route,step},al))seen.add(r.point.id)}
+   for(const id of seen){if(truth.get(id)===true)tp++;else bad.push('誤報 '+P.find(p=>p.id===id).name)}for(const [id,ok] of truth)if(ok&&!seen.has(id))bad.push('漏報 '+P.find(p=>p.id===id).name)}}
+ assert(trips>80&&tp>25,`trips ${trips} tp ${tp}`);assert.deepEqual(bad,[],'沿路模擬：'+bad.join('、'));
+ // GPS／搖桿：沿所在道路往前看，路口取最直的路；反方向行駛時看不到同一點
+ let fw=0,bk=0,tot=0;for(const c of P.filter(p=>p.speed&&!p.tech&&p.dir&&p.axis)){const dir=(c.axis.x*c.dir.x+c.axis.z*c.dir.z)>0?c.axis:{x:-c.axis.x,z:-c.axis.z},from={x:c.alertAt.x-dir.x*.3,z:c.alertAt.z-dir.z*.3};tot++;
+  const la=nav.lookahead(from.x,from.z,dir,350/unit,.35);if(la&&checkAlerts([c],from,dir,{unit,route:la},new Set()).length)fw++;
+  const back=nav.lookahead(c.alertAt.x+dir.x*.3,c.alertAt.z+dir.z*.3,{x:-dir.x,z:-dir.z},350/unit,.35);if(back&&checkAlerts([c],{x:c.alertAt.x+dir.x*.3,z:c.alertAt.z+dir.z*.3},{x:-dir.x,z:-dir.z},{unit,route:back},new Set()).length)bk++}
+ assert(fw>=tot-2,`沿所在道路往前看：${fw}/${tot} 個測速點前 27 公尺會提醒`);assert.equal(bk,0,'背向行駛不提醒');
+ globalThis.__enfSim=`${trips} simulated road trips past every camera: ${tp} correct alerts, 0 false or missed; road lookahead ${fw}/${tot}`;}
+console.log(`PASS enforcement: ${records.length} official rows (${points.length} points, 4 tech, 27 swapped lat/lng columns restored without changing values, 1 suspect not alerted); sheet CSV round-trip and bundled fallback; ahead/direction/once/rearm/range alerts; ${globalThis.__enfSim}; parallel/cross/opposite roads not alerted.`);
+// 介面不得出現試算表／工作表名稱或資料來源說明（使用者要求）
+{const strip=t=>t.replace(/\/\*[\s\S]*?\*\//g,'').split('\n').filter(l=>!l.trim().startsWith('//')).join('\n');
+ for(const f of ['game.js','index.html','ask.js','places.js']){const t=strip(fs.readFileSync(new URL('../dist/'+f,import.meta.url),'utf8'));for(const w of ['試算表','工作表','熊熊綜合系統','資料來源'])assert(!t.includes(w),`${f} 介面文字含「${w}」`)}}

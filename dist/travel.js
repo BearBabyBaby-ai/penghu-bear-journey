@@ -92,6 +92,12 @@ export class Journey{
   while(remaining>1e-9&&this.active){const dt=Math.min(.5,remaining);this.advance(player,dt);remaining-=dt}
   if(raw.pending&&this.active){const end=decode(raw.pending.end);if(end)this.pending={end,meta:raw.pending.meta||{}}}this.cancelAtPort=!!raw.cancelAtPort;return true;
  }
+ /* 熊寶接下來要走的陸路（到下一個港口前為止），第一點是目前位置；給測速提醒沿路判斷用 */
+ ahead(player){
+  if(!this.active||this.wait>0||this.leg.type!=='walk')return null;const out=[{x:player.x,z:player.z}];
+  for(let i=this.legIndex;i<this.plan.legs.length;i++){const leg=this.plan.legs[i];if(leg.type!=='walk')break;for(const p of leg.points.slice(i===this.legIndex?this.pointIndex:1))out.push({x:p.x,z:p.z})}
+  return out;
+ }
  geometry(player){
   const g=new Geometry();if(!this.active)return g;
   const draw=(a,b,type)=>{const distance=gap(a,b);if(distance<1e-8)return;const dx=-(b.z-a.z)/distance*.045,dz=(b.x-a.x)/distance*.045,steps=type==='ferry'?Math.ceil(distance/.8):1;

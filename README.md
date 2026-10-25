@@ -148,6 +148,11 @@ python -m http.server 4173 --directory dist
 - 熊寶大小不隨視角改變，與第21版相同。
 - 桌機地區資訊改放左側，不再蓋住地圖工具列；底圖狀態不再蓋住放大鈕。手機開啟測速圖層時地圖選單自動收起。
 
+## 第23版
+
+- 測速提醒改為沿道路判斷：只提醒你（或熊寶）所走道路上、同方向的測速點，旁邊道路與路口另一條路不再誤報；熊寶快速移動時不再漏掉科技執法路口；GPS 行進方向更穩定。
+- 介面不再出現試算表名稱與資料來源說明。
+
 ## 署名與驗證範圍
 
 國土測繪陸域、OSM 道路、Overture Maps 建物（OpenStreetMap ODbL、Shi et al. 2023 CC BY 4.0）及第三方工具的授權與出處保留於 `dist/geo/SOURCES.md`、`dist/geo/MIRROR-LICENSE.txt` 及 `tools/vendor/polygon-clipping-LICENSE.md`。此匯出未為熊寶圖像與第一方內容另行指定開源授權。

@@ -40,22 +40,52 @@ export function groupPoints(records){
     return{...p,name:main.name,area:main.area,speed:!!speed,tech:!!tech,limit:(speed||tech).limit,direction:(speed||tech).direction,dir:parseDirection((speed||tech).direction),items:[...new Set(p.records.flatMap(r=>r.items.split(/[、,，]/)).map(s=>s.trim()).filter(Boolean))],suspect:p.records.some(r=>r.suspect)}});
 }
 
+/* 沿路線往前找：回傳路線上離提醒點最近（橫向 tol 公尺內）的第一個位置與該段行進方向。
+   route[0] 為目前位置；第一段只看前方（已經通過的不算）。 */
+export function alongRoute(route,a,unit,tol,max){
+  let s=0;
+  for(let i=0;i<route.length-1;i++){
+    const A=route[i],B=route[i+1],dx=B.x-A.x,dz=B.z-A.z,L=Math.hypot(dx,dz);if(L<1e-9)continue;
+    let t=((a.x-A.x)*dx+(a.z-A.z)*dz)/(L*L);
+    if(i===0&&t<0){s+=L;continue}
+    t=Math.max(0,Math.min(1,t));
+    const lat=Math.hypot(A.x+dx*t-a.x,A.z+dz*t-a.z)*unit;
+    if(lat<=tol)return{s:(s+t*L)*unit,dir:{x:dx/L,z:dz/L}};
+    s+=L;if(s*unit>max)break;
+  }
+  return null;
+}
+
 /* 前方提醒：pos／heading 為世界座標與行進方向單位向量，unit＝每世界單位的實際公尺數。
-   測速：前方（夾角 45° 內）range 公尺內且行進方向與受測方向相同（夾角 60° 內）。
-   科技執法路口：techRange 公尺內（不分方向）；若同時測速且方向相同，以測速距離提早提醒。
+   有 route（熊寶自動前往的道路路線，第一點為上次檢查位置）時：提醒點必須在路線上（橫向 15 公尺內），距離用沿路距離，
+   測速還要求該段路的行進方向與受測方向相同（夾角 60° 內）；這樣旁邊平行道路、交叉路口另一條路的測速不會誤報。
+   沒有路線（搖桿、GPS）時：提醒點必須在行進方向正前方的走廊內（橫向 lateral 公尺內），
+   測速點所在道路須與行進方向平行，且受測方向相同。
+   科技執法路口：沿路（或直線）techRange 公尺內，不分方向。step＝上次檢查後移動的公尺數，
+   用來補足檢查間隔，避免移動較快時直接跳過 50 公尺的路口範圍。
    同一點提醒一次，離開 rearm 公尺後才會再提醒。原始座標疑似有誤的點不提醒。 */
-export function checkAlerts(points,pos,heading,{unit=1,range=300,techRange=50,rearm=600}={},alerted=new Set()){
-  const out=[];
+export function checkAlerts(points,pos,heading,{unit=1,range=300,techRange=50,rearm=600,route=null,lateral=20,step=0}={},alerted=new Set()){
+  const out=[],techReach=techRange+Math.max(0,Math.min(step,150));
   for(const p of points){
     const a=p.alertAt||p.world;if(!a||p.suspect)continue;
-    const dx=a.x-pos.x,dz=a.z-pos.z,dw=Math.hypot(dx,dz),d=dw*unit;
+    const dx=a.x-pos.x,dz=a.z-pos.z,d=Math.hypot(dx,dz)*unit;
     if(alerted.has(p.id)){if(d>rearm)alerted.delete(p.id);continue}
-    if(!heading)continue;
-    const ahead=dw<1e-9?1:(dx*heading.x+dz*heading.z)/dw,same=!p.dir||(heading.x*p.dir.x+heading.z*p.dir.z)>=.5;
-    let hit=false;
-    if(p.speed&&d<=range&&ahead>=Math.SQRT1_2&&same)hit=true;
-    if(p.tech&&d<=techRange&&ahead>=0)hit=true;
-    if(hit){alerted.add(p.id);out.push({point:p,distance:d})}
+    let hit=null;
+    if(route&&route.length>1){
+      // route[0] 是上次檢查時的位置，step 公尺後才是目前位置：剛好在這段間隔經過的點也不會漏掉
+      const r=alongRoute(route,a,unit,15,range+step);
+      if(r){
+        const ahead=Math.max(0,r.s-step),same=!p.dir||(r.dir.x*p.dir.x+r.dir.z*p.dir.z)>=.5;
+        if(p.speed&&r.s-step<=range&&same)hit=ahead;
+        if(p.tech&&r.s-step<=techRange)hit=hit===null?ahead:Math.min(hit,ahead);
+      }
+    }else if(heading){
+      const along=(dx*heading.x+dz*heading.z)*unit,lat=Math.abs(dx*heading.z-dz*heading.x)*unit;
+      const same=!p.dir||(heading.x*p.dir.x+heading.z*p.dir.z)>=.5,parallel=!p.axis||Math.abs(heading.x*p.axis.x+heading.z*p.axis.z)>=.7;
+      if(p.speed&&along>=0&&along<=range&&lat<=lateral&&same&&parallel)hit=along;
+      if(p.tech&&d<=techReach&&along>=0)hit=hit===null?d:Math.min(hit,d);
+    }
+    if(hit!==null){alerted.add(p.id);out.push({point:p,distance:hit})}
   }
   return out.sort((a,b)=>a.distance-b.distance);
 }

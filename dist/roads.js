@@ -33,6 +33,29 @@ export class RoadNavigation{
    if(d<dist&&this.sizes[p.component]>=3){dist=d;best={...p,offset:d}}
   }return best;
  }
+ /* 附近所有道路（每條線段取最近點），附道路方向；給測速提醒點選「同方向的那條路」用 */
+ nearby(x,z,maxDistance=.6){
+  if(!Number.isFinite(x)||!Number.isFinite(z))return[];const out=[],seen=new Set();
+  for(let iz=Math.floor((z-maxDistance)/this.bin);iz<=Math.floor((z+maxDistance)/this.bin);iz++)for(let ix=Math.floor((x-maxDistance)/this.bin);ix<=Math.floor((x+maxDistance)/this.bin);ix++)for(const id of this.cells.get(ix+':'+iz)||[]){
+   if(seen.has(id))continue;seen.add(id);const e=this.edges[id],a=this.nodes[e.a],b=this.nodes[e.b],t=clamp(((x-a.x)*(b.x-a.x)+(z-a.z)*(b.z-a.z))/e.length**2),p=this.point(id,t),d=Math.hypot(p.x-x,p.z-z);
+   if(d<=maxDistance&&this.sizes[p.component]>=3)out.push({...p,offset:d,axis:{x:(b.x-a.x)/e.length,z:(b.z-a.z)/e.length}});
+  }return out.sort((p,q)=>p.offset-q.offset);
+ }
+ /* 沿目前道路往前看：從 (x,z) 附近、方向與 heading 一致的道路出發，遇到路口選最直的那條（轉角 45° 內），
+    最多 length 世界單位；給 GPS／搖桿模式的測速提醒用（沒有規劃路線時，預測「照這條路直走」會經過哪裡） */
+ lookahead(x,z,heading,length,maxOffset=.35){
+  if(!heading)return null;
+  const c=this.nearby(x,z,maxOffset).find(q=>Math.abs(q.axis.x*heading.x+q.axis.z*heading.z)>=.7);if(!c)return null;
+  const e=this.edges[c.edge],fwd=c.axis.x*heading.x+c.axis.z*heading.z>0;let node=fwd?e.b:e.a,prevEdge=c.edge;
+  const pts=[{x:c.x,z:c.z},{x:this.nodes[node].x,z:this.nodes[node].z}];let len=Math.hypot(pts[1].x-c.x,pts[1].z-c.z);
+  for(let guard=0;len<length&&guard<500;guard++){
+   const here=this.nodes[node],prev=pts[pts.length-2],L0=Math.hypot(here.x-prev.x,here.z-prev.z)||1,dir={x:(here.x-prev.x)/L0,z:(here.z-prev.z)/L0};
+   let best=null,bestDot=.7;
+   for(const id of this.adj[node]){if(id===prevEdge)continue;const ed=this.edges[id],other=ed.a===node?ed.b:ed.a,o=this.nodes[other],L=Math.hypot(o.x-here.x,o.z-here.z)||1,d=((o.x-here.x)*dir.x+(o.z-here.z)*dir.z)/L;if(d>bestDot){bestDot=d;best={id,other,L}}}
+   if(!best)break;node=best.other;prevEdge=best.id;pts.push({x:this.nodes[node].x,z:this.nodes[node].z});len+=best.L;
+  }
+  return pts;
+ }
  path(start,end,limit=Infinity){
   if(!this.isOnRoad(start)||!this.isOnRoad(end)||start.component!==end.component)return null;
   const se=this.edges[start.edge],te=this.edges[end.edge];
