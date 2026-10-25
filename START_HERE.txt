@@ -1,4 +1,4 @@
-熊熊澎湖之旅｜第23版 Claude／Gemini接手入口
+熊熊澎湖之旅｜第24版 Claude／Gemini接手入口
 
 先讀CLAUDE.md（核心限制），再讀HANDOFF_CLAUDE_GEMINI.md、README.md與DEVELOPMENT.md。
 Node.js 24：npm run check。發布目錄dist/，GitHub主分支main。
@@ -23,4 +23,5 @@ Node.js 24：npm run check。發布目錄dist/，GitHub主分支main。
 第21版：WebGL 畫面被收回時自動重新載入並回到地圖；測速紅圈拉遠時隱藏、可疑點不顯示。
 第22版：立體建築底圖（dist/buildings.js、geo/penghu-buildings-20261021.json，拉近才畫、高度多為推估）；地圖預設視角 0.9；熊寶大小固定不隨視角變；桌機地區資訊改左側、底圖狀態不蓋＋；手機開測速時地圖選單自動收起。
 第23版：測速提醒沿道路判斷（熊寶沿規劃路線、搖桿／GPS 沿所在道路往前看），修正誤報與漏報；介面移除試算表名稱與資料來源說明。
+第24版：開著「我的位置」選目的地＝從你的位置導航（dist/gpsnav.js；熊寶沿路跟著你、照你的速度，不自己跑去目的地；偏離重新規劃、抵達提示、地圖行進方向朝上、螢幕保持亮著）；測速詳情保留官方資料表連結與「澎湖縣警察局公布」。
 Google 協作平台全頁嵌入：google-sites/index.html（程式碼全部內嵌，node tools/build-google-sites.mjs 產生；遊戲更新後重新產生、重貼）。
