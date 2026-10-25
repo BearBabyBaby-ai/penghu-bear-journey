@@ -1,0 +1,23 @@
+name: Fetch Penghu buildings (experiment only)
+on:
+  push:
+    branches: [exp-3d-buildings-data]
+permissions:
+  contents: write
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - run: node fetch.mjs
+      - run: |
+          ls -la data
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git add data
+          git commit -m "建物資料（實驗用）" || echo nothing
+          git push
