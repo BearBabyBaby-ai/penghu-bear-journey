@@ -13,7 +13,9 @@ jobs:
         with:
           node-version: '24'
           package-manager-cache: false
-      - run: node fetch.mjs
+      - run: node probe.mjs
+      - run: pip install duckdb && python overture.py
+        timeout-minutes: 30
       - run: |
           ls -la data
           git config user.name "github-actions"
