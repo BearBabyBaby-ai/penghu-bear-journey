@@ -1,4 +1,4 @@
-import {Engine,Geometry,buildWorld,buildMapMarkers,movePlayer,insideIsland,clamp} from './engine.js?v=20261015-travel8';
+import {Engine,Geometry,buildWorld,buildMapMarkers,movePlayer,insideIsland,clamp} from './engine.js?v=20261025-3d1';
 import {KINDS,AREAS,makeTour,filterRecords,interpolateTide,cleanSave,minute} from './model.js?v=20261015-travel8';
 import {MAP,mapPosition,worldToGeo,LAYERS,WORLD_METRES} from './map.js?v=20261015-travel8';
 import {RoadNavigation,loadRoads} from './roads.js?v=20261015-travel8';
@@ -9,6 +9,11 @@ import {placeImages,imageSource} from './media.js?v=20261015-travel8';
 import {TravelPlanner,Journey,loadFerries} from './travel.js?v=20261016-ferry5';
 import {askPlaces} from './ask.js?v=20261016-ask1';
 import {loadFerrySheet} from './ferry-sheet.js?v=20261016-sheet1';
+import {loadBuildings} from './buildings.js?v=20261025-3d1';
+// 立體建築試驗：地圖預設斜一點，才看得出建物高度（全區總覽與分海動畫仍維持原本角度）
+const MAP_3D_TILT=.9;
+// 熊寶大小不隨視角改變：一律換算成原本地圖視角（1.12）時的大小，騎車／搭船熊寶跟著原始熊寶等比
+const BEAR_REF_TILT=1.12,BEAR_TILT_FIX=()=>Math.cos(BEAR_REF_TILT)/Math.max(.2,Math.cos(engine.tilt));
 import {loadEnforcement,groupPoints,checkAlerts,alertText} from './enforcement.js?v=20261016-enf1';
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const escape=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -92,7 +97,7 @@ function setRegion(area,record=null,mode='map'){
  }else player={x:0,z:6,facing:0};
  target=record?nodes.find(n=>n.record.id===record.id):mapped?nodes.find(n=>n.record.id===(returning?.targetId||journey?.meta.recordId))||null:null;
  engine.setWorld(mapped?buildMapMarkers(displayedNodes()):buildWorld(nodes,area));
- engine.angle=mapped?0:.65;engine.tilt=mapped?1.12:.78;engine.focus=[player.x,0,player.z];if(started){mapOverview=false;engine.zoom=innerWidth<700?10:12}
+ engine.angle=mapped?0:.65;engine.tilt=mapped?MAP_3D_TILT:.78;engine.focus=[player.x,0,player.z];if(started){mapOverview=false;engine.zoom=innerWidth<700?10:12}
  $('#labels').innerHTML=nodes.map(n=>`<button class="place-label" id="label-${n.index}" data-node="${n.index}" style="--tag:${KINDS[n.record.kind].color}" title="${escape(KINDS[n.record.kind].label+' · '+n.record.name)}" aria-label="選取${escape(n.record.name)}" hidden><span class="dot">${KINDS[n.record.kind].symbol}</span><span class="place-name">${escape(n.record.name)}</span></button>`).join('');
  $$('.place-label').forEach(el=>{const n=nodes[Number(el.dataset.node)];n.label=el;el.addEventListener('click',()=>{start();selectMapPlace(n)})});
  $('#scene-label').textContent=observingSea?'奎壁山 · 分海觀察示意':`${area} · 道路與港口探索`;
@@ -242,7 +247,7 @@ function enterTideView(){
  tideView=true;tidePlaying=true;document.body.classList.add('tide-mode');$('#tide-bar').hidden=false;mapOverview=false;inspectPoint={x:mid.x,z:mid.z};engine.angle=0;engine.tilt=1.12;engine.zoom=innerWidth<700?8:9;
  updateTideBar();toast(`奎壁山摩西分海：自動播放 ${tideDate} 一天的潮汐（約 12 秒），退潮時步道露出。可拖曳下方時間或暫停，按「返回地圖」回到熊寶身邊。`);
 }
-function exitTideView(){tideView=false;tidePlaying=false;document.body.classList.remove('tide-mode');$('#tide-bar').hidden=true;inspectPoint=null;engine.zoom=innerWidth<700?10:12;toast('已返回地圖，熊寶在原來的位置。')}
+function exitTideView(){tideView=false;tidePlaying=false;document.body.classList.remove('tide-mode');$('#tide-bar').hidden=true;inspectPoint=null;engine.zoom=innerWidth<700?10:12;engine.tilt=MAP_3D_TILT;toast('已返回地圖，熊寶在原來的位置。')}
 /* 步道露出比例：原表潮高 -10 以下開始露出，-80 以下全露（由兩岸往中間） */
 function drawTidePath(g){
  if(!tideView||!mapMode())return;const day=data.seaDays[tideDate]||Object.values(data.seaDays)[0],h=day?interpolateTide(day.events,simMinute):null;if(h===null)return;
@@ -299,7 +304,7 @@ function frame(now){
  drawTidePath(g);
  engine.render(time,g);
  const feet=engine.project([player.x,1.05,player.z]),head=engine.project([player.x,4.8,player.z]),avatar=$('#bearbao-avatar');
- if(feet&&head){const size=clamp(Math.abs(head.y-feet.y)*.82,8,100),bob=moving?Math.sin(time*12)*2:Math.sin(time*2)*.3;avatar.style.left=feet.x+'px';avatar.style.top=(feet.y-bob)+'px';avatar.style.width=size+'px';avatar.style.height=size+'px';avatar.style.setProperty('--lean',moving?Math.sin(player.facing+engine.angle)*3+'deg':'0deg');avatar.hidden=(mapMode()&&(!navigation||!navigation.isOnRoad(player)&&!journey?.inTransit))||feet.x< -size||feet.x>innerWidth+size||feet.y<0||feet.y>innerHeight+size}
+ if(feet&&head){const size=clamp(Math.abs(head.y-feet.y)*.82*(mapMode()?BEAR_TILT_FIX():1),8,100),bob=moving?Math.sin(time*12)*2:Math.sin(time*2)*.3;avatar.style.left=feet.x+'px';avatar.style.top=(feet.y-bob)+'px';avatar.style.width=size+'px';avatar.style.height=size+'px';avatar.style.setProperty('--lean',moving?Math.sin(player.facing+engine.angle)*3+'deg':'0deg');avatar.hidden=(mapMode()&&(!navigation||!navigation.isOnRoad(player)&&!journey?.inTransit))||feet.x< -size||feet.x>innerWidth+size||feet.y<0||feet.y>innerHeight+size}
  const boat=$('#ferry-boat'),sailing=mapMode()&&journey?.inTransit&&!navigation.isLand(player.x,player.z);
  /* 角色圖：海上搭船＝搭船熊寶；陸上移動中＝騎車熊寶；停下來（含剛上岸）＝原始熊寶。三張都是使用者提供的原圖，只縮放不改繪 */
  const boatBear=$('#bear-boat'),rideBear=$('#bear-ride'),showBoat=!!feet&&!avatar.hidden&&sailing,showRide=!!feet&&!avatar.hidden&&!showBoat&&moving&&journey?.leg?.type!=='port';
@@ -325,14 +330,14 @@ function frame(now){
 function bindControls(){
  document.body.classList.add('not-started');$('#start').onclick=start;$('#home').onclick=e=>{e.preventDefault();returnToMap();start();inspectPoint=null;mapOverview=false;engine.focus=[player.x,0,player.z];toast('回到熊寶目前位置。')};$('#help').onclick=()=>{keys.clear();$('#help-dialog').showModal()};$('#help-go').onclick=()=>{$('#help-dialog').close();start()};
  $('#place-kind').onchange=e=>{Object.assign(enabledKinds,categoryKinds(e.target.value));refreshPlaceVisibility()};$('#places-catalog').onclick=()=>openPanel('atlas');
- $('#map-overview').onclick=()=>{closeMapMenu();returnToMap();mapOverview=true;inspectPoint=null;engine.angle=0;engine.tilt=1.12;toast('全區地圖；用類別選單選美食、景點或廟宇，點數字查看群組。')};$('#zoom-in').onclick=()=>{mapOverview=false;engine.zoom=clamp(engine.zoom*.72,3,650)};$('#zoom-out').onclick=()=>{mapOverview=false;engine.zoom=clamp(engine.zoom/ .72,3,650)};$('#map-follow').onclick=()=>{closeMapMenu();gps.camera=false;mapOverview=false;inspectPoint=null;engine.zoom=innerWidth<700?10:12;engine.focus=[player.x,0,player.z]};
+ $('#map-overview').onclick=()=>{closeMapMenu();returnToMap();mapOverview=true;inspectPoint=null;engine.angle=0;engine.tilt=1.12;toast('全區地圖；用類別選單選美食、景點或廟宇，點數字查看群組。')};$('#zoom-in').onclick=()=>{mapOverview=false;engine.zoom=clamp(engine.zoom*.72,3,650)};$('#zoom-out').onclick=()=>{mapOverview=false;engine.zoom=clamp(engine.zoom/ .72,3,650)};$('#map-follow').onclick=()=>{closeMapMenu();gps.camera=false;mapOverview=false;inspectPoint=null;engine.tilt=MAP_3D_TILT;engine.zoom=innerWidth<700?10:12;engine.focus=[player.x,0,player.z]};
  $$('.dialog-close').forEach(b=>b.onclick=()=>b.closest('dialog').close());$$('dialog').forEach(d=>d.addEventListener('click',e=>{if(e.target===d){const r=d.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)d.close()}}));
  $('#close-panel').onclick=closePanel;$$('[data-panel]').forEach(b=>b.onclick=()=>openPanel(b.dataset.panel));
  $('#region').onchange=e=>navigateRegion(e.target.value);
  $('#tide-bar-range').oninput=e=>{tidePlaying=false;simMinute=Number(e.target.value);updateTideBar()};$('#tide-play').onclick=()=>{tidePlaying=!tidePlaying;updateTideBar()};$('#tide-exit').onclick=exitTideView;
  $('#gps-toggle').onclick=()=>{closeMapMenu();toggleGps()};$('#gps-chip').onclick=gpsRecenter;
  $('#map-more').onclick=e=>{e.stopPropagation();const open=!$('#map-tools').classList.contains('open');$('#map-tools').classList.toggle('open',open);$('#map-more').setAttribute('aria-expanded',String(open))};
- $('#north-liao').addEventListener('click',closeMapMenu);$('#enforce-toggle').onchange=e=>toggleEnforce(e.target.checked);setupEnforcement();$('#map-retry').addEventListener('click',closeMapMenu);
+ $('#north-liao').addEventListener('click',closeMapMenu);$('#enforce-toggle').onchange=e=>{closeMapMenu();toggleEnforce(e.target.checked)};setupEnforcement();$('#map-retry').addEventListener('click',closeMapMenu);
  document.addEventListener('pointerdown',e=>{if($('#map-tools').classList.contains('open')&&!e.target.closest('#map-tools'))closeMapMenu()});
  setupAsk();
  window.addEventListener('keydown',e=>{if(['INPUT','SELECT','TEXTAREA'].includes(document.activeElement.tagName))return;const k=e.key.toLowerCase();if(k==='escape'){closePanel();return}if(['w','a','s','d','arrowup','arrowdown','arrowleft','arrowright','shift','e'].includes(k)){e.preventDefault();if(k==='e'&&!e.repeat)interact();else keys.add(k)}});
@@ -547,7 +552,7 @@ async function init(){
  try{
   const r=await fetch('data.json');if(!r.ok)throw Error('無法載入遊戲資料');data=await r.json();
   let raw={};try{raw=JSON.parse(localStorage.getItem(SAVE_KEY)||'{}')}catch{saveAvailable=false}save=cleanSave(raw,data.records);
-  engine=new Engine($('#world'));engine.configureMap(MAP);engine.tiles=new TileMap(engine,s=>{$('#tile-state').textContent=s;$('.geo-status').classList.toggle('has-map-error',s.includes('未載入'))});engine.zoom=44;
+  engine=new Engine($('#world'));engine.configureMap(MAP);engine.tiles=new TileMap(engine,s=>{$('#tile-state').textContent=s;$('.geo-status').classList.toggle('has-map-error',s.includes('未載入'))});engine.zoom=44;loadBuildings(engine).then(b=>{if(b&&engine)engine.buildings=b});
   $('#region').innerHTML=AREAS.map(a=>`<option value="${a}">${a}</option>`).join('');bindControls();setRegion(save.area);
   $('#map-layer').onchange=e=>{engine.tiles.setLayer(e.target.value);$('#layer-credit').textContent=LAYERS[e.target.value].credit;$('#layer-credit').href=LAYERS[e.target.value].href};
   $('#coast-retry').onclick=()=>{engine.tiles.retry();prepareCoastline()};$('#map-retry').onclick=()=>engine.tiles.retry();

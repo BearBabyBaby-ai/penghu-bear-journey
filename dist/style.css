@@ -313,3 +313,7 @@ button,select,a,#touch-action{touch-action:manipulation}.place-label,#joystick,#
  .gps-on .geo-status{display:none!important}
  body:has(#toast.visible) .gps-chip,body:has(#toast.visible) .geo-status,.enforce-alerting .gps-chip,.enforce-alerting .geo-status{visibility:hidden}
 }
+
+/* 2026-10-26 第22版：桌機的問熊寶結果／地區資訊改放左側（不蓋住地圖工具列）；底圖狀態移到縮放鈕左側（不蓋住＋） */
+@media(min-width:1101px){.ask-results{top:96px;left:34px;transform:none;width:min(400px,32vw);max-height:calc(100dvh - 296px)}}
+@media(min-width:1101px){.geo-status,.geo-status.ready{right:104px}}

@@ -1,4 +1,4 @@
-熊熊澎湖之旅｜第21版 Claude／Gemini接手入口
+熊熊澎湖之旅｜第22版 Claude／Gemini接手入口
 
 先讀CLAUDE.md（核心限制），再讀HANDOFF_CLAUDE_GEMINI.md、README.md與DEVELOPMENT.md。
 Node.js 24：npm run check。發布目錄dist/，GitHub主分支main。
@@ -21,4 +21,5 @@ Node.js 24：npm run check。發布目錄dist/，GitHub主分支main。
 第19版：分海動畫改在真實地圖上（奎壁山→赤嶼步道依潮高露出），不再使用示意小島場景。
 第20版：手機版面 v3（下方單一卡片、提示一條、目的地卡兩列、地區資訊預設一列）。
 第21版：WebGL 畫面被收回時自動重新載入並回到地圖；測速紅圈拉遠時隱藏、可疑點不顯示。
+第22版：立體建築底圖（dist/buildings.js、geo/penghu-buildings-20261021.json，拉近才畫、高度多為推估）；地圖預設視角 0.9；熊寶大小固定不隨視角變；桌機地區資訊改左側、底圖狀態不蓋＋；手機開測速時地圖選單自動收起。
 Google 協作平台全頁嵌入：google-sites/index.html（程式碼全部內嵌，node tools/build-google-sites.mjs 產生；遊戲更新後重新產生、重貼）。

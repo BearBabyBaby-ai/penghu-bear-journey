@@ -75,7 +75,7 @@ export class Engine{
   const depth=Math.max(150,this.zoom*3);this.matrix=mult(ortho(-this.zoom*aspect,this.zoom*aspect,-this.zoom,this.zoom,-depth,depth+100),lookAt(eye,f));
   gl.uniformMatrix4fv(this.uniform.uMatrix,false,this.matrix);gl.uniform1f(this.uniform.uTime,time);gl.uniform1f(this.uniform.uNight,this.night);
   gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,this.mapTexture);gl.uniform1i(this.uniform.uTexture,0);gl.uniform2f(this.uniform.uMapSize,...(this.mapSize||[1,1]));gl.uniform2f(this.uniform.uMapOrigin,...(this.mapOrigin||[0,0]));
-  if(this.mapVisible&&this.mapMesh){this.draw(this.mapMesh,0,1);this.tiles?.render();if(this.roadMesh)this.draw(this.roadMesh);if(this.routeMesh)this.draw(this.routeMesh)}else if(this.water)this.draw(this.water,1);if(this.world)this.draw(this.world);
+  if(this.mapVisible&&this.mapMesh){this.draw(this.mapMesh,0,1);this.tiles?.render();if(this.roadMesh)this.draw(this.roadMesh);this.buildings?.render();if(this.routeMesh)this.draw(this.routeMesh)}else if(this.water)this.draw(this.water,1);if(this.world)this.draw(this.world);
   gl.bindBuffer(gl.ARRAY_BUFFER,this.dynamic);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(dynamic.v),gl.DYNAMIC_DRAW);this.draw({buffer:this.dynamic,count:dynamic.v.length/9});
  }
  project(p){if(!this.matrix)return null;const m=this.matrix;return{x:((m[0]*p[0]+m[4]*p[1]+m[8]*p[2]+m[12])*.5+.5)*this.canvas.clientWidth,y:(.5-(m[1]*p[0]+m[5]*p[1]+m[9]*p[2]+m[13])*.5)*this.canvas.clientHeight}}

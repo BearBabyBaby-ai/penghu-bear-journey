@@ -1,4 +1,4 @@
-import {Geometry} from './engine.js?v=20261015-travel8';
+import {Geometry} from './engine.js?v=20261025-3d1';
 import {MAP,WORLD_METRES,LAYERS,tileAt,tileBounds} from './map.js?v=20261015-travel8';
 // Browser requests only the current viewport; no raster tiles are bundled or prefetched.
 export class TileMap{

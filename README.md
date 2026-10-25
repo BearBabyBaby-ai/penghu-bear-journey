@@ -142,9 +142,15 @@ python -m http.server 4173 --directory dist
 - App 從背景回來地圖變空白時，會自動重新整理並回到地圖。
 - 測速紅圈拉遠時隱藏；位置有誤的那一點不再顯示。
 
+## 第22版
+
+- 地圖拉近時出現立體建築（澎湖約 8000 棟；高度多為推估示意值），地圖預設視角斜一點。
+- 熊寶大小不隨視角改變，與第21版相同。
+- 桌機地區資訊改放左側，不再蓋住地圖工具列；底圖狀態不再蓋住放大鈕。手機開啟測速圖層時地圖選單自動收起。
+
 ## 署名與驗證範圍
 
-國土測繪陸域、OSM 道路及第三方工具的授權與出處保留於 `dist/geo/SOURCES.md`、`dist/geo/MIRROR-LICENSE.txt` 及 `tools/vendor/polygon-clipping-LICENSE.md`。此匯出未為熊寶圖像與第一方內容另行指定開源授權。
+國土測繪陸域、OSM 道路、Overture Maps 建物（OpenStreetMap ODbL、Shi et al. 2023 CC BY 4.0）及第三方工具的授權與出處保留於 `dist/geo/SOURCES.md`、`dist/geo/MIRROR-LICENSE.txt` 及 `tools/vendor/polygon-clipping-LICENSE.md`。此匯出未為熊寶圖像與第一方內容另行指定開源授權。
 
 第13版已執行 `npm run check`（Node.js 22.22.0，六組PASS；Node 24未在此環境實測），並以無頭Chromium截圖檢查桌機與三種手機尺寸。外部底圖圖磚、實體手機操作及你的 GitHub 儲存庫 Actions 尚未驗證。
 

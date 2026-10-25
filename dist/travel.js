@@ -1,5 +1,5 @@
 import {geoToWorld} from './map.js?v=20261015-travel8';
-import {Geometry} from './engine.js?v=20261015-travel8';
+import {Geometry} from './engine.js?v=20261025-3d1';
 export const FERRY_FILE='geo/penghu-ferries-20261016.json';
 export const FERRY_VERSION='penghu-ferry-game-20261016-v4';
 const gap=(a,b)=>Math.hypot(a.x-b.x,a.z-b.z),same=(a,b)=>gap(a,b)<1e-6;
