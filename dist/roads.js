@@ -49,12 +49,30 @@ export class RoadNavigation{
   const e=this.edges[c.edge],fwd=c.axis.x*heading.x+c.axis.z*heading.z>0;let node=fwd?e.b:e.a,prevEdge=c.edge;
   const pts=[{x:c.x,z:c.z},{x:this.nodes[node].x,z:this.nodes[node].z}];let len=Math.hypot(pts[1].x-c.x,pts[1].z-c.z);
   for(let guard=0;len<length&&guard<500;guard++){
-   const here=this.nodes[node],prev=pts[pts.length-2],L0=Math.hypot(here.x-prev.x,here.z-prev.z)||1,dir={x:(here.x-prev.x)/L0,z:(here.z-prev.z)/L0};
-   let best=null,bestDot=.7;
-   for(const id of this.adj[node]){if(id===prevEdge)continue;const ed=this.edges[id],other=ed.a===node?ed.b:ed.a,o=this.nodes[other],L=Math.hypot(o.x-here.x,o.z-here.z)||1,d=((o.x-here.x)*dir.x+(o.z-here.z)*dir.z)/L;if(d>bestDot){bestDot=d;best={id,other,L}}}
+   const here=this.nodes[node],prev=pts[pts.length-2],L0=Math.hypot(here.x-prev.x,here.z-prev.z),dir=L0>1e-6?{x:(here.x-prev.x)/L0,z:(here.z-prev.z)/L0}:heading; // 起點剛好在路口節點上時用行進方向
+   let best=null,bestDot=.7;const exits=this.adj[node].filter(id=>id!==prevEdge);
+   for(const id of exits){const ed=this.edges[id],other=ed.a===node?ed.b:ed.a,o=this.nodes[other],L=Math.hypot(o.x-here.x,o.z-here.z)||1,d=((o.x-here.x)*dir.x+(o.z-here.z)*dir.z)/L;if(d>bestDot||exits.length===1&&d>-.3){bestDot=d;best={id,other,L}}} // 只有一條路可走（道路本身轉彎）就跟著彎
    if(!best)break;node=best.other;prevEdge=best.id;pts.push({x:this.nodes[node].x,z:this.nodes[node].z});len+=best.L;
   }
   return pts;
+ }
+ /* 同 lookahead，但路口有好幾條「大致直行」（45° 內）的路時每條都看（最多 maxRoutes 條），
+    道路本身轉彎（只有一條路可走）就跟著彎；回傳多條路線，給沒有規劃路線時的測速提醒用 */
+ lookaheadAll(x,z,heading,length,maxOffset=.35,maxRoutes=8){
+  if(!heading)return[];
+  const c=this.nearby(x,z,maxOffset).find(q=>Math.abs(q.axis.x*heading.x+q.axis.z*heading.z)>=.7);if(!c)return[];
+  const e=this.edges[c.edge],fwd=c.axis.x*heading.x+c.axis.z*heading.z>0,first=fwd?e.b:e.a,out=[];
+  const start={x:c.x,z:c.z},n0={x:this.nodes[first].x,z:this.nodes[first].z};
+  const stack=[{pts:[start,n0],len:Math.hypot(n0.x-start.x,n0.z-start.z),node:first,prevEdge:c.edge}];
+  for(let guard=0;stack.length&&guard<4000;guard++){
+   const cur=stack.pop();if(cur.len>=length||out.length+stack.length>=maxRoutes*2){out.push(cur.pts);if(out.length>=maxRoutes)break;continue}
+   const here=this.nodes[cur.node],prev=cur.pts[cur.pts.length-2],L0=Math.hypot(here.x-prev.x,here.z-prev.z),dir=L0>1e-6?{x:(here.x-prev.x)/L0,z:(here.z-prev.z)/L0}:heading;
+   const exits=this.adj[cur.node].filter(id=>id!==cur.prevEdge),next=[];
+   for(const id of exits){const ed=this.edges[id],other=ed.a===cur.node?ed.b:ed.a,o=this.nodes[other],L=Math.hypot(o.x-here.x,o.z-here.z)||1,d=((o.x-here.x)*dir.x+(o.z-here.z)*dir.z)/L;if(d>=.7||exits.length===1&&d>-.3)next.push({id,other,L})}
+   if(!next.length){out.push(cur.pts);if(out.length>=maxRoutes)break;continue}
+   for(const nx of next)stack.push({pts:[...cur.pts,{x:this.nodes[nx.other].x,z:this.nodes[nx.other].z}],len:cur.len+nx.L,node:nx.other,prevEdge:nx.id});
+  }
+  return out;
  }
  path(start,end,limit=Infinity){
   if(!this.isOnRoad(start)||!this.isOnRoad(end)||start.component!==end.component)return null;

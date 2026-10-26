@@ -1,7 +1,7 @@
 // 測速照相與科技執法：資料整理、提醒判斷、試算表與內建檔（不連網）
 import assert from 'node:assert/strict';import fs from 'node:fs';
 import {parseCSV} from '../dist/ferry-sheet.js';
-import {parseDirection,normalizeRecord,enforcementRowsFromCSV,groupPoints,checkAlerts,alertText,loadEnforcement,ENFORCE_HEADERS,ENFORCE_FILE} from '../dist/enforcement.js';
+import {parseDirection,normalizeRecord,enforcementRowsFromCSV,groupPoints,checkAlerts,alertText,loadEnforcement,distanceAhead,ENFORCE_HEADERS,ENFORCE_FILE} from '../dist/enforcement.js';
 const close=(a,b)=>Math.abs(a-b)<1e-9;
 // 方向：「東向西」＝往西（x 減少）；「東南向西北」＝往西北（z 減少＝往北）
 assert.deepEqual(parseDirection('東向西'),{x:-1,z:0});{const d=parseDirection('東南向西北');assert(d.x<0&&d.z<0&&close(Math.hypot(d.x,d.z),1))}assert.equal(parseDirection('不明'),null);
@@ -42,6 +42,9 @@ assert.match(alertText({point:{...p,tech:true},distance:287}),/前方 290 公尺
  assert.equal(checkAlerts([q],{x:0,z:2},{x:0,z:-1},{unit:100,route:[{x:0,z:2},{x:0,z:-3}]},new Set()).length,0,'交叉方向經過路口不提醒');
  assert.equal(checkAlerts([q],{x:-2,z:0},{x:1,z:0},{unit:100,route:[{x:-2,z:0},{x:3,z:0}]},new Set()).length,0,'反方向不提醒');
  const k={...q,id:'k2',speed:false,tech:true};assert.equal(checkAlerts([k],{x:-.2,z:0},{x:-1,z:0},{unit:100,route:[{x:.6,z:0},{x:-.2,z:0},{x:-3,z:0}],step:80},new Set()).length,1,'兩次檢查之間經過的科技執法路口仍提醒');}
+// 提醒持續倒數：接近時距離遞減，通過後回傳 null／負值（收起提醒）
+{const q={id:'d',alertAt:{x:0,z:0},speed:true,dir:{x:-1,z:0}};const ds=[3,2,1,.2].map(x=>distanceAhead(q,{x,z:0},{x:-1,z:0},{unit:100,route:[{x,z:0},{x:-5,z:0}]}));
+ assert.deepEqual(ds.map(Math.round),[300,200,100,20],'倒數距離');const after=distanceAhead(q,{x:-.5,z:0},{x:-1,z:0},{unit:100,route:[{x:-.5,z:0},{x:-5,z:0}]});assert(after===null||after<0,'通過後收起');}
 // 真實道路模擬：熊寶沿路前往經過每個測速點附近（各 6 趟），提醒必須都在路線上、方向正確，且不漏
 {const {RoadNavigation}=await import('../dist/roads.js'),{Coastline}=await import('../dist/coastline.js'),{mapPosition}=await import('../dist/map.js'),{TravelPlanner,Journey}=await import('../dist/travel.js'),{alongRoute}=await import('../dist/enforcement.js');
  const read=f=>JSON.parse(fs.readFileSync(new URL('../dist/'+f,import.meta.url)));const nav=new RoadNavigation(read('geo/penghu-roads-20211217.json'),new Coastline(read('geo/penghu-land-20260407.geojson'))),planner=new TravelPlanner(nav,read('geo/penghu-ferries-20261016.json'),read('geo/penghu-grid-20260407.json').sourceSHA256),unit=100*Math.cos(23.55*Math.PI/180);

@@ -1,7 +1,7 @@
 import {Engine,Geometry,buildWorld,buildMapMarkers,movePlayer,insideIsland,clamp} from './engine.js?v=20261025-3d1';
 import {KINDS,AREAS,makeTour,filterRecords,interpolateTide,cleanSave,minute} from './model.js?v=20261015-travel8';
 import {MAP,mapPosition,worldToGeo,LAYERS,WORLD_METRES} from './map.js?v=20261015-travel8';
-import {RoadNavigation,loadRoads} from './roads.js?v=20261026-enf2';
+import {RoadNavigation,loadRoads} from './roads.js?v=20261026-enf4';
 import {Coastline,loadTerrain} from './coastline.js?v=20261015-travel8';
 import {TileMap} from './tiles.js?v=20261015-travel8';
 import {mapPlaces,placeCounts,shownPlaces,categoryKinds,labelLayout,regionalSpawn,REGION_STARTS,MAP_MARKER_LABEL_Y} from './places.js?v=20261015-travel8';
@@ -10,12 +10,12 @@ import {TravelPlanner,Journey,loadFerries} from './travel.js?v=20261026-enf2';
 import {askPlaces} from './ask.js?v=20261016-ask1';
 import {loadFerrySheet} from './ferry-sheet.js?v=20261016-sheet1';
 import {loadBuildings} from './buildings.js?v=20261025-3d1';
-import {GpsNav} from './gpsnav.js?v=20261026-nav1';
+import {GpsNav} from './gpsnav.js?v=20261026-enf4';
 // 立體建築試驗：地圖預設斜一點，才看得出建物高度（全區總覽與分海動畫仍維持原本角度）
 const MAP_3D_TILT=.9;
 // 熊寶大小不隨視角改變：一律換算成原本地圖視角（1.12）時的大小，騎車／搭船熊寶跟著原始熊寶等比
 const BEAR_REF_TILT=1.12,BEAR_TILT_FIX=()=>Math.cos(BEAR_REF_TILT)/Math.max(.2,Math.cos(engine.tilt));
-import {loadEnforcement,groupPoints,checkAlerts,alertText,alongRoute} from './enforcement.js?v=20261026-enf2';
+import {loadEnforcement,groupPoints,checkAlerts,alertText,alongRoute,distanceAhead} from './enforcement.js?v=20261026-enf4';
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const escape=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const today=()=>new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Taipei',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
@@ -459,7 +459,12 @@ function gpsMotion(pos){
  for(let i=hist.length-2;i>=0;i--)if(Math.hypot(now.x-hist[i].x,now.z-hist[i].z)*unit>=need){base=hist[i];break}
  const dist=base?Math.hypot(now.x-base.x,now.z-base.z)*unit:0,own=Number(pos.coords?.speed),hd=Number(pos.coords?.heading);
  gps.speed=Math.max(Number.isFinite(own)?own:0,base?dist/Math.max(.5,(now.t-base.t)/1000):0);
- gps.heading=gps.speed<5/3.6?null:base?{x:(now.x-base.x)*unit/dist,z:(now.z-base.z)*unit/dist}:Number.isFinite(hd)&&own>=2?{x:Math.sin(hd*Math.PI/180),z:-Math.cos(hd*Math.PI/180)}:gps.heading;
+ /* 方向：手機有回報行進方向（衛星都卜勒，移動中最準）就用它；否則用 30 公尺以前的位置。
+    定位飄移偶爾會算出相反方向：和上一次方向相反時，要連續兩次都相反才採用 */
+ const dev=Number.isFinite(hd)&&own>=2.5?{x:Math.sin(hd*Math.PI/180),z:-Math.cos(hd*Math.PI/180)}:null,calc=base?{x:(now.x-base.x)*unit/dist,z:(now.z-base.z)*unit/dist}:null;
+ let h=gps.speed<5/3.6?null:dev||calc||(Number.isFinite(hd)&&own>=2?{x:Math.sin(hd*Math.PI/180),z:-Math.cos(hd*Math.PI/180)}:null);
+ if(h&&gps.heading&&!dev&&h.x*gps.heading.x+h.z*gps.heading.z<0){gps.flip=(gps.flip||0)+1;if(gps.flip<2)h=gps.heading}else gps.flip=0;
+ gps.heading=h||(gps.speed<5/3.6?null:gps.heading);
 }
 /* 你所在的道路點：有行進方向時取方向一致的道路（避免對到旁邊或交叉的路）；導航中且在路線上時取路線上的點 */
 function gpsRoadPoint(){
@@ -539,7 +544,7 @@ async function toggleEnforce(on,silent=false){
  enforce.on=on;try{localStorage.setItem(ENFORCE_KEY,on?'1':'0')}catch{}
  document.body.classList.toggle('enforce-on',on);
  if(on&&!silent)ensureEnforceAudio();
- if(!on){$('#enforce-labels').innerHTML='';$('#enforce-alert').hidden=true;document.body.classList.remove('enforce-alerting');if(!silent)toast('已關閉測速／科技執法圖層與提醒。');return}
+ if(!on){$('#enforce-labels').innerHTML='';hideEnforceAlert();if(!silent)toast('已關閉測速／科技執法圖層與提醒。');return}
  if(!enforce.points.length&&!enforce.loading){enforce.loading=true;const res=await loadEnforcement();enforce.loading=false;enforce.from=res.from;enforce.meta=res.meta||null;enforce.points=groupPoints(res.records);prepareEnforcePoints()}
  renderEnforceMarkers();
  if(!silent){const shown=enforce.points.filter(q=>!q.suspect),n=shown.length,nt=shown.filter(q=>q.tech).length;toast(n?`已顯示測速照相 ${shown.filter(q=>q.speed).length} 處${nt?`（其中 ${nt} 處路口另有科技執法）`:''}（澎湖縣警察局公布）。騎車請勿操作手機，以現場標誌與速限為準。`:'測速／科技執法資料暫時讀不到。')}
@@ -571,8 +576,30 @@ function showEnforceDetail(p){
  if(!$('#details').open)$('#details').showModal();
 }
 function showEnforceAlert(list,{sound=false}={}){
- if(!list.length)return;const el=$('#enforce-alert');el.textContent=alertText(list[0]);el.hidden=false;document.body.classList.add('enforce-alerting');clearTimeout(enforce.alertTimer);enforce.alertTimer=setTimeout(()=>{el.hidden=true;document.body.classList.remove('enforce-alerting')},4500);
- if(sound){try{navigator.vibrate?.([140,80,140])}catch{}try{const a=enforce.audio;if(a){a.resume?.();const t=a.currentTime;for(const [f,d] of [[880,0],[1175,.18]]){const o=a.createOscillator(),g=a.createGain();o.frequency.value=f;g.gain.setValueAtTime(.0001,t+d);g.gain.exponentialRampToValueAtTime(.25,t+d+.02);g.gain.exponentialRampToValueAtTime(.0001,t+d+.15);o.connect(g).connect(a.destination);o.start(t+d);o.stop(t+d+.16)}}}catch{}}
+ if(!list.length)return;const first=list[0];
+ /* 提醒持續顯示並倒數距離，直到通過該點才收起（不是固定幾秒就消失） */
+ enforce.active={point:first.point,sound,near:first.distance<=120,d:first.distance,miss:0};setEnforceText(first.distance);
+ /* 同一點 60 秒內只響一次（重新顯示時不重複響） */
+ if(sound){const id=first.point.id,t=Date.now(),last=(enforce.beeped||(enforce.beeped=new Map())).get(id);if(!last||t-last>60000){enforce.beeped.set(id,t);enforceBeep()}}
+}
+function setEnforceText(distance){
+ const el=$('#enforce-alert'),a=enforce.active;if(!a)return;const t=alertText({point:a.point,distance});if(el.textContent!==t)el.textContent=t;el.hidden=false;document.body.classList.add('enforce-alerting');
+ clearTimeout(enforce.alertTimer);enforce.alertTimer=setTimeout(hideEnforceAlert,8000); /* 8 秒沒有更新（停下、定位中斷）才收起 */
+}
+function hideEnforceAlert(){enforce.active=null;clearTimeout(enforce.alertTimer);const el=$('#enforce-alert');if(el)el.hidden=true;document.body.classList.remove('enforce-alerting')}
+/* 每次檢查時更新提醒中的那一點：剩餘距離倒數；通過後收起。GPS 時剩 100 公尺再響一次 */
+function trackEnforceAlert(pos,heading,opts,moved=0){
+ const a=enforce.active;if(!a)return;let d=opts.route||opts.routes?distanceAhead(a.point,pos,heading,opts):null; // 這次對不到路就用移動距離往下扣，不用直線估算
+ /* 這一次對不到路（定位飄移、路口）時，用移動距離往下扣，連續 3 次（還很遠時 6 次）對不到才收起；已經通過就收起 */
+ if(d===null){a.miss=(a.miss||0)+1;d=(a.d??0)-moved;if(a.miss>=(d>30?6:3)){const id=a.point.id;hideEnforceAlert();if(d>30){enforce.alerted.delete(id);enforce.gpsAlerted.delete(id)}return}}else a.miss=0; // 還沒到就對不到路：之後再對到時重新顯示
+ const at=a.point.alertAt||a.point.world;if(a.miss&&d<25&&heading&&at){const dx=at.x-pos.x,dz=at.z-pos.z;if((dx*heading.x+dz*heading.z)<0&&Math.hypot(dx,dz)*(opts.unit||1)>25)d=-10} // 對不到路、估計已到點附近，且點在你後方 25 公尺外：收起
+ if(d<-5){hideEnforceAlert();return}
+ if(a.d!=null&&a.miss===0)d=Math.min(a.d,Math.max(d,a.d-(moved*1.5+15))); // 顯示距離平順：不倒退、也不比實際移動跳得快（定位飄移時）
+ a.d=Math.max(0,d);setEnforceText(a.d);if(a.sound&&!a.near&&a.d<=100){a.near=true;enforceBeep()}
+}
+function enforceBeep(){
+ {try{navigator.vibrate?.([140,80,140])}catch{}try{const a=enforce.audio;if(a){a.resume?.();const t=a.currentTime;for(const [f,d] of [[880,0],[1175,.18]]){const o=a.createOscillator(),g=a.createGain();o.frequency.value=f;g.gain.setValueAtTime(.0001,t+d);g.gain.exponentialRampToValueAtTime(.25,t+d+.02);g.gain.exponentialRampToValueAtTime(.0001,t+d+.15);o.connect(g).connect(a.destination);o.start(t+d);o.stop(t+d+.16)}}}catch{}}
+
 }
 /* 熊寶行進：以 0.25 秒間的移動方向判斷前方（GPS 開啟時改用你的實際位置） */
 function enforceBearTick(){
@@ -585,23 +612,26 @@ function enforceBearTick(){
  const unit=realMetres(),last=enforce.lastAhead,sameTrip=ahead&&last&&enforce.lastRev===journey.revision;enforce.lastAhead=ahead;enforce.lastRev=journey?.revision;
  /* 用上次檢查時的路線（從上次位置沿實際道路到現在），這段間隔裡經過的點也會檢查到 */
  let route=sameTrip?last:ahead,step=sameTrip?(alongRoute(last,player,unit,5,1e9)?.s??n*unit):0;
- if(!route&&heading&&n<2){route=navigation?.lookahead?navigation.lookahead(prev.x,prev.z,heading,(350+n*unit)/unit,.2):null;step=n*unit} /* 搖桿：沿熊寶所在道路往前看 */
+ if(!route&&heading&&n<2){const all=navigation?.lookaheadAll?navigation.lookaheadAll(prev.x,prev.z,heading,(350+n*unit)/unit,.2):[];step=n*unit;if(all.length){trackEnforceAlert(player,heading,{unit,routes:all,step},n*unit);showEnforceAlert(checkAlerts(enforce.points,player,heading,{unit,routes:all,step},enforce.alerted));return}} /* 搖桿：沿熊寶所在道路往前看（路口幾條直行方向都看） */
  if(!route){checkAlerts(enforce.points,player,null,{unit},enforce.alerted);return}
- showEnforceAlert(checkAlerts(enforce.points,player,heading,{unit,route,step},enforce.alerted));
+ trackEnforceAlert(player,heading,{unit,route,step},n*unit);showEnforceAlert(checkAlerts(enforce.points,player,heading,{unit,route,step},enforce.alerted));
 }
 /* GPS：用「至少 30 公尺（定位誤差大時取誤差的 3 倍）以前的位置」算行進方向，避免定位飄移時方向顛倒；
    時速低於 5 公里（步行、停車）不提醒。沿你目前所在的道路往前看（路口取最直的那條），只提醒這條路上同方向的測速 */
 function enforceGpsCheck(pos){
- if(!enforce.on||!gps.world||!enforce.points.length)return;const unit=realMetres(),now={x:gps.world.x,z:gps.world.z,t:pos.timestamp||Date.now()},heading=gps.heading;
- if(!heading){checkAlerts(enforce.points,now,null,{unit},enforce.gpsAlerted);return}
+ if(!enforce.on||!gps.world||!enforce.points.length)return;const unit=realMetres(),now={x:gps.world.x,z:gps.world.z,t:pos.timestamp||Date.now()},heading=gps.heading,moving=(gps.speed||0)>=5/3.6;
+ const prev=gps.prevFix,moved=prev&&now.t-prev.t<=10000?Math.hypot(now.x-prev.x,now.z-prev.z)*unit:0;
  let route=null,step=0;
- /* 導航中且在路線上：直接看接下來要走的路線（轉彎也算得準）；否則沿你所在的道路往前看（路口取最直的那條） */
- if(gpsNav&&gpsNav.off===0&&gpsNav.lastLat<=40){const from=Math.max(0,Math.min(gpsNav.prevS??gpsNav.s,gpsNav.s));route=gpsNav.ahead(from,350/unit+(gpsNav.s-from));if(route)step=(gpsNav.s-from)*unit}
- if(!route){
-  /* 從上一個定位點開始看：定位間隔較長（例如 3～5 秒一筆）時，中間經過的路口也不會漏 */
-  const prev=gps.prevFix,moved=prev&&now.t-prev.t<=10000?Math.hypot(now.x-prev.x,now.z-prev.z)*unit:0,from=moved>0&&moved<200?prev:now;step=from===prev?moved:0;
-  route=navigation?.lookahead?navigation.lookahead(from.x,from.z,heading,(350+step)/unit,.35):null;
+ /* 導航中且在路線上：直接看接下來要走的路線（不必等方向算出來，轉彎也算得準）；否則沿你所在的道路往前看（路口取最直的那條，道路本身轉彎會跟著彎） */
+ if(moving&&gpsNav&&gpsNav.off===0&&gpsNav.lastLat<=40){const from=Math.max(0,Math.min(gpsNav.prevS??gpsNav.s,gpsNav.s));route=gpsNav.ahead(from,350/unit+(gpsNav.s-from));if(route)step=(gpsNav.s-from)*unit}
+ if(!route&&moving&&heading){
+  /* 從上一個定位點開始看：定位間隔較長（例如 3～5 秒一筆）時，中間經過的路口也不會漏；定位誤差大時找路範圍放寬 */
+  const from=moved>2*(gps.fix?.accuracy||10)&&moved<200?prev:now;step=from===prev?moved:0; // 移動距離比定位誤差大很多時才從上一點看（慢速時直接從目前位置看，距離較準）
+  const reach=Math.min(.6,Math.max(.35,(gps.fix?.accuracy||10)*3/unit));
+  const all=navigation?.lookaheadAll?navigation.lookaheadAll(from.x,from.z,heading,(350+step)/unit,reach):[];
+  if(all.length){if(enforce.active)trackEnforceAlert(now,heading,{unit,routes:all,step},moved);showEnforceAlert(checkAlerts(enforce.points,now,heading,{unit,routes:all,step},enforce.gpsAlerted),{sound:true});return}
  }
+ if(enforce.active)trackEnforceAlert(now,heading,{unit,route,step},moving?moved:0);
  if(!route){checkAlerts(enforce.points,now,null,{unit},enforce.gpsAlerted);return}
  showEnforceAlert(checkAlerts(enforce.points,now,heading,{unit,route,step},enforce.gpsAlerted),{sound:true});
 }

@@ -1,6 +1,6 @@
 {
   "project": "熊熊澎湖之旅",
-  "exportedAt": "2026-10-26T07:51:08+08:00",
+  "exportedAt": "2026-10-26T10:03:14+08:00",
   "siteVersion": 14,
   "deploymentDirectory": "dist",
   "recordCount": 977,
@@ -28,7 +28,9 @@
     "Enforcement simulation: bear road trips 0 false/0 missed (old 34 false, 7 missed); GPS 5 m noise false 131->43, wrong direction 2->0",
     "Browser GPS drive toward 縣道202線湖西段: one alert at 300 m forward, none in reverse",
     "npm run check: 11 suites PASS incl. tests/gpsnav.mjs",
-    "Browser GPS drive 2.3 km at ~40 km/h with navigation: bear within 12 px of user, arrival then stamp available; off-route reroute; GPS resumes after WebGL reload"
+    "Browser GPS drive 2.3 km at ~40 km/h with navigation: bear within 12 px of user, arrival then stamp available; off-route reroute; GPS resumes after WebGL reload",
+    "tests/enforcement-sweep.mjs: 512 runs (32 cameras x both directions x 40/70 km/h x GPS error 0/8 m x with/without navigation) all pass",
+    "Browser: GPS past 合界段 countdown 300->20 m then hidden; reverse none; bear trip 馬公->西嶼 6 alerts each hidden after passing"
   ],
   "unverified": [
     "Node.js 24 run (will run in GitHub Actions)",
@@ -59,28 +61,28 @@
     },
     {
       "path": "CLAUDE.md",
-      "bytes": 11353,
-      "sha256": "4b52ba263f9a7d89618c8bf5c112ebeef19d2974a124fda03f640ec330de5bb7"
+      "bytes": 11653,
+      "sha256": "b9164f2c45a9db609707e74c2ca9782e45acb3c1b158d111c9a8d05ca2a2286c"
     },
     {
       "path": "DEVELOPMENT.md",
-      "bytes": 24540,
-      "sha256": "a163eec65e5f6767692c20d18e22ef7fa77c5c38b27a82c671cc8bd22eb3138a"
+      "bytes": 25169,
+      "sha256": "b8fa1dc803e4a3a9dcd3948a69c64a918fa1de1809482f0f1165c0cafc4ffa8c"
     },
     {
       "path": "HANDOFF_CLAUDE_GEMINI.md",
-      "bytes": 36204,
-      "sha256": "735ac53bbce9ea4de16dc62f0594909da8996e64f151ead04644970c83820de5"
+      "bytes": 38372,
+      "sha256": "730fe33c63a0d41ffb2dba533291c646da01839f06e50ce5a68016d2a6e1d1a5"
     },
     {
       "path": "README.md",
-      "bytes": 13472,
-      "sha256": "eac6eebe10be0e4bc75216a9ee44dc922fed725bd58feb7d2b562ed577fb5eaf"
+      "bytes": 13783,
+      "sha256": "5cd01e4655418971ffbb8a603cad11dafba843da60ef39b170359da3d06c130c"
     },
     {
       "path": "START_HERE.txt",
-      "bytes": 3970,
-      "sha256": "a1b45d997604899da8fad38a51edc377f6fe7112ebb5afb764c6aee099621e63"
+      "bytes": 4158,
+      "sha256": "cb0c40ec0b3910d4eef9b732ebca06b59f64efb1649f96a925b365b51c8669bc"
     },
     {
       "path": "dist/.nojekyll",
@@ -849,8 +851,8 @@
     },
     {
       "path": "dist/enforcement.js",
-      "bytes": 8416,
-      "sha256": "9d95d6c5d0fafb2957da75f5934d61d43f07c16bc2410b580e29c00d6735a481"
+      "bytes": 10140,
+      "sha256": "f40c313abfbbb85f0158dcad9c798b4a180a7a2ac1bc2928b3458bcc1defd281"
     },
     {
       "path": "dist/engine.js",
@@ -864,8 +866,8 @@
     },
     {
       "path": "dist/game.js",
-      "bytes": 87656,
-      "sha256": "ec16ff066adea8d87f7af9097b33f704e2177bc9e0053a442af34446beafe81b"
+      "bytes": 91208,
+      "sha256": "f69ea14c0bb379932c3503270cb1fe993e152affda48f65fac038e1e94301040"
     },
     {
       "path": "dist/geo/MIRROR-LICENSE.txt",
@@ -909,8 +911,8 @@
     },
     {
       "path": "dist/gpsnav.js",
-      "bytes": 3692,
-      "sha256": "fee0ffd62de3777d0ed4c6d66b6aeff221f298b0b0b180f4cc478f86747cb7f6"
+      "bytes": 3796,
+      "sha256": "faae04dd6af3bedae87e9e6965465cf415719d41509a981ff5b2a9c8cc17ae05"
     },
     {
       "path": "dist/icons/apple-touch-icon.png",
@@ -940,7 +942,7 @@
     {
       "path": "dist/index.html",
       "bytes": 12721,
-      "sha256": "3e05652fe5e68d449153ea2bd745a391ad9ab2ee4fcef84f819b1f6ad5e1571c"
+      "sha256": "87e5e49ed4feb6f7bd3ee610cb7509ac486b7fb3299440beb676b5cd26843ac2"
     },
     {
       "path": "dist/manifest.json",
@@ -984,8 +986,8 @@
     },
     {
       "path": "dist/roads.js",
-      "bytes": 9476,
-      "sha256": "548b1f29a832b92a73ac0228a09308c32d1f33e9c7887afbf60de4449f4873c7"
+      "bytes": 11319,
+      "sha256": "df1a6eef466f11d2c677610c67a5027938616827cc52b938a38bb567372feb4a"
     },
     {
       "path": "dist/style.css",
@@ -1024,8 +1026,8 @@
     },
     {
       "path": "package.json",
-      "bytes": 565,
-      "sha256": "cbe122123cf259021b980598087a970c4813d76a2d4940c9c5051700b0328efa"
+      "bytes": 601,
+      "sha256": "a89231ef2158624d7d5ac84bc8244724b46daf9b8a5913af976d4b5a4b449d8b"
     },
     {
       "path": "sources/app-icon-travel-bear.png",
@@ -1108,9 +1110,14 @@
       "sha256": "0c4447ffd1e3e1bed15023c52724dfe78ab21d66d2378c0d39ed605918470141"
     },
     {
+      "path": "tests/enforcement-sweep.mjs",
+      "bytes": 7361,
+      "sha256": "a138535e5b64ba81e611f85467550a676aae149eb6b857d506e766624c47f309"
+    },
+    {
       "path": "tests/enforcement.mjs",
-      "bytes": 10108,
-      "sha256": "9a8d8e7572380666e5920ff6a4240d1c968451fd3519dbc045e74ba9632f2fd5"
+      "bytes": 10597,
+      "sha256": "37b1d5c7ab85555a4bda41b08a18777c9c0be46d2894c5e654cc17ff5e2a5b58"
     },
     {
       "path": "tests/ferry-sheet.mjs",
@@ -1244,7 +1251,8 @@
     "2026-10-17 第21版：WebGL 收回自動重新載入；測速紅圈拉遠隱藏、可疑點不顯示",
     "2026-10-26 第22版：立體建築底圖（Overture Maps 建物 8022 棟，拉近才畫）；熊寶大小不隨視角變；桌機地區資訊改左側、底圖狀態不蓋放大鈕；手機開測速時地圖選單收起",
     "2026-10-26 第23版：測速提醒沿道路判斷（修正旁邊道路誤報、快速移動漏報、GPS 方向顛倒）；介面移除試算表名稱與資料來源說明",
-    "2026-10-26 第24版：開定位選目的地＝從你的位置導航（熊寶沿路跟著你、照你的速度；偏離重新規劃、抵達提示、行進方向朝上、螢幕保持亮著、重新載入後接續）；測速詳情保留官方資料表連結與澎湖縣警察局公布"
+    "2026-10-26 第24版：開定位選目的地＝從你的位置導航（熊寶沿路跟著你、照你的速度；偏離重新規劃、抵達提示、行進方向朝上、螢幕保持亮著、重新載入後接續）；測速詳情保留官方資料表連結與澎湖縣警察局公布",
+    "2026-10-26 第25版：測速提醒持續倒數、通過後收起；沿路往前看修正（節點、轉彎、岔路、長直路段、GPS 方向）；新增逐點雙向排查測試"
   ],
   "previousSiteVersion": 13,
   "previousExportSha256": "31529d562278dad55686203c1d2c902d9090c9687437422f4c8913a14c0592e9",
@@ -1258,5 +1266,5 @@
     "signingKey": "shared with 熊熊綜合系統 (fingerprint B4:D3:...:3A:3A); keystore kept outside repository",
     "assetlinks": "https://bearbabybaby-ai.github.io/.well-known/assetlinks.json lists both apps"
   },
-  "version": "24"
+  "version": "25"
 }

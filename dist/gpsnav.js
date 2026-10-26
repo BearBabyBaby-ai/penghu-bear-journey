@@ -47,7 +47,7 @@ export class GpsNav{
   /* 從 s 起往前的陸路（遇到港口／船段就停），給測速提醒用 */
   ahead(from,length){
     const out=[this.point(from)];if(out[0].type&&out[0].type!=='walk')return null;
-    for(const q of this.pts){if(q.s<=from)continue;if(q.type!=='walk'||q.s-from>length)break;out.push({x:q.x,z:q.z})}
+    for(const q of this.pts){if(q.s<=from)continue;if(q.type!=='walk')break;if(q.s-from>length){const e=this.point(from+length);out.push({x:e.x,z:e.z});break}out.push({x:q.x,z:q.z})} // 長直路段也看到 length 為止
     if(out.length<2){const end=this.point(Math.min(this.total,from+length));if(end.type!=='walk')return null;out.push({x:end.x,z:end.z})}
     return out;
   }

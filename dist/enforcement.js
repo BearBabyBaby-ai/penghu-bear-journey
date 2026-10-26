@@ -64,7 +64,17 @@ export function alongRoute(route,a,unit,tol,max){
    科技執法路口：沿路（或直線）techRange 公尺內，不分方向。step＝上次檢查後移動的公尺數，
    用來補足檢查間隔，避免移動較快時直接跳過 50 公尺的路口範圍。
    同一點提醒一次，離開 rearm 公尺後才會再提醒。原始座標疑似有誤的點不提醒。 */
-export function checkAlerts(points,pos,heading,{unit=1,range=300,techRange=50,rearm=600,route=null,lateral=20,step=0}={},alerted=new Set()){
+export function checkAlerts(points,pos,heading,opts={},alerted=new Set()){
+  /* routes：多條可能的前方路線（沒有規劃路線、路口有幾條直行方向時），任一條上有就提醒，取最近的距離 */
+  if(opts.routes){const seen=new Map();for(const route of opts.routes){const probe=new Set(alerted);for(const r of checkAlertsOne(points,pos,heading,{...opts,routes:null,route},probe))if(!seen.has(r.point.id)||r.distance<seen.get(r.point.id).distance)seen.set(r.point.id,r)}
+    if(!opts.routes.length)checkAlertsOne(points,pos,null,{...opts,routes:null},alerted);
+    for(const r of seen.values())alerted.add(r.point.id);
+    // 可再提醒：離開 rearm 公尺後
+    for(const p of points){const a=p.alertAt||p.world;if(a&&alerted.has(p.id)&&!seen.has(p.id)&&Math.hypot(a.x-pos.x,a.z-pos.z)*(opts.unit||1)>(opts.rearm||600))alerted.delete(p.id)}
+    return [...seen.values()].sort((a,b)=>a.distance-b.distance)}
+  return checkAlertsOne(points,pos,heading,opts,alerted);
+}
+function checkAlertsOne(points,pos,heading,{unit=1,range=300,techRange=50,rearm=600,route=null,lateral=20,step=0}={},alerted=new Set()){
   const out=[],techReach=techRange+Math.max(0,Math.min(step,150));
   for(const p of points){
     const a=p.alertAt||p.world;if(!a||p.suspect)continue;
@@ -88,6 +98,15 @@ export function checkAlerts(points,pos,heading,{unit=1,range=300,techRange=50,re
     if(hit!==null){alerted.add(p.id);out.push({point:p,distance:hit})}
   }
   return out.sort((a,b)=>a.distance-b.distance);
+}
+
+/* 已提醒的點：沿路線（或正前方走廊）還剩多少公尺；回傳負值或 null 表示已經通過 */
+export function distanceAhead(p,pos,heading,{unit=1,route=null,routes=null,step=0,lateral=20,max=400}={}){
+  const a=p.alertAt||p.world;if(!a)return null;
+  if(routes){let best=null;for(const r of routes){const d=distanceAhead(p,pos,heading,{unit,route:r,step,lateral,max});if(d!==null&&(best===null||d<best))best=d}return best}
+  if(route&&route.length>1){const r=alongRoute(route,a,unit,15,max+step);return r?r.s-step:null}
+  if(!heading)return null;const dx=a.x-pos.x,dz=a.z-pos.z,along=(dx*heading.x+dz*heading.z)*unit,lat=Math.abs(dx*heading.z-dz*heading.x)*unit;
+  return lat<=lateral*2?along:null;
 }
 
 export function alertText({point:p,distance}){
