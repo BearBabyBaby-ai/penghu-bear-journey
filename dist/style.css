@@ -1,0 +1,319 @@
+:is(#hud){position:absolute;inset:0;pointer-events:none;z-index:3}#hud .destination{pointer-events:auto}#labels{z-index:1}.topbar,.dock{z-index:10}
+:root{--ink:#324f47;--muted:#78867b;--cream:#faf8ed;--line:#d8deca;--green:#3e6c57;--food:#cd8a61;--sight:#6e9e94;--temple:#ae8d63;--shadow:0 16px 45px #37564c18;font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;color:var(--ink);font-size:14px}*{box-sizing:border-box}body{margin:0;background:#acd2d2;overflow:hidden}button,input,select{font:inherit}button,select,a{ -webkit-tap-highlight-color:transparent}button{cursor:pointer;color:inherit}button:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid #b48b53;outline-offset:4px}button{border:0}button:disabled{cursor:default;opacity:.5}a{color:inherit;text-decoration:none}button:hover{filter:brightness(.97)}[hidden]{display:none!important}#world{width:100vw;height:100dvh;display:block;touch-action:none;background:#b0d7d6}#labels{position:absolute;inset:0;pointer-events:none;overflow:hidden}.place-label{position:absolute;transform:translate(-50%,-100%);pointer-events:auto;border-radius:18px;padding:7px 12px 7px 8px;background:#faf9eeed;box-shadow:0 4px 14px #305f4c18;white-space:nowrap;font-size:11px;max-width:170px;overflow:hidden;text-overflow:ellipsis;transition:opacity .2s,border-color .2s;border:1px solid #fff9;display:flex;align-items:center;gap:6px}.place-label .dot{display:inline-grid;place-items:center;background:var(--tag,#7ca38e);color:white;width:18px;height:18px;border-radius:50%;font-size:10px;flex:none}.place-label.target{border-color:#416e57;background:#fffff4;box-shadow:0 0 0 3px #faf8ed55}.place-label.collected .dot{background:#6c8a66}.topbar{position:absolute;left:38px;right:38px;top:28px;display:flex;align-items:center;justify-content:space-between;pointer-events:none}.topbar>*{pointer-events:auto}.brand{display:flex;align-items:center;gap:12px;font-size:18px;font-weight:750;letter-spacing:2px}.brand small{display:block;font-size:8px;letter-spacing:2.3px;font-weight:500;margin-top:6px}.bear-mark{position:relative;display:inline-block;width:36px;height:31px;border-radius:48% 48% 43% 43%;background:#a47b54;flex:none}.bear-mark:before,.bear-mark:after{content:"";position:absolute;top:-7px;background:#a47b54;width:13px;height:14px;border-radius:50%}.bear-mark:before{left:0}.bear-mark:after{right:0}.bear-mark i{position:absolute;width:16px;height:11px;border-radius:50%;background:#e8d5ae;left:10px;bottom:5px}.bear-mark i:before{content:"";position:absolute;width:5px;height:4px;background:#3e473a;left:5px;top:1px;border-radius:50%}.top-actions{display:flex;align-items:center;gap:16px}.region-wrap{display:flex;align-items:center;gap:10px;border-radius:24px;padding:10px 17px;background:#f8f7e9df;border:1px solid #fffa}.eyebrow{font-size:10px;letter-spacing:1.8px;color:var(--muted);font-weight:600}.region-wrap select{border:0;background:transparent;outline:0;font-weight:700;color:var(--ink)}.icon-button{width:36px;height:36px;border-radius:50%;background:#f8f7e9dc;display:grid;place-items:center;font-size:20px;font-weight:400}.intro{position:absolute;left:6.1vw;top:23vh;pointer-events:none}.intro>*{pointer-events:auto}.kicker{font-size:9px;letter-spacing:2.5px;display:flex;align-items:center;gap:10px}.tiny-line{width:28px;height:1px;background:var(--ink)}h1{font-family:"Noto Serif TC","PMingLiU",serif;font-weight:600;font-size:clamp(38px,4.1vw,67px);line-height:1.37;letter-spacing:5px;margin:24px 0 20px}.intro p{font-size:13px;line-height:2.1;color:#5d7569;letter-spacing:1px}.primary{background:var(--green);border-radius:7px;color:#fffced;font-size:13px;padding:16px 23px;letter-spacing:1px;display:inline-flex;gap:28px;align-items:center}.primary span{font-size:20px;line-height:1}.intro .primary{margin-top:21px;box-shadow:0 7px 20px #426c5022}.intro-meta{display:flex;gap:15px;font-size:9px;color:#657d71;margin-top:25px}.intro-meta span+span:before{content:"·";margin-right:15px}.glass{background:#faf9eeeb;border:1px solid #ffffffe0;box-shadow:var(--shadow);backdrop-filter:blur(14px)}.compass{position:absolute;right:48px;top:114px;width:52px;height:74px;text-align:center;font-size:9px;letter-spacing:1px;opacity:.8}.compass svg{width:50px;height:50px}.destination{position:absolute;right:34px;bottom:134px;width:276px;border-radius:14px;padding:20px}.tag{font-size:10px;border:1px solid #bac9b1;display:inline-block;padding:4px 8px;border-radius:12px;color:#748569}.destination h3{font-family:"Noto Serif TC","PMingLiU",serif;font-size:21px;line-height:1.5;margin:13px 0 7px;font-weight:600}.destination p{font-size:11px;color:#819080;line-height:1.7;margin:0}.destination .primary{margin-top:14px;width:100%;justify-content:space-between;padding:12px 15px;font-size:11px}.destination .distance{display:flex;align-items:center;justify-content:space-between;font-size:11px;margin-top:16px}.distance strong{font-size:23px;font-weight:500}.distance small{font-size:10px}.scene-caption{position:absolute;bottom:32px;left:38px;font-size:10px;letter-spacing:.7px;display:flex;align-items:center;gap:7px}.scene-caption small{position:absolute;left:0;top:19px;font-size:8px;color:#4d7c72;white-space:nowrap}.status-dot{width:5px;height:5px;border-radius:50%;background:#588375}.controls-hint{position:absolute;right:38px;bottom:34px;font-size:9px;color:#51756a;display:flex;gap:8px;align-items:center}.controls-hint kbd{font-family:inherit;letter-spacing:2px;border:1px solid #73988c73;background:#eff5e34d;border-radius:4px;padding:4px}.dock{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);display:flex;border-radius:40px;padding:7px 10px;gap:1px}.dock button{background:transparent;border-radius:30px;padding:10px 18px;display:flex;gap:9px;align-items:center;font-size:11px;white-space:nowrap}.dock button.active{background:#e6ebd9}.dock svg{width:19px;height:19px;fill:none;stroke:#668372;stroke-width:1.3;stroke-linejoin:round;stroke-linecap:round}.dock b{display:inline-block;font-size:9px;min-width:16px;text-align:center;margin-left:4px;border-radius:20px;background:#dbe5cf;padding:2px;font-weight:500}.panel{position:absolute;right:20px;top:100px;bottom:112px;width:min(470px,calc(100vw - 40px));border-radius:20px;background:#faf8ee;box-shadow:0 18px 75px #274b4933;border:1px solid #ffffff;overflow:hidden;z-index:20;display:flex;flex-direction:column}.panel-head{display:flex;align-items:center;justify-content:space-between;padding:25px 25px 17px;border-bottom:1px solid var(--line)}.panel h2{font-family:"Noto Serif TC","PMingLiU",serif;font-size:25px;font-weight:600;letter-spacing:2px;margin:7px 0 0}.panel-head .icon-button{background:#eef0e2}.panel #panel-body{overflow-y:auto;padding:21px 24px 30px;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#c2ceb8 transparent}.panel p{font-size:12px;line-height:1.9}.search{width:100%;background:#f1f1e5;border:1px solid #dce2d0;border-radius:8px;padding:12px 13px;color:var(--ink);outline:0}.filters{display:flex;gap:6px;margin:12px 0;flex-wrap:wrap}.filter{font-size:10px;background:#ebeddf;border-radius:15px;padding:7px 11px}.filter.selected{background:#4d735c;color:#fffced}.result-summary{color:var(--muted);font-size:10px;margin:17px 0 10px}.atlas-list{display:flex;flex-direction:column;gap:8px}.atlas-item{display:flex;align-items:center;gap:13px;padding:14px 12px;border:1px solid #e2e4d5;border-radius:10px;background:#fffdf4;text-align:left;flex:none}.atlas-item:hover{border-color:#a4b398}.kind-tile{height:41px;width:41px;border-radius:11px;background:#e8e9d5;display:grid;place-items:center;flex:none;font-size:19px;color:var(--tag)}.atlas-item h3{font-size:13px;line-height:1.7;margin:0 0 3px;font-weight:600}.atlas-item p{margin:0;font-size:10px;line-height:1.5;color:var(--muted)}.atlas-item .arrow{margin-left:auto;color:#90a087;font-size:16px}.atlas-item .mini-check{font-size:10px;display:inline-block;color:#68825a;margin-left:7px}.load-more{width:100%;padding:13px;background:#e9ecdb;border-radius:9px;margin-top:13px;font-size:11px}.small-note{font-size:10px!important;color:#7b8878;line-height:1.9}.summary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:16px 0}.summary-grid>div{background:#f0f0e2;padding:13px 9px;border-radius:9px;text-align:center}.summary-grid strong{font-family:Georgia,serif;display:block;font-size:26px;font-weight:400}.summary-grid span{display:block;color:#83917f;font-size:10px;margin-top:4px}.stamp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.stamp{background:#f5f4e7;border:1px solid #e2e3cf;border-radius:10px;padding:17px 8px;min-height:119px;text-align:center;display:flex;align-items:center;flex-direction:column;justify-content:center}.stamp .stamp-symbol{width:47px;height:47px;display:grid;place-items:center;border:2px dashed currentColor;border-radius:50%;font-size:22px;opacity:.8;transform:rotate(-9deg);margin-bottom:10px}.stamp strong{font-size:10px;font-weight:500;line-height:1.6}.stamp small{font-size:8px;margin-top:5px;color:#8b9683}.empty{background:#f0f0e2;border:1px dashed #cbd4bc;border-radius:12px;padding:30px 21px;text-align:center;font-size:12px;color:#85907b;line-height:2}.small-button{font-size:10px;background:#e9ebdc;border-radius:7px;padding:9px 12px}.save-actions{display:flex;gap:8px;margin:20px 0}.save-actions button{flex:1}.tide-controls{display:flex;gap:9px;align-items:center;margin-bottom:15px}.tide-controls input,.tide-controls select{border:1px solid #d1dcc4;background:#fffdf2;border-radius:6px;padding:10px;color:var(--ink);max-width:100%;min-width:0}.tide-controls input{flex:1}.tide-controls select{font-size:11px}.tide-summary{background:#e9eddd;border-radius:12px;padding:15px;margin:14px 0}.tide-summary h3{font-size:13px;margin:0 0 10px}.time-pairs{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.time-pairs div{background:#f9f8ec;padding:12px;border-radius:7px;font-size:10px}.time-pairs strong{display:block;font-size:19px;font-weight:500;margin-top:6px}.tide-table{width:100%;border-collapse:collapse;font-size:11px}.tide-table th{font-size:9px;color:#89957f;letter-spacing:.5px;text-align:left;font-weight:400;padding:10px 4px;border-bottom:1px solid #d9dfcb}.tide-table td{padding:11px 4px;border-bottom:1px solid #e2e6d7}.tide-table .low{color:#517e70}.tide-tabs{display:flex;gap:5px;margin-bottom:17px}.tide-tabs button{flex:1;font-size:10px;background:#eceee0;padding:10px 4px;border-radius:7px}.tide-tabs button.selected{background:#55775e;color:white}.simulator{padding:16px;background:#e2ede2;border-radius:12px;margin-top:17px}.simulator h3{font-size:13px;margin:0 0 7px}.simulator input{width:100%;accent-color:#63836c;margin:16px 0 5px}.simulator .slider-labels{display:flex;justify-content:space-between;font-size:9px;color:#769078}.simulator output{font-size:11px;display:block;margin-top:12px}.simulator p{font-size:10px!important;margin-bottom:0}.source-foot{border-top:1px solid #dbe1cd;margin-top:26px;padding-top:16px}.source-foot a{font-size:10px;text-decoration:underline;text-underline-offset:3px}.source-foot p{font-size:9px;line-height:1.9;margin:9px 0}.detail-tag{display:flex;gap:8px;align-items:center}.detail-tag .eyebrow{letter-spacing:1px}dialog{border:1px solid #fff;background:#faf8ed;color:var(--ink);padding:35px;border-radius:20px;max-width:calc(100vw - 30px);width:490px;max-height:85dvh;overflow:auto;box-shadow:0 30px 120px #1c4b4d44}dialog::backdrop{background:#284f4b55;backdrop-filter:blur(5px)}.dialog-close{position:absolute;right:15px;top:15px;background:#eaeedc}.detail-icon{width:68px;height:68px;border-radius:17px;background:#e6e9d5;display:grid;place-items:center;font-size:32px;margin:10px 0 23px}dialog h2{font-family:"Noto Serif TC","PMingLiU",serif;font-size:27px;line-height:1.6;letter-spacing:1px;margin:13px 0}dialog p{font-size:12px;line-height:2;color:#70816e}dialog h4{font-size:11px;letter-spacing:1px;margin:22px 0 6px}.detail-fields{display:grid;grid-template-columns:55px 1fr;gap:11px 8px;font-size:11px;line-height:1.7;margin:23px 0}.detail-fields dt{color:#91a087}.detail-fields dd{margin:0}.detail-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:24px}.detail-actions .primary{flex:1;justify-content:center;padding:13px 16px;font-size:11px}.detail-actions a{background:#e7ebd9;padding:14px 16px;border-radius:7px;font-size:11px}.source-row{font-size:9px;color:#96a18c;margin-top:20px}.help-grid{display:grid;grid-template-columns:1fr 1.35fr;border-top:1px solid var(--line);gap:14px;font-size:11px;padding:20px 0}.help-grid>span{color:#83917b}.help-grid b{font-weight:500}#toast{position:absolute;top:103px;left:50%;transform:translateX(-50%) translateY(-10px);background:#faf8ebf5;box-shadow:var(--shadow);padding:13px 22px;border-radius:12px;z-index:60;font-size:12px;pointer-events:none;opacity:0;transition:.25s;max-width:calc(100vw - 30px);text-align:center;line-height:1.8}#toast.visible{opacity:1;transform:translateX(-50%) translateY(0)}#loading{position:absolute;inset:0;background:#e8eddd;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:100;gap:8px}#loading .bear-mark{margin-bottom:15px;animation:breathe 1.7s ease-in-out infinite}#loading p{font-size:14px;letter-spacing:2px}#loading small{font-size:10px;color:#96a08d}@keyframes breathe{50%{transform:translateY(-7px)}}#joystick,#touch-action{display:none}input[type=file]{display:none}.error-box{max-width:500px;padding:25px;line-height:1.9;font-size:13px;text-align:center}#loading.error .bear-mark{animation:none}.locked-stamp{opacity:.5}.footer-stat{margin-top:20px;color:#82927d;font-size:10px;line-height:1.9}.stamps-filter{margin:13px 0 18px}.panel-open .destination{display:none}
+@media(min-width:1450px){.intro{left:7vw}.destination{right:43px}.panel{right:29px;width:490px}.topbar{left:45px;right:45px}}
+@media(max-width:1050px){.controls-hint{display:none}.scene-caption small{display:none}.scene-caption{bottom:110px}.dock{bottom:24px}.intro{left:5vw}.intro h1{font-size:49px}.destination{width:230px;right:22px}.topbar{left:24px;right:24px}.intro-meta{font-size:8px;gap:9px}.intro-meta span+span:before{margin-right:9px}}
+@media(max-width:700px){.topbar{left:20px;right:18px;top:25px}.brand{font-size:14px;letter-spacing:1px;gap:10px}.brand small{font-size:6px;letter-spacing:1.5px}.brand .bear-mark{width:31px;height:27px}.bear-mark i{left:8px}.region-wrap{padding:8px 10px}.region-wrap .eyebrow{display:none}.top-actions{gap:8px}.top-actions .icon-button{height:30px;width:30px;font-size:17px}.region-wrap select{font-size:11px}.intro{top:auto;bottom:145px;left:27px}.intro h1{font-size:39px;letter-spacing:3px;line-height:1.4;margin:16px 0 12px}.intro .kicker{font-size:7px;letter-spacing:1.7px}.intro p{font-size:11px;line-height:1.9;margin:0}.intro .primary{padding:13px 20px;font-size:11px;margin-top:20px}.intro-meta{margin-top:18px;font-size:8px}.dock{bottom:19px;padding:5px 6px;border-radius:22px;width:calc(100% - 36px);justify-content:space-around}.dock button{padding:12px 8px;font-size:9px;gap:6px}.dock svg{width:17px;height:17px}.dock b{font-size:8px}.compass{right:23px;top:91px;width:34px;height:54px}.compass svg{width:35px;height:35px}.destination{right:19px;bottom:97px;width:204px;border-radius:12px;padding:14px}.destination h3{font-size:17px;margin:8px 0 4px}.destination .tag{font-size:8px;padding:3px 6px}.destination p{font-size:9px}.destination .distance{margin-top:10px;font-size:9px}.distance strong{font-size:19px}.destination .primary{font-size:10px;padding:10px 11px;margin-top:10px}.scene-caption{display:none}.panel{right:10px;left:10px;top:86px;bottom:91px;width:auto;border-radius:15px}.panel-head{padding:19px 20px 15px}.panel h2{font-size:22px}.panel #panel-body{padding:16px 19px 23px}.panel-head .eyebrow{font-size:8px}dialog{padding:29px 23px}dialog h2{font-size:24px}#toast{top:83px;font-size:10px;padding:11px 16px}#joystick{display:block;position:absolute;left:23px;bottom:104px;width:90px;height:90px;border:1px solid #f8f6ddc7;border-radius:50%;background:#f8f7df33;touch-action:none;z-index:10}#stick{position:absolute;width:39px;height:39px;left:25px;top:25px;border-radius:50%;border:1px solid #fff9;background:#f9f7e6a9;box-shadow:0 3px 10px #244b4020}#touch-action{display:block;position:absolute;right:24px;bottom:315px;width:44px;height:44px;border-radius:50%;border:1px solid #fff;background:#f8f8e4d9;z-index:10;font-size:14px}.not-started #joystick,.not-started #touch-action,.panel-open #joystick,.panel-open #touch-action{display:none}.help-grid{font-size:10px;gap:12px}.controls-hint{display:none}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;scroll-behavior:auto!important;transition:none!important}}
+.map-tools{position:absolute;top:115px;right:118px;border-radius:22px;padding:5px;display:flex;gap:3px;pointer-events:auto}.map-tools button,.map-tools a{font-size:10px;background:transparent;border-radius:16px;padding:9px 12px}.map-tools button:hover,.map-tools a:hover{background:#e9eddc}.intro{background:#faf8edeb;border:1px solid #fff9;border-radius:22px;padding:25px 29px;box-shadow:0 14px 60px #35564a0d;backdrop-filter:blur(9px);top:19vh}.intro h1{font-size:clamp(35px,3.6vw,57px);margin-top:16px}.summary-grid{grid-template-columns:repeat(2,1fr)}.scene-caption{background:#faf8ede3;padding:7px 10px;border-radius:6px;bottom:42px}.scene-caption small{top:34px;left:8px;background:#faf8eddf;padding:4px 7px;border-radius:4px;color:#6e8577}.destination{background:#faf9eef5}@media(max-width:700px){.map-tools{right:65px;top:90px;padding:3px}.map-tools button,.map-tools a{font-size:8px;padding:7px 9px}.intro{padding:21px 24px;left:22px;bottom:125px;top:auto}.intro h1{font-size:35px}.intro-meta{font-size:7px}.compass{top:89px}.panel{top:132px}.scene-caption{display:flex;left:20px;bottom:80px;font-size:8px;padding:5px 8px}.scene-caption small{display:none}.destination{bottom:109px}}
+.brand-bear{width:47px;height:51px;object-fit:contain;display:block;flex:none}#bearbao-avatar{position:absolute;z-index:2;pointer-events:none;object-fit:contain;transform:translate(-50%,-100%) rotate(var(--lean,0deg));transform-origin:50% 96%;filter:drop-shadow(0 2px 1px #445a491c);will-change:left,top;user-select:none}#loading .brand-bear{width:103px;height:103px;margin-bottom:8px}@media(max-width:700px){.brand-bear{width:35px;height:39px}}
+.map-tools select{font:inherit;font-size:10px;background:#faf9ee;border:1px solid #d8deca;border-radius:15px;padding:6px;color:var(--ink);max-width:160px}.map-credit{position:absolute;z-index:12;right:8px;bottom:2px;background:#ffffffe8;padding:3px 6px;font-size:10px;line-height:1.4;max-width:95vw}.map-credit a{text-decoration:underline}.geo-status{position:absolute;z-index:9;right:34px;top:170px;max-width:310px;border-radius:10px;padding:9px 12px;font-size:10px;line-height:1.8;display:flex;flex-direction:column;pointer-events:auto}.geo-status button{font-size:10px;background:#e6ebd9;border-radius:6px;padding:5px 10px;align-self:flex-start;margin-top:4px}#tile-state:empty{display:none}@media(max-width:700px){.map-tools{right:64px;left:18px;flex-wrap:wrap;justify-content:flex-end;max-width:calc(100vw - 82px)}.map-tools select{font-size:9px;max-width:132px}.geo-status{right:18px;top:165px;max-width:calc(100vw - 240px);font-size:8px;padding:7px;line-height:1.6}.geo-status button{font-size:9px;padding:4px 7px}.map-credit{font-size:8px}.panel{top:150px}.compass{top:93px}}@media(max-width:400px){.geo-status{top:335px;max-width:180px}}.map-zoom{position:absolute;right:50px;top:205px;border-radius:18px;padding:3px;display:flex;flex-direction:column;pointer-events:auto}.map-zoom button{background:transparent;width:32px;height:32px;font-size:20px}.geo-status.ready{padding:6px 11px;gap:3px;font-size:10px;box-shadow:0 4px 14px #37564c12}.geo-status.ready #coast-state{color:#3e6c57}.not-started .geo-status.ready:not(.has-map-error){display:none}
+@media(max-width:700px){
+ .topbar{top:14px;left:13px;right:13px;height:43px}.brand{font-size:13px;letter-spacing:.8px;gap:7px}.brand small{font-size:6px;letter-spacing:1px}.brand-bear{width:31px;height:35px}.top-actions{gap:6px}.region-wrap{padding:8px}.region-wrap select{font-size:11px}
+ .map-tools{top:72px;left:12px;right:12px;max-width:none;justify-content:center;gap:2px;padding:4px;border-radius:17px;flex-wrap:wrap}.map-tools button{font-size:10px;padding:8px 7px}.map-tools select{font-size:10px;width:137px;max-width:137px;padding:6px 4px}.compass{right:15px;top:120px}.map-zoom{right:15px;top:178px;padding:2px;border-radius:13px}.map-zoom button{width:31px;height:31px;font-size:19px}
+ .geo-status,.geo-status.ready{top:129px;left:12px;right:65px;max-width:none;max-height:36px;overflow:auto;border-radius:9px;padding:5px 8px;display:flex;flex-direction:row;flex-wrap:wrap;align-items:center;gap:3px 8px;font-size:9px;line-height:1.4;box-shadow:none}.geo-status #terrain-state{display:none}.geo-status #coast-state{white-space:nowrap}.geo-status #tile-state{font-size:9px;min-width:0;flex:1}.geo-status button{font-size:9px;padding:3px 7px;margin:0}
+ .intro{pointer-events:auto;overscroll-behavior:contain;top:177px;bottom:109px;left:14px;right:14px;padding:23px 22px;overflow:auto;border-radius:20px}.intro h1{font-size:35px;letter-spacing:3px;line-height:1.35;margin:17px 0}.intro p{font-size:11px;line-height:1.85}.intro .primary{margin-top:19px;padding:13px 19px}.intro-meta{flex-wrap:wrap;gap:6px 10px;line-height:1.6;margin-top:15px}
+ .dock{bottom:calc(29px + env(safe-area-inset-bottom));width:calc(100% - 24px);padding:4px 6px;border-radius:23px}.dock button{padding:11px 7px;font-size:10px;gap:5px}.dock svg{width:17px;height:17px}.dock b{margin-left:1px}
+ .destination{left:12px;right:12px;bottom:calc(98px + env(safe-area-inset-bottom));width:auto;padding:12px 14px;border-radius:13px;max-height:175px;overflow:auto}.destination h3{font-size:17px;margin:5px 0;line-height:1.4}.destination p{display:none}.destination .tag{font-size:8px;padding:2px 6px}.destination .distance{margin-top:5px;font-size:9px}.destination .distance strong{font-size:17px}.destination .primary{font-size:10px;padding:9px 12px;margin-top:7px}
+ #joystick{left:18px;bottom:calc(274px + env(safe-area-inset-bottom));width:80px;height:80px}#stick{left:20px;top:20px;width:38px;height:38px}#touch-action{right:20px;bottom:calc(290px + env(safe-area-inset-bottom));height:42px;width:42px}.scene-caption{display:none}.panel{top:125px;bottom:calc(98px + env(safe-area-inset-bottom));left:10px;right:10px}.panel-open .geo-status,.panel-open .map-zoom{display:none}
+ .map-credit{font-size:8px;line-height:1.25;bottom:calc(1px + env(safe-area-inset-bottom));left:0;right:0;max-width:100%;text-align:center;padding:2px 4px;max-height:24px;overflow:hidden}#toast{top:121px;max-width:calc(100vw - 25px);font-size:10px;padding:9px 12px}
+}
+@media(max-width:360px){.brand{font-size:11px}.brand small{font-size:5px}.map-tools select{width:120px;max-width:120px}.map-tools button{padding-left:5px;padding-right:5px}.intro h1{font-size:31px}.intro .kicker{font-size:6px;letter-spacing:1px}.dock button{font-size:9px;padding:10px 5px;gap:4px}}
+@media(max-width:700px) and (max-height:600px){.intro{top:172px;bottom:97px;padding:16px 20px}.intro h1{font-size:29px;margin:11px 0}.intro p{font-size:10px}.intro .primary{margin-top:12px}.intro-meta{display:none}.destination{max-height:145px;bottom:90px}.destination .distance{display:none}#joystick{bottom:244px;height:70px;width:70px}#stick{left:15px;top:15px}#touch-action{bottom:255px}}
+
+.destination #destination-start{width:100%;margin-top:7px;font-size:11px}.destination:has(#destination-start){max-height:215px}
+
+/* All source places remain on the map. Only crowded name labels get shorter. */
+.place-label .place-name{overflow:hidden;text-overflow:ellipsis}.place-label.compact{width:24px;height:24px;padding:2px;justify-content:center;border-radius:50%;max-width:none;overflow:visible}.place-label.compact .dot{width:18px;height:18px;flex:none}.place-label.compact .place-name{display:none}.place-label.compact:hover,.place-label.compact:focus-visible{width:auto;max-width:200px;height:auto;padding:6px 10px 6px 6px;border-radius:15px;z-index:4000!important}.place-label.compact:hover .place-name,.place-label.compact:focus-visible .place-name{display:inline}.place-label[hidden]{display:none!important}
+.place-layers{position:absolute;left:34px;bottom:107px;padding:9px 12px;border-radius:12px;pointer-events:auto}.place-layers>div{display:flex;align-items:center;gap:5px}.place-layers button{display:flex;align-items:center;gap:5px;background:#e9eddf;padding:6px 8px;border-radius:8px;font-size:11px;white-space:nowrap}.place-layers button[aria-pressed=false]{opacity:.5;background:transparent;text-decoration:line-through}.place-layers button b{font-size:10px;font-weight:500}.place-layers small{display:block;margin-top:5px;font-size:9px;color:#71816f}.layer-dot{display:inline-grid;place-items:center;width:18px;height:18px;color:#fff;border-radius:50%;font-size:9px}.sight-dot{background:#6c9d91}.temple-dot{background:#b19463}#places-catalog{background:transparent;font-size:10px}.not-started .place-layers,.panel-open .place-layers{display:none}
+.destination{padding-top:12px;max-height:340px;overflow:auto}.destination:has(#destination-start){max-height:380px}.destination-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:7px;color:#7a8978;font-size:10px}.destination-head button{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:#e9eddf;color:#3e6c57;font-size:22px;line-height:1}.destination .destination-story{display:block;width:100%;margin-top:6px;padding:8px}.destination h3{margin-top:8px}.destination .distance{margin-top:7px}
+@media(max-width:1050px) and (min-width:701px){.place-layers{left:22px}}
+@media(max-width:700px){
+ .place-layers{left:12px;right:12px;bottom:calc(96px + env(safe-area-inset-bottom));padding:7px 9px;border-radius:11px}.place-layers>div{justify-content:space-between;gap:3px}.place-layers button{padding:5px 8px;font-size:10px}.place-layers small{font-size:8px;margin-top:4px}
+ .destination,.destination:has(#destination-start){left:116px;right:12px;bottom:calc(172px + env(safe-area-inset-bottom));width:auto;max-height:240px;padding:9px 11px;border-radius:12px}.destination-head{margin-bottom:4px;font-size:9px}.destination-head button{width:24px;height:24px;font-size:20px}.destination h3{font-size:15px;line-height:1.4;margin:5px 0}.destination .distance{display:flex;font-size:9px;margin-top:4px}.destination .distance strong{font-size:17px}.destination .primary{font-size:10px;padding:9px 10px;margin-top:6px;gap:5px}.destination .destination-story{font-size:9px;padding:7px;margin-top:5px}.destination #destination-start{font-size:9px;padding:7px}
+ #joystick{bottom:calc(178px + env(safe-area-inset-bottom))}#touch-action{bottom:calc(196px + env(safe-area-inset-bottom))}.has-target #touch-action{left:37px;right:auto;bottom:calc(272px + env(safe-area-inset-bottom))}
+ .place-label{font-size:10px;padding:5px 9px 5px 6px}.place-label .dot{width:19px;height:19px}.place-label.compact{width:26px;height:26px}
+}
+@media(max-width:700px) and (max-height:680px){.destination,.destination:has(#destination-start){max-height:200px}.place-layers small{font-size:8px}}
+.food-dot{background:#c78861}.summary-grid{grid-template-columns:repeat(3,1fr)}.atlas-thumb{width:64px;height:56px;object-fit:cover;border-radius:8px;flex:none;background:#e9ecdf}.place-gallery{display:grid;gap:10px;margin:14px 0 18px}.place-photo{display:block;border-radius:12px;overflow:hidden;background:#e7ecdf;text-align:center}.place-photo img{display:block;width:100%;height:auto;max-height:330px;object-fit:contain}.photo-error{display:block;padding:25px 12px;font-size:11px;line-height:1.8}.destination-photo{display:block;width:100%;padding:0;background:#e9ecdf;border-radius:9px;overflow:hidden;margin:8px 0}.destination-photo img{display:block;width:100%;height:95px;object-fit:cover}.destination-photo:has(img[hidden]){display:none}
+@media(max-width:700px){.place-layers>div{gap:3px}.place-layers button{font-size:9px;padding:5px 6px;gap:3px}.place-layers button b{font-size:9px}.place-layers .layer-dot{width:16px;height:16px;font-size:8px}#places-catalog{font-size:9px;padding:5px 6px}.destination-photo img{height:65px}.place-photo img{max-height:270px}.atlas-thumb{width:58px;height:52px}}
+
+/* One native selector works with desktop keyboards and phone pickers. */
+.place-layers>div{gap:10px}.place-layers label{font-size:11px;white-space:nowrap}.place-layers select{min-width:152px;min-height:40px;border:1px solid #d8deca;border-radius:9px;background:#faf8ed;color:var(--ink);padding:7px 30px 7px 10px}.place-layers #places-catalog{min-height:40px;font-size:11px}.place-label.cluster{width:34px;height:34px;padding:3px;border:2px solid #faf8ed;box-shadow:0 2px 8px #324f4726}.place-label.cluster .dot{width:24px;height:24px;font-size:11px;font-weight:700}.place-label.cluster:hover,.place-label.cluster:focus-visible{width:34px;height:34px;padding:3px}.place-label.cluster .place-name{display:none!important}
+@media(max-width:700px){.place-layers{padding:7px 10px}.place-layers>div{gap:8px}.place-layers label{font-size:11px}.place-layers select{flex:1;min-width:0;font-size:12px;min-height:40px}.place-layers #places-catalog{font-size:10px;padding:6px}.place-layers small{font-size:9px;line-height:1.5}.place-label.cluster{width:34px;height:34px}}
+#ferry-boat{position:absolute;z-index:2;pointer-events:none;transform:translate(-50%,-100%) rotate(var(--rock,0deg));transform-origin:50% 75%}#ferry-boat svg{display:block;width:100%;height:100%;overflow:visible}.journey-phase{font-size:11px;line-height:1.6;color:#3e6c57;margin:8px 0}.journey-ports{font-size:10px;line-height:1.6;margin:7px 0;color:#507f8b}.journey-ports small{display:block;font-size:9px;color:#839083}
+@media(max-width:700px){.journey-phase{font-size:10px;margin:5px 0}.journey-ports{font-size:9px;margin:4px 0}.geo-status.ready{max-width:calc(100vw - 26px)}.geo-status.ready #terrain-state{line-height:1.5;white-space:normal}}
+
+/* ===== 2026-10-16 手機版面整理（只影響 700px 以下；桌機不變） =====
+   上：標題列 → 地圖工具橫列；右：指北／縮放；下：目的地卡 → 地圖顯示 → 底部選單。
+   搖桿與 E 鍵依下方卡片實際高度（--ui-bottom，由 mobile-layout.js 計算）浮在上方，不再互相遮擋。 */
+button,select,a,#touch-action{touch-action:manipulation}.place-label,#joystick,#stick{touch-action:none}html,body{overscroll-behavior:none}
+@media(max-width:700px){
+ .topbar{top:0;left:0;right:0;height:auto;padding:calc(6px + env(safe-area-inset-top)) 10px 6px 8px;background:#faf9eef2;border-bottom:1px solid #fff;box-shadow:0 4px 18px #37564c14;backdrop-filter:blur(14px)}
+ .brand{gap:6px;font-size:15px;letter-spacing:1px}.brand small{font-size:6.5px;letter-spacing:1px;margin-top:4px}.brand-bear{width:34px;height:38px}
+ .top-actions{gap:6px}.region-wrap{padding:0 6px 0 12px;min-height:38px;border-radius:19px;background:#eef1e2;border:1px solid #fff}.region-wrap select{font-size:14px;min-height:38px;padding-right:2px}
+ .top-actions .icon-button{width:38px;height:38px;font-size:18px;background:#eef1e2}
+
+ .map-tools{top:calc(58px + env(safe-area-inset-top));left:0;right:0;max-width:none;padding:2px 10px 6px;gap:6px;flex-wrap:nowrap;justify-content:flex-start;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;background:transparent;border:0;border-radius:0;box-shadow:none;backdrop-filter:none}
+ .map-tools::-webkit-scrollbar{display:none}
+ .map-tools button,.map-tools select{flex:none;min-height:36px;border-radius:18px;background:#faf9eef2;border:1px solid #fff;box-shadow:0 2px 9px #37564c1f;font-size:12px}
+ .map-tools button{padding:0 13px}.map-tools select{width:auto;max-width:none;padding:0 8px}#map-retry{width:36px;padding:0;font-size:15px}
+
+ .compass{right:12px;top:calc(106px + env(safe-area-inset-top));width:34px;height:48px;font-size:8px}.compass svg{width:32px;height:32px}
+ .map-zoom{right:10px;top:calc(158px + env(safe-area-inset-top));padding:3px;border-radius:24px}.map-zoom button{width:40px;height:40px;font-size:22px}
+
+ .geo-status,.geo-status.ready{top:calc(106px + env(safe-area-inset-top));left:10px;right:62px;width:auto;max-width:none;max-height:none;border-radius:16px;padding:6px 11px;font-size:11px;line-height:1.5}
+ .geo-status.ready:not(.has-map-error):not(.error){display:none}
+ #toast{top:calc(108px + env(safe-area-inset-top));font-size:12px;padding:10px 14px;line-height:1.6}
+
+ .intro{top:calc(106px + env(safe-area-inset-top));bottom:calc(82px + env(safe-area-inset-bottom))}
+ .panel{top:calc(106px + env(safe-area-inset-top));bottom:calc(80px + env(safe-area-inset-bottom));left:8px;right:8px}
+
+ .dock{left:10px;right:10px;width:auto;transform:none;bottom:calc(16px + env(safe-area-inset-bottom));padding:4px;border-radius:26px;justify-content:space-between}
+ .dock button{flex:1;justify-content:center;min-height:48px;padding:0 4px;font-size:12px;gap:5px;border-radius:22px}.dock svg{width:19px;height:19px}.dock b{font-size:10px;margin-left:2px}
+ .map-credit{bottom:env(safe-area-inset-bottom);font-size:8px;line-height:14px;max-height:14px;padding:0 4px;background:#ffffffd9}
+
+ .place-layers{left:10px;right:10px;bottom:calc(76px + env(safe-area-inset-bottom));padding:6px 6px 6px 12px;border-radius:16px}
+ .place-layers>div{gap:8px}.place-layers label{font-size:12px}.place-layers select{flex:1;min-width:0;min-height:42px;font-size:14px;border-radius:12px}
+ .place-layers #places-catalog{min-height:42px;padding:0 10px;font-size:12px;border-radius:12px;background:#e9eddf}
+ .place-layers small{display:none}
+
+ .destination,.destination:has(#destination-start){left:10px;right:10px;width:auto;bottom:calc(134px + env(safe-area-inset-bottom));max-height:calc(100dvh - 300px);overflow:auto;padding:10px 12px;border-radius:16px;display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"tag tag" "name name" "phase phase" "ports ports" "dist dist" "act story";column-gap:8px;row-gap:0;align-items:center}
+ .destination:has(.destination-photo){grid-template-columns:72px minmax(0,1fr) auto;grid-template-areas:"photo tag tag" "photo name name" "photo dist dist" "act act story"}
+ .destination-head{position:absolute;top:7px;right:7px;margin:0}.destination-head>span{display:none}.destination-head button{width:32px;height:32px;font-size:22px}
+ .destination .tag{grid-area:tag;justify-self:start;margin-right:38px;font-size:10px;padding:2px 8px}
+ .destination h3{grid-area:name;font-size:17px;line-height:1.35;margin:4px 38px 0 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ .destination .journey-phase{grid-area:phase;display:block;font-size:12px;margin:4px 0 0}.destination .journey-ports{grid-area:ports;display:block;font-size:11px;margin:2px 0 0}.destination .journey-ports small{display:inline;margin-left:6px;font-size:10px}
+ .destination .distance{grid-area:dist;margin:4px 0 0;font-size:11px;display:flex}.destination .distance strong{font-size:20px}
+ .destination-photo{grid-area:photo;width:72px;height:72px;margin:0;align-self:start;border-radius:10px}.destination-photo img{width:72px;height:72px;object-fit:cover}
+ .destination #destination-action{grid-area:act;margin-top:9px;min-height:44px;font-size:13px;padding:0 14px;border-radius:12px}
+ .destination .destination-story{grid-area:story;width:auto;margin-top:9px;min-height:44px;padding:0 12px;font-size:12px;border-radius:12px;white-space:nowrap}
+ .destination #destination-start{grid-column:1/-1;font-size:12px;min-height:40px}
+
+ #joystick{left:14px;bottom:calc(var(--ui-bottom,134px) + 12px);width:96px;height:96px;background:#f8f7df59;border-color:#fff}
+ #stick{left:27px;top:27px;width:42px;height:42px}
+ #touch-action,.has-target #touch-action{left:auto;right:14px;bottom:calc(var(--ui-bottom,134px) + 30px);width:52px;height:52px;font-size:17px;font-weight:700;box-shadow:0 3px 12px #37564c26}
+}
+@media(max-width:700px) and (max-height:640px){
+ .destination,.destination:has(#destination-start){max-height:calc(100dvh - 250px)}
+ .destination .destination-photo,.destination-photo img{width:56px;height:56px}.destination:has(.destination-photo){grid-template-columns:56px minmax(0,1fr) auto}
+ #joystick{width:80px;height:80px}#stick{left:20px;top:20px;width:38px;height:38px}
+}
+@media(max-width:360px){.brand>span{font-size:13px}.brand small{display:none}.map-tools button,.map-tools select{font-size:11px}.dock button{font-size:11px;gap:3px}.place-layers label{display:none}}
+@media(max-width:700px){
+ .intro{top:calc(150px + env(safe-area-inset-top));bottom:auto;max-height:calc(100dvh - 250px - env(safe-area-inset-top) - env(safe-area-inset-bottom))}
+ .not-started .map-zoom,.not-started .compass{display:none}
+}
+
+/* ===== 2026-10-16 問熊寶（本機文字查詢，不連 AI／API） ===== */
+.ask{position:absolute;top:24px;left:50%;transform:translateX(-50%);width:min(440px,34vw);z-index:11;pointer-events:auto;display:flex;align-items:center;gap:6px;padding:4px 4px 4px 6px;border-radius:24px}
+.ask-bear{width:30px;height:32px;object-fit:contain;flex:none}
+.ask input{flex:1;min-width:0;border:0;background:transparent;outline:0;font-size:13px;color:var(--ink);padding:8px 2px}
+.ask input::placeholder{color:#8a9888}
+.ask button{flex:none;background:var(--green);color:#fffced;border-radius:18px;padding:9px 15px;font-size:12px}
+.ask-results{position:absolute;top:76px;left:50%;transform:translateX(-50%);width:min(460px,40vw);max-height:calc(100dvh - 230px);overflow:auto;overscroll-behavior:contain;z-index:12;pointer-events:auto;border-radius:16px;padding:10px 12px 12px}
+.ask-head{display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:6px}
+.ask-close{width:30px;height:30px;border-radius:50%;background:#e9eddf;font-size:20px;line-height:1}
+.ask-area{display:flex;align-items:center;justify-content:space-between;gap:10px;background:#eef1e2;border-radius:12px;padding:10px 12px;margin-bottom:8px}
+.ask-area strong{display:block;font-size:16px}.ask-area span{display:block;font-size:11px;color:#5d7569;margin-top:2px}.ask-area small{display:block;font-size:10px;color:#507f8b;margin-top:3px;line-height:1.5}
+.ask-area .primary{flex:none;padding:10px 12px;font-size:12px;gap:8px}
+.ask-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.ask-item{display:flex;align-items:stretch;gap:6px}
+.ask-info{flex:1;min-width:0;display:flex;align-items:center;gap:10px;text-align:left;background:#fffdf4;border:1px solid #e2e4d5;border-radius:12px;padding:7px 9px}
+.ask-info img,.ask-symbol{width:46px;height:46px;border-radius:9px;object-fit:cover;flex:none;background:#e8e9d5}
+.ask-symbol{display:grid;place-items:center;color:var(--tag);font-size:19px}
+.ask-text{min-width:0;display:flex;flex-direction:column;gap:1px}.ask-text b{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ask-text small{font-size:10px;color:var(--muted)}
+.ask-text em{font-style:normal;font-size:10px;color:#507f8b;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.5}
+.ask-go{flex:none;min-width:58px;border-radius:12px;background:var(--green);color:#fffced;font-size:12px;padding:0 10px}
+.ask-go:disabled{background:#d9ddcf;color:#6f7b6c}
+.ask-more{width:100%;margin-top:8px;padding:11px;border-radius:10px;background:#e9ecdb;font-size:12px}
+.ask-empty{font-size:12px;line-height:1.8;color:#6f7f6d;margin:4px 2px 2px}
+.not-started .ask,.not-started .ask-results,.panel-open .ask,.panel-open .ask-results{display:none!important}
+@media(max-width:1100px) and (min-width:701px){.ask{top:84px;left:auto;right:24px;transform:none;width:360px}.ask-results{top:134px;left:auto;right:24px;transform:none;width:380px}}
+@media(max-width:700px){
+ .ask{top:calc(102px + env(safe-area-inset-top));left:10px;right:10px;width:auto;transform:none;padding:3px 3px 3px 6px}
+ .ask input{font-size:16px;padding:9px 2px}.ask button{padding:10px 14px;font-size:13px;border-radius:20px}.ask-bear{width:28px;height:30px}
+ .ask-results{top:calc(152px + env(safe-area-inset-top));left:10px;right:10px;width:auto;transform:none;max-height:calc(100dvh - 160px - var(--ui-bottom,134px) - env(safe-area-inset-top))}
+ .ask-text b{font-size:14px}.ask-text small{font-size:11px}.ask-text em{font-size:11px}.ask-go{min-width:62px;font-size:13px}
+ .compass{top:calc(156px + env(safe-area-inset-top))}.map-zoom{top:calc(206px + env(safe-area-inset-top))}
+ .geo-status,.geo-status.ready{top:calc(154px + env(safe-area-inset-top))}#toast{top:calc(156px + env(safe-area-inset-top))}
+ .ask-open #joystick,.ask-open #touch-action{display:none}
+}
+
+/* ===== 2026-10-16 交通船資訊面板 ===== */
+.ferry-status{font-size:11px!important;color:#507f8b;background:#eef1e2;border-radius:8px;padding:6px 10px;margin:0 0 6px}.ferry-warn{color:#a25b3a!important}.ferry-group{margin:16px 0 4px}.ferry-group h3{font-size:12px;letter-spacing:1px;color:#5d7569;margin:0 0 8px}
+.ferry-route{background:#fffdf4;border:1px solid #e2e4d5;border-radius:12px;padding:11px 12px;margin-bottom:8px}
+.ferry-name b{font-size:14px;font-weight:600}.ferry-name small{display:block;font-size:11px;color:var(--muted);margin-top:2px}
+.ferry-actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+.ferry-actions button{background:var(--green);color:#fffced;border-radius:9px;padding:8px 11px;font-size:12px}
+.ferry-actions a{background:#e9ecdb;border-radius:9px;padding:8px 11px;font-size:12px}
+@media(max-width:700px){.dock button{font-size:11px;gap:3px;padding:0 2px}.dock svg{width:17px;height:17px}.ferry-actions button,.ferry-actions a{padding:10px 12px;font-size:13px}}
+@media(max-width:360px){.dock button span{font-size:10px}.dock svg{display:none}}
+
+/* ===== 2026-10-16 角色圖：搭船熊寶、騎車熊寶（使用者提供原圖，只縮放） ===== */
+.bear-sprite{position:absolute;z-index:2;pointer-events:none;object-fit:contain;transform:translate(-50%,-100%) rotate(var(--rock,0deg)) scaleX(var(--flip,1));transform-origin:50% 92%;filter:drop-shadow(0 2px 1px #445a491c);will-change:left,top;user-select:none}
+
+/* ===== 2026-10-16 GPS 我的位置、地圖工具圖示、地區資訊 ===== */
+.tool-icon{display:none;width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.map-extra{display:contents}#map-more,.ask-pill{display:none}
+#map-overview{order:1}#map-follow{order:2}#gps-toggle{order:3}#north-liao{order:4}#map-layer{order:5}#map-retry{order:6}
+#gps-toggle.active{background:#2f7cf6;color:#fff}
+.gps-chip{position:absolute;z-index:11;left:34px;top:96px;max-width:min(420px,calc(100vw - 68px));padding:8px 14px;border-radius:16px;font-size:11px;line-height:1.5;color:#2b5a8f;text-align:left;pointer-events:auto}
+.gps-chip::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:#2f7cf6;margin-right:7px;vertical-align:1px;box-shadow:0 0 0 3px #2f7cf633}
+#gps-marker{position:absolute;z-index:2;width:0;height:0;pointer-events:none}
+#gps-marker .gps-acc{position:absolute;left:0;top:0;width:var(--acc,20px);height:var(--acc,20px);transform:translate(-50%,-50%);border-radius:50%;background:#2f7cf61f;border:1px solid #2f7cf666}
+#gps-marker .gps-dot{position:absolute;left:-9px;top:-9px;width:18px;height:18px;box-sizing:border-box;border-radius:50%;background:#2f7cf6;border:3px solid #fff;box-shadow:0 1px 4px #0000004d;animation:gps-pulse 2s ease-out infinite}
+@keyframes gps-pulse{0%{box-shadow:0 1px 4px #0000004d,0 0 0 0 #2f7cf699}100%{box-shadow:0 1px 4px #0000004d,0 0 0 16px #2f7cf600}}
+.region-sub{font-size:12px;color:#5d7569;margin:10px 2px 6px;font-weight:600}
+.region-card{margin-bottom:2px}
+
+/* ===== 2026-10-16 騎車／搭船熊寶動畫：使用者提供的動畫 WebP（輪胎旋轉、船體航行與破浪），只縮放不改繪 ===== */
+.bear-sprite img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none;user-select:none;transform-origin:50% 92%}
+/* 疊在動畫上的晃動與煙塵（只動外框與加特效，不改圖） */
+.bear-sprite .fx{position:absolute;pointer-events:none;opacity:0}
+.bear-sprite.ride img{animation:ride-bump .34s ease-in-out infinite}
+@keyframes ride-bump{0%,100%{transform:translateY(0) rotate(0)}30%{transform:translateY(-1.8%) rotate(-.9deg)}60%{transform:translateY(-.4%) rotate(.5deg)}}
+.ride .puff{left:9%;top:76%;width:10%;height:10%;border-radius:50%;background:radial-gradient(circle,#fffffff2 0 38%,#eef0e6aa 52%,#ffffff00 70%);animation:ride-puff .9s linear infinite}
+.ride .puff.p2{animation-delay:.3s;top:80%}.ride .puff.p3{animation-delay:.6s;top:73%}
+@keyframes ride-puff{0%{transform:translate(0,0) scale(.35);opacity:.95}100%{transform:translate(-170%,-70%) scale(1.9);opacity:0}}
+.bear-sprite.boat img{animation:boat-bob 2.4s ease-in-out infinite}
+@keyframes boat-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-2.2%)}}
+@media(prefers-reduced-motion:reduce){.bear-sprite img,.bear-sprite .fx{animation:none!important}}
+
+/* ===== 2026-10-16 手機版面 v2（只影響 700px 以下；桌機不變）=====
+   不再每樣都整條橫幅：右側直排工具（跟隨熊寶、我的位置、地圖選單）＋縮放；
+   左上「問熊寶」收成小膠囊（點了才展開）與類別下拉並排；底部只留目的地卡與分頁列。 */
+@media(max-width:700px){
+ .compass{top:calc(60px + env(safe-area-inset-top));right:16px;width:34px;height:44px}.compass svg{width:30px;height:30px}
+ .map-tools{top:calc(108px + env(safe-area-inset-top));left:auto;right:10px;width:auto;flex-direction:column;flex-wrap:nowrap;gap:6px;padding:4px;overflow:visible;border-radius:26px;background:#faf9eef2;border:1px solid #fff;box-shadow:0 4px 16px #37564c24;backdrop-filter:blur(14px)}
+ .map-tools #map-follow,.map-tools #gps-toggle,.map-tools #map-more{display:grid;place-items:center;width:42px;height:42px;min-height:42px;padding:0;border-radius:50%;background:transparent;border:0;box-shadow:none;color:var(--ink)}
+ .map-tools #map-follow{order:1}.map-tools #gps-toggle{order:2}.map-tools #map-more{order:3}
+ .map-tools .tool-icon{display:block}
+ .map-tools #map-follow>span,.map-tools #gps-toggle>span,.map-tools #map-more>span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+ .map-tools #gps-toggle.active{background:#2f7cf6;color:#fff}
+ .map-tools.open #map-more{background:#e3e9d8}
+ .map-extra{display:none;position:absolute;right:56px;top:0;width:200px;flex-direction:column;gap:6px;padding:8px;border-radius:16px;background:#faf9eefa;border:1px solid #fff;box-shadow:0 8px 24px #37564c2e}
+ .map-tools.open .map-extra{display:flex}
+ .map-extra button,.map-extra select{width:100%;min-height:42px;border-radius:12px;font-size:14px;text-align:left;padding:0 12px;background:#eef1e2;border:1px solid #fff;box-shadow:none}
+ .map-extra #map-retry{width:100%;font-size:14px;padding:0 12px}.map-extra #map-retry::after{content:" 重新載入底圖"}
+ .map-zoom{top:calc(262px + env(safe-area-inset-top));right:10px}
+
+ .ask{top:calc(60px + env(safe-area-inset-top));left:10px;right:auto;width:auto;padding:3px 14px 3px 5px;gap:6px;border-radius:22px;cursor:pointer}
+ body:not(.ask-expanded) .ask input,body:not(.ask-expanded) .ask button{display:none}
+ body:not(.ask-expanded) .ask-pill{display:block;font-size:14px;font-weight:600;color:var(--ink);white-space:nowrap;line-height:40px}
+ .ask-expanded .ask{right:62px;padding:3px 3px 3px 6px;cursor:auto}
+ .ask-expanded .place-layers{display:none!important}
+
+ .place-layers{top:calc(60px + env(safe-area-inset-top));bottom:auto;left:124px;right:auto;padding:0;border-radius:22px;background:transparent;border:0;box-shadow:none;backdrop-filter:none}
+ .place-layers>div{gap:0}.place-layers label,.place-layers #places-catalog,.place-layers small{display:none}
+ .place-layers select{flex:none;width:auto;min-width:0;height:46px;min-height:46px;font-size:14px;border-radius:23px;padding:0 12px;border:1px solid #fff;background:#faf9eef2;box-shadow:0 4px 16px #37564c24;backdrop-filter:blur(14px)}
+
+ .geo-status,.geo-status.ready{top:calc(110px + env(safe-area-inset-top));left:10px;right:66px}
+ .gps-chip{top:calc(112px + env(safe-area-inset-top));left:10px;right:66px;max-width:none;font-size:12px;padding:8px 12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ .map-tools{z-index:12}
+ .gps-on .geo-status{top:calc(156px + env(safe-area-inset-top))}
+ .ask-open .geo-status,.region-open .geo-status,.ask-expanded .geo-status,.panel-open .geo-status{display:none!important}
+ body:has(.map-tools.open) .geo-status,body:has(.map-tools.open) .gps-chip{display:none!important}
+ #toast,.gps-on #toast{top:calc(6px + env(safe-area-inset-top));z-index:30}
+ .ask-results{top:calc(110px + env(safe-area-inset-top));right:66px;max-height:calc(100dvh - 120px - var(--ui-bottom,134px) - env(safe-area-inset-top))}
+ .gps-on .ask-results{top:calc(156px + env(safe-area-inset-top));max-height:calc(100dvh - 166px - var(--ui-bottom,134px) - env(safe-area-inset-top))}
+ .ask-results.region-info{max-height:max(190px,calc(100dvh - 250px - var(--ui-bottom,134px) - env(safe-area-inset-top)))}
+
+ .intro{top:calc(108px + env(safe-area-inset-top));bottom:calc(92px + env(safe-area-inset-bottom))}
+ .panel{top:calc(60px + env(safe-area-inset-top));bottom:calc(88px + env(safe-area-inset-bottom))}
+
+ .dock{bottom:calc(14px + env(safe-area-inset-bottom));padding:4px;border-radius:24px}
+ .dock button{flex-direction:column;gap:2px;min-height:54px;padding:4px 2px;font-size:11px;border-radius:20px}
+ .dock svg{display:block;width:20px;height:20px}
+ .dock button>span{display:flex;align-items:center;gap:3px;white-space:nowrap}.dock b{font-size:9px;padding:0 5px;margin:0}
+ .destination,.destination:has(#destination-start){bottom:calc(84px + env(safe-area-inset-bottom));max-height:calc(100dvh - 330px)}
+}
+@media(max-width:700px) and (max-height:680px){
+ .compass{display:none}
+ .map-tools{top:calc(60px + env(safe-area-inset-top))}
+ .map-zoom{top:calc(214px + env(safe-area-inset-top))}
+ .map-zoom button{width:40px;height:40px}
+}
+@media(max-width:360px){
+ .place-layers{left:118px}.place-layers select{font-size:13px;padding:0 6px}
+ .dock button{font-size:10px}.dock svg{display:block;width:18px;height:18px}
+}
+
+/* ===== 2026-10-16 測速照相與科技執法圖層（預設關閉） ===== */
+#enforce-labels{position:absolute;inset:0;z-index:1;pointer-events:none}
+.enforce-marker{position:absolute;transform:translate(-50%,-50%);width:28px;height:28px;border-radius:50%;background:#fff;border:3px solid #d8382f;box-shadow:0 2px 6px #0000003d;display:grid;place-items:center;padding:0;pointer-events:auto;cursor:pointer}
+.enforce-marker b{font-size:11px;font-weight:800;color:#222;line-height:1;letter-spacing:-.5px}
+.enforce-marker i{position:absolute;right:-7px;top:-7px;font-style:normal;font-size:9px;font-weight:700;background:#3e6c57;color:#fff;border-radius:7px;padding:1px 3px;line-height:1.3}
+.enforce-marker.suspect{border-style:dashed;border-color:#9a8f86;opacity:.75}
+.enforce-toggle{display:flex;align-items:center;gap:5px;font-size:10px;padding:0 8px;white-space:nowrap;cursor:pointer;order:7}
+.enforce-toggle input{width:14px;height:14px;margin:0;accent-color:#d8382f}
+#enforce-alert{position:absolute;z-index:61;left:50%;top:auto;bottom:104px;transform:translateX(-50%);max-width:min(460px,calc(100vw - 32px));padding:10px 16px;border-radius:14px;background:#d8382f;color:#fff;font-size:14px;font-weight:700;box-shadow:0 6px 20px #0000003d;text-align:center;line-height:1.5}
+.enforce-warn{color:#a25b3a;font-size:12px}
+@media(max-width:700px){
+ .map-extra .enforce-toggle{width:100%;min-height:42px;border-radius:12px;font-size:14px;padding:0 12px;background:#eef1e2;border:1px solid #fff;box-sizing:border-box}
+ .map-extra .enforce-toggle input{width:18px;height:18px}
+ #enforce-alert{top:calc(110px + env(safe-area-inset-top));bottom:auto;font-size:15px}.gps-on #enforce-alert{top:calc(156px + env(safe-area-inset-top))}
+ .enforce-marker{width:30px;height:30px}
+}
+/* 測速提醒顯示時先隱藏一般提示，避免兩個疊在一起 */
+.enforce-alerting #toast{opacity:0!important;visibility:hidden}
+@media(prefers-reduced-motion:reduce){#gps-marker .gps-dot{animation:none!important}}
+
+/* ===== 2026-10-16 分海場景時間條（取代目的地卡，可拖曳、播放／暫停、返回地圖） ===== */
+.tide-bar{position:absolute;z-index:11;left:50%;bottom:104px;transform:translateX(-50%);width:min(440px,calc(100vw - 32px));padding:12px 14px;border-radius:16px;pointer-events:auto;box-sizing:border-box}
+.tide-bar-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:13px}.tide-bar-head span{font-size:12px;color:#507f8b;font-variant-numeric:tabular-nums}
+.tide-bar input{width:100%;margin:8px 0 4px;accent-color:#3e6c57}
+.tide-bar small{display:block;font-size:11px;color:var(--muted);line-height:1.5}
+.tide-bar-actions{display:flex;gap:8px;margin-top:8px}.tide-bar-actions button{flex:1;min-height:40px;font-size:13px;border-radius:12px;justify-content:center}
+.tide-mode .place-layers,.tide-mode #enforce-labels,.tide-mode #destination,.tide-mode .ask-results{display:none!important}
+@media(max-width:700px){
+ .tide-bar{left:10px;right:10px;width:auto;transform:none;bottom:calc(84px + env(safe-area-inset-bottom))}
+ .not-started .map-tools,.not-started .geo-status,.not-started .gps-chip,.not-started .place-layers{display:none!important}
+}
+
+/* ===== 2026-10-17 手機版面 v3（整體規則，只影響 700px 以下） =====
+   1. 下方只有一個卡片位置：目的地卡、問熊寶結果／地區資訊、分海時間條共用，同時只顯示一張；
+   2. 地圖上方不壓卡片：上方只有標題列與「問熊寶、類別」一列，右側直排工具；
+   3. 提示統一在同一條（類別列下方）：測速提醒 > 一般提示 > GPS 狀態 > 圖資狀態，新的蓋過舊的、不疊；
+   4. 目的地卡兩列；自動導航中不顯示停用按鈕；地區資訊預設一列，點「精選 ▾」展開。 */
+.region-actions{display:flex;align-items:center;gap:6px;flex:none}
+.region-toggle{padding:8px 10px;border-radius:10px;background:#fffdf4;border:1px solid #e2e4d5;font-size:12px;white-space:nowrap}
+.region-close{display:none;width:30px;height:30px;border-radius:50%;background:#e9eddf;font-size:18px;line-height:1}
+@media(min-width:701px){.region-toggle{display:none}}
+@media(max-width:700px){
+ /* 1. 下方卡片位置 */
+ .ask-results,.gps-on .ask-results{top:auto;bottom:calc(84px + env(safe-area-inset-bottom));left:10px;right:10px;max-height:min(46dvh,420px)}
+ .ask-results.region-info,.gps-on .ask-results.region-info{max-height:min(46dvh,420px)}
+ .ask-open #destination,.region-open #destination{display:none!important}
+ .ask-results.region-info.collapsed{padding:6px;overflow:visible}
+ .ask-results.region-info.collapsed .ask-head,.ask-results.region-info.collapsed .region-sub,.ask-results.region-info.collapsed .ask-list,.ask-results.region-info.collapsed .ask-empty,.ask-results.region-info.collapsed .ask-more{display:none}
+ .ask-results.region-info .region-card{margin:0;padding:8px 10px;gap:8px}
+ .ask-results.region-info .region-card strong{display:inline;font-size:15px;margin-right:6px}.ask-results.region-info .region-card span{display:inline;font-size:11px}
+ .ask-results.region-info .region-card small{font-size:11px;margin-top:2px;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+ .ask-results.region-info.collapsed .region-close{display:grid;place-items:center}
+ /* 地區精選清單展開時，搖桿與 E 鍵先收起（不被推到畫面上方） */
+ body:has(.ask-results.region-info:not(.collapsed):not([hidden])) #joystick,body:has(.ask-results.region-info:not(.collapsed):not([hidden])) #touch-action{display:none}
+
+ /* 4. 目的地卡兩列 */
+ .destination,.destination:has(#destination-start),.destination:has(.destination-photo){bottom:calc(84px + env(safe-area-inset-bottom));padding:8px 10px;row-gap:2px;column-gap:6px;grid-template-columns:minmax(0,1fr) auto auto;grid-template-areas:"name name name" "phase phase phase" "ports ports ports" "dist story act";max-height:none;overflow:visible}
+ .destination:has(.destination-photo){grid-template-columns:48px minmax(0,1fr) auto auto;grid-template-areas:"photo name name name" "photo dist story act"}
+ .destination .tag{display:none}
+ .destination h3{font-size:16px;margin:2px 36px 0 0}
+ .destination-head{top:4px;right:4px}.destination-head button{width:30px;height:30px;font-size:20px}
+ .destination .journey-phase{font-size:11px;margin:0}.destination .journey-ports{font-size:11px;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.destination .journey-ports small{display:none}
+ .destination .distance{margin:0;align-self:center;font-size:11px;gap:4px;flex-wrap:wrap}.destination .distance strong{font-size:17px}
+ .destination-photo,.destination-photo img{width:48px;height:48px}
+ .destination #destination-action,.destination .destination-story{margin-top:4px;min-height:38px;font-size:12px;padding:0 10px;border-radius:10px}
+ .destination #destination-action{grid-area:act}.destination .destination-story{grid-area:story}
+ .destination #destination-action.is-active{display:none}
+
+ /* 3. 提示統一一條 */
+ #toast,.gps-on #toast,#toast.visible{top:calc(112px + env(safe-area-inset-top));left:10px;right:66px;max-width:none;transform:none;text-align:left;z-index:30}
+ #enforce-alert,.gps-on #enforce-alert{top:calc(112px + env(safe-area-inset-top));left:10px;right:66px;max-width:none;transform:none;bottom:auto;font-size:15px;padding:10px 14px}
+ .gps-chip,.geo-status,.geo-status.ready,.gps-on .geo-status{top:calc(112px + env(safe-area-inset-top))}
+ .gps-on .geo-status{display:none!important}
+ body:has(#toast.visible) .gps-chip,body:has(#toast.visible) .geo-status,.enforce-alerting .gps-chip,.enforce-alerting .geo-status{visibility:hidden}
+}
+
+/* 2026-10-26 第22版：桌機的問熊寶結果／地區資訊改放左側（不蓋住地圖工具列）；底圖狀態移到縮放鈕左側（不蓋住＋） */
+@media(min-width:1101px){.ask-results{top:96px;left:34px;transform:none;width:min(400px,32vw);max-height:calc(100dvh - 296px)}}
+@media(min-width:1101px){.geo-status,.geo-status.ready{right:104px}}

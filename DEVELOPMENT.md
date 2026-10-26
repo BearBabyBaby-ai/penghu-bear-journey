@@ -1,0 +1,135 @@
+# 熊熊澎湖之旅 · 3D 島嶼探索
+
+瀏覽器 WebGL 遊戲，保留使用者原本的透明熊寶角色、977 筆美食／景點／廟宇、集章進度與潮汐工具。已納入「美食清單」608筆；原試算表不修改。
+
+## 地圖與陸海
+
+六鄉市共用 EPSG:3857 地理座標。地標由原表經緯度直接投影，不採旅遊 JPEG 的近似對位，也不把地標搬到附近陸地。預設臺灣通用電子地圖 WMTS EMAP，可切換 OpenStreetMap；畫面標示圖磚與陸域來源。圖磚只按可視範圍取得，無背景預抓或離線打包。
+
+陸域檔案與遊戲部署在相同來源：
+
+- `dist/geo/penghu-land-20260407.geojson`：內政部國土測繪中心2026-04-07版村里界圖，經 Finjon Kiang 的 GeoJSON 鏡像取得澎湖106個村里，再聯集成296個外部多邊形，去除村里內部邊界。
+- `dist/geo/penghu-grid-20260407.json`：預先計算的65 Mercator公尺導航網格，採行程編碼，約22KB。版本與SHA-256綁定陸域檔案，手機不必重新建立碰撞網格。
+- `dist/geo/SOURCES.md`：來源、版本、轉換方法與授權。原始來源為政府資料開放授權條款第1版，鏡像轉換保留MIT授權。
+
+遊戲出發不連線查詢 Overpass、不讀取舊海岸快取。陸域與導航版本或雜湊不符時停走並提供本地檔案重試，不把未知資料當成陸地。地圖圖磚未載入時，仍以相同陸域輪廓顯示備援圖面；圖磚可自行切換來源或重試。
+
+此輪廓為行政圖資衍生的遊戲陸域，不是即時潮線或獨立海岸測量成果。陸海判定保留海洋內環；空間索引只加速查詢，判定與完整環掃描一致。陸域網格保留作幾何回歸資料，實際移動改由下述道路圖控制。
+
+實際資料檢核：北寮保安宮為陸地、北寮東側及澎湖內海為海洋。所有地標保留原表坐標，另在150 Mercator公尺範圍內找道路互動點。940筆有有效坐標，其中921筆可找到道路互動點；19筆道路未收錄、另37筆無有效坐標，保留圖鑑並停用前往。不推測新路或入口。
+
+## 道路移動
+
+`dist/geo/penghu-roads-20211217.json` 為 OpenStreetMap 道路資料，經 typebrook/mapstew 公開向量圖磚快照取得。來源時間為 **2021-12-17 05:28 +08:00**，介面說明、地圖註記和資料來源均標示日期，可能缺少新路。此為遊戲道路資料，不代表即時通行條件。
+
+來源121張z14向量圖磚（非底圖點陣圖磚）的Git blob SHA列在檔案內。原始MVT道路節點轉回EPSG:3857；以原始全域整數座標合併節點、去重線段。不因兩條道路鄰近就增加連線，不連接未共享節點的交叉線。排除private/no、施工和未收錄類別。非橋梁線段必須完整位於陸域，只有來源明確具橋名的五個OSM橋梁way可通過海面。
+
+道路圖含24,489節點、26,746線段。A*以起終點在線段上的投影為虛擬節點，每個原始折點保留；自動步行逐段走完，沒有直線平滑或轉角捷徑。橘線顯示規劃路徑，距離為道路長度的近似地面公尺。搖桿／WASD只可沿當前線段前後移動，在共享節點按輸入方向選路，無路便停止。已知橋面顯示「橋面」，其他海域不產生路徑。
+
+鄉市下拉選單會從熊寶當下位置規劃並自動前往代表地標，禁止改寫角色位置。馬公到西嶼走陸路及已收錄橋梁；首頁標誌只跟隨熊寶，地點卡已刪除切換道路起點入口。無可用道路或港口航線時留在原位。附近互動以短道路距離判斷，不能隔街廓集章。原始熊寶PNG和既有印章保持相容。
+
+## 圖片與區域起點
+
+141張圖資皆按原表「工作表＋列號」對應到指定Drive原圖（美食11張、景點96張、廟宇34張）。網頁檔放在`dist/assets/places/`，不依賴Drive登入或短效下載網址。EXIF方向校正後，等比例限制1600像素、WebP品質84，不裁切或修飾內容；原圖ID、網址、原始檔雜湊及網頁檔雜湊保留在`PHOTO-MANIFEST.json`。一筆美食的圖資欄為Google Maps連結，保留連結資料而不當圖片。圖鑑縮圖、目的地卡和地點詳情皆使用實際對應照片。
+
+第一次啟動的六區起點、以及鄉市導航目的地明確指定：馬公觀音亭、湖西北寮保安宮、白沙澎湖水族館、西嶼二崁、七美神鷹寶塔、望安花宅。2026-10-16 起，上方鄉市選單（及問熊寶的「前往七美鄉」）選離島鄉市時，目的地改為該島港口本身（`game.js` 的 `REGION_PORTS`：望安鄉→**望安潭門港**、七美鄉→**七美南滬港**），下船即抵達，不再續走到花宅或神鷹寶塔；兩島的初始出生點不變。其他沒有收錄航線的離島（吉貝、虎井等）需先新增港口與航線。白沙不再因原表首列為姑婆嶼就移至離島；姑婆嶼的原始座標仍保留為可選地標。起點缺少可用道路時，從該區地點最多的連通道路群選擇，無路則停走。
+
+## 操作
+
+地圖顯示所有940筆有有效坐標的原表地標（590美食、181景點、169廟宇），不再只顯示每區九站。37筆缺坐標資料（18美食、19廟宇）仍保留在977筆完整圖鑑中。道路未收錄的地點仍保留原座標標記；不以可否尋路篩除地標。
+
+桌機與手機共用「地圖顯示」原生下拉選單：景點181、美食608、廟宇188、全部977，預設景點。密集地點聚合為可點開的數字群組，所有940筆地點仍可由群組與圖鑑存取；群組錨定其中一個原始標記，不更改任何地點座標。選定目的地獨立保留，切換類別不取消導航。目的地卡可關閉；海上取消需到下一港口下船後才停止。手機（700px以下）目的地卡為全寬精簡卡，位於地圖顯示列上方；搖桿與E鍵依 `--ui-bottom` 浮在卡片上方。
+
+WASD／方向鍵沿路移動、Shift加速、點道路沿路前往；點地標選取後可按「沿道路前往」、拖曳旋轉、滾輪或＋／−縮放、E閱讀與集章。手機提供沿路搖桿、兩指縮放、出錯時才顯示的狀態列與底部目的地卡片。「北寮」選取原表北寮保安宮並沿路前往，「全圖」查看六鄉市，「跟隨熊寶」回到村落比例尺。
+
+已移除桌機和手機的島嶼任務、六枚印章門檻、類別走訪與分海任務完成提示。介面不再顯示原試算表資料來源連結、指定工作表清單及地點原表列號；資料快照、地圖授權署名及必要版本說明保留。集章手帳保留個別地點印章及進度備份；潮汐工具獨立使用。
+
+熊寶原始透明PNG逐位元保留，以面向鏡頭的角色顯示，不鏡像衣服文字。進度可匯出／匯入。
+
+地圖立體符號使用低矮分類小模型：美食為遮棚攤位、廟宇為雙層屋簷，景點為玄武岩、燈塔、橋或沙灘符號。各模型不超過0.30世界單位寬及0.40世界單位高，維持原始座標；符號不是實測建築物。真實地圖不再繪製高柱圓球與浮動菱形，熊寶本身的尺寸、圖片與動作不變。
+
+
+## 港口與搭船
+
+`dist/travel.js` 的 `TravelPlanner` 先找道路，沒有連通道路時才使用已收錄的港口連線：馬公南海交通船碼頭 ⇄ 望安潭門港 ⇄ 七美南滬港；2026-10-16 依白沙鄉公所交通船時刻表加入赤崁漁港 ⇄ 吉貝漁港（白沙之星）、岐頭漁港 ⇄ 鳥嶼漁港（鳥嶼號）、岐頭漁港 ⇄ 員貝漁港（員貝號）、重光碼頭 ⇄ 大倉漁港（大倉號），以及馬公市公所交通船馬公南海交通船碼頭（南海遊客中心）⇄ 桶盤漁港（桶盤之星，委託營運）、⇄ 虎井漁港。規劃改為小型港口圖（起點、終點、各港口為節點；邊為同陸塊道路步行或航線），以 Dijkstra 取步行＋航程最短；同一陸塊可有多個港口，也可「下船→沿路到另一港→再搭船」（例：吉貝→赤崁→沿路到馬公→望安→七美）。其他未收錄航線的離島（姑婆嶼、東西嶼坪、將軍等）不推測港口，不轉移角色。白沙三條航線的島上部分地點（如吉貝沙尾、目斗嶼燈塔）在2021道路快照附近無道路，仍無法前往。
+
+`Journey` 依序推進道路、港區登船、海上、靠港下船、島內道路；每步消耗時間與距離，階段切換只更新同一位置的道路屬性。航行中更改目的地會排隊，下一港口下船後規劃新行程；取消同樣靠港下船後才停止。碼頭短接駁為121／133／72（馬公／望安／七美）、103／171／137／38／78／110／131（赤崁／吉貝／岐頭／鳥嶼／員貝／重光／大倉）Mercator公尺左右的遊戲示意；吉貝港池被防波堤圍住，接駁上限放寬為200公尺（`travel.js` 驗證上限同步為2.0世界單位），並只採與外海相連的海面格，海上折線以陸域遮罩產生並逐段檢查不穿島；均不是實測航道、泊位或實際導航服務。遊戲沒有模擬真實班次、候船或票價。
+
+港口名稱、連通關係及位置參考：官方交通船購票系統的馬公／潭門港介紹與嵌入地圖；七美採海巡署七美漁港安檢所（南滬26之3，鄰近26之4候船處）的座標；白沙航線依白沙鄉公所「各離島交通船每日開航時間表」（https://www.baisha.gov.tw/ch/home.jsp?id=113），赤崁、吉貝、岐頭、鳥嶼、員貝、大倉、桶盤、虎井八港採海巡署各漁港安檢所公告座標；桶盤、虎井航線依馬公市公所交通船時間表（https://www.penghu.gov.tw/Tmakun/ch/home.jsp?id=247）；重光碼頭海巡署名冊無資料，依旅遊資訊「碼頭在重光威靈殿後方」以廟宇表「重光-威靈殿」座標為參考點（非官方碼頭座標，取得官方座標後應更新）。來源網址及參考點說明保留於 `dist/geo/penghu-ferries-20261016.json`。`node tools/build-ferry-routes.mjs` 可從同一陸域與道路資料重新產生。航線JSON與陸域SHA-256綁定，不符則停止載入。
+
+熊寶原圖不改繪、不換角色。2026-10-16 起角色圖依狀態切換（`game.js` 渲染段）：`journey.inTransit` 且位置在海面＝搭船熊寶（`assets/bear-boat.webp`）；陸上 `moving` 且目前旅段不是港區上下船（`leg.type!=="port"`）＝騎車熊寶（`assets/bear-ride.webp`）；其餘（停止、港區上下船）＝原始熊寶。比例以三張原圖的眼鏡寬度對齊（原始約575px、騎車約340px、搭船約212px，皆1254px畫布）：`RIDE_SCALE=575/340`（約1.69倍）、`BOAT_SCALE=575/212`（約2.71倍），熊寶本身在三種狀態下等大；搭船圖錨點略低於熊寶腳下並輕微搖晃。騎車／搭船熊寶依畫面上的行進方向左右翻轉：每幀以熊寶世界座標的移動方向，投影前方一個世界單位到畫面，比較左右決定 `--flip`（原圖朝右）；移動量太小時沿用上一個方向。原始熊寶不翻轉。原 SVG 船體元素保留但隱藏。
+
+## 地點與潮汐資料
+
+使用2026-10-15快照：美食608筆、景點181筆、廟宇188筆、奎壁山摩西分海2,825筆潮汐、未來30天潮汐預報六區塊各31日／120筆。原表無站名時保留區塊名稱；日期只列月日時依讀取時間推定2026年；高度未註明單位時保留原值。分海動畫為獨立示意場景，只用極值插值，實際通行依現場管制。
+
+## 執行與驗證
+
+靜態提供`dist/`即可。無外部JS/CDN依賴；圖磚按需連網。程式與樣式帶版本參數，避免手機沿用舊版模組。
+
+`npm run check`驗證同源陸域載入、外部服務及快取無依賴、錯誤／雜湊拒絕、實際北寮陸海、全部六區出生點和自動路徑、U形路網轉彎、道路投影起終點、搖桿鎖定道路與死路停止、馬公到北寮道路路徑、導航與幾何一致、空間索引與完整環掃描一致、窄水道防穿越、熊寶雜湊、977筆紀錄及潮汐／進度回歸。
+
+重建陸域：先以來源Git blob取得澎湖106村里的GeoJSON，再執行`node tools/build-land.mjs <source.geojson>`。構建工具使用附MIT授權的polygon-clipping做聯集，瀏覽器不載入此函式庫。
+
+重建道路：依圖磚manifest取得原始MVT並組成含base64資料的JSON，執行`python tools/decode-road-tiles.py <tiles.json> <lines.json>`，再執行`node tools/build-road-graph.mjs <lines.json>`。兩步均不依賴外部套件；原始幾何及source manifest隨衍生道路圖保留，依ODbL提供。
+
+已新增12組跨區往返、每幀移動上限、港口銜接、海路不穿島、排隊改道、抵港取消、船程保存／恢復，以及原始類別／鄉市事件處理器的Node狀態測試。
+
+## 手機版面（第13版）
+
+只在 `@media(max-width:700px)` 內調整，桌機規則未動。`style.css` 檔尾「2026-10-16 手機版面整理」區塊覆寫先前多層手機規則：標題列底色條、地圖工具橫向滑動列、右側指北／縮放、狀態列只在載入中或錯誤時顯示、全寬目的地卡（CSS grid：相片｜類別／名稱／距離，下列「前往」＋「地點資料與故事」）、地圖顯示列、底部選單。`dist/mobile-layout.js` 以 ResizeObserver／MutationObserver 量測目的地卡、地圖顯示列與底部選單的最高頂點，寫入 `--ui-bottom`；搖桿與E鍵用 `calc(var(--ui-bottom)+…)` 定位。
+
+搖桿 `#joystick`／`#stick` 必須維持 `touch-action:none`（觸控規則不可把它併入 manipulation），按下時記住中心點計算方向。`game.js` 主要變更：兩指縮放（window 層 pointer 事件，只接受落在地圖或地標上的觸控，比例尺範圍與滾輪相同），以及 `updateDestination()` 的重繪鍵不含距離，行進中只改距離數字，不再每幀重建卡片 DOM。
+
+## 交通船資訊
+
+底部選單「交通船」開啟面板（`game.js` 的 `renderFerries()`），列出 `TravelPlanner.links` 的全部航線，依營運單位分組，顯示船名（只寫已查證者）、「前往○○」按鈕（`goToPort()`：沿路走到該港，選離島港口則自動搭船）及官方時刻表連結。航線的 `operator`、`vessel`、`source` 由 `tools/build-ferry-routes.mjs` 的 `ROUTES` 寫入航線檔（版本 v3）。相同內容存於熊熊綜合系統試算表「交通船資訊」工作表（gid 777010；每列一條航線，含兩端港口座標與座標依據）。面板開啟時以 `dist/ferry-sheet.js` 即時讀取該表的公開 CSV（先 `export?format=csv&gid=777010`，再 `gviz` 備援，與熊熊綜合系統相同做法），依標題列對應欄位；讀不到則顯示內建航線並標示。表上的營運單位、船名、官方連結以表為準；「前往」只用內建航線檔中的港口與海路，表上有、內建檔沒有海路的航線標示「尚未收錄海路」且不提供前往離島的按鈕。每週一排程任務查核官方資料，必要時更新工作表，新增航線時重建航線檔並推送。`tests/ferry-sheet.mjs` 檢查 CSV 解析、欄位對應與離線退回。
+
+## 問熊寶（本機文字查詢）
+
+`ask.js` 的 `parseAsk()` 依序取出地區（六鄉市全名或簡稱）、類別詞（美食／景點／廟宇各一組常用說法，長詞優先）、「附近／最近」，其餘去掉贅字後為關鍵字；`SYNONYMS` 為神明與常見景物別名。`askPlaces()` 在原表紀錄中以欄位權重（名稱12、特色6、類別與村里4、簡介2、傳說與節慶1）計分，完整字串優先，否則以兩字片段重疊率（≥60%）比對；只有地區／類別時以景點、有照片者優先；「附近」且無關鍵字時依與熊寶的直線距離排序。結果只來自 `data.records`，`tests/ask.mjs` 檢查不會產生不存在的地點。UI 在 `game.js` 的 `renderAsk()`／`setupAsk()`，前往一律走 `navigateTo()`。
+
+## App（第14版）
+
+`manifest.json`、`sw.js`、`pwa.js` 與 `icons/` 全部在 `dist/`，相對路徑，子目錄部署相容。service worker 只處理同源 GET：導覽與 .html 一律 `no-store` 先連網，其他程式與 JSON 先連網後備快取，`assets/`、`icons/` 先用快取。外部圖磚不攔截、不離線打包。已以無頭Chromium驗證：註冊並接管頁面、離線重新整理仍能開啟遊戲與載入資料。
+
+## GPS 我的位置（第15版）
+
+`game.js` 的 `toggleGps()`／`onGps()`／`gpsFollowBear()`／`placeGpsMarker()`／`updateGpsUI()`。定位點以 `mapPosition({lat,lng})` 換成世界座標，`navigation.snap(x,z,1.5)`（約 150 公尺）找最近收錄道路，再用 `journey.request(player,road,{name:'你的位置',gps:true})` 規劃（同一般導航，含港口搭船）；不改 `player` 座標。重新規劃節流：新定位 2.5 秒、其他 6 秒，你移動不到約 30 公尺且已在跟隨路線上就不重算；船上不重算（靠港後接續）。有 `target`、或正在走使用者選的非 GPS 路線時不搶導航。`gps` 物件不進存檔（`meta.gps` 也會被 `cleanSave` 濾掉）。
+
+## 地區資訊（第15版）
+
+`navigateRegion()` 最後呼叫 `showRegionInfo(area)`：清空 `#ask-input`、收起問熊寶膠囊，`#ask-results` 加 `region-info` 類別顯示地區卡；精選依底部類別下拉，有照片優先、最多 6 筆，「前往」仍走 `navigateTo()`。
+
+## 手機版面 v2（第15版）
+
+`index.html`：地圖工具改為 `#map-follow`、`#gps-toggle`、`#map-more` 加 `.map-extra`（全圖、北寮、底圖、重新載入）；桌機 `.map-extra{display:contents}` 並以 `order` 維持原順序。問熊寶表單多 `.ask-pill`；`body.ask-expanded` 控制手機展開。CSS 在 `style.css` 末段「手機版面 v2」。`mobile-layout.js` 不變（類別下拉移到上方後不再計入 `--ui-bottom`）。
+
+## 角色動畫（第17版起）
+
+`#bear-ride`、`#bear-boat` 為 `<div class="bear-sprite">` 內含使用者提供的動畫 WebP（`bear-ride-anim.webp`、`bear-boat-anim.webp`，後者用 `data-src` 延遲到有搭船行程才載入）；`game.js` 設定外層位置、大小與 `--flip`。搭船動畫以 `BOAT_FIT={s:.8207,tx:61,ty:29}` 換算 `BOAT_SCALE`、`BOAT_DX`、`BOAT_DY`（翻轉時水平位移跟著反向）。另依使用者要求疊加 CSS：騎車 `ride-bump` 顛簸＋`.puff` 排氣煙塵，搭船 `boat-bob` 起伏＋`--rock` 左右搖晃（`prefers-reduced-motion` 時停用）。
+
+## 南海遊客中心東側上船（第15版）
+
+`tools/build-ferry-routes.mjs` 的港口可設 `board:[lng,lat]`，作為找道路與海面上船點的中心（沒有就用官方 `geo`）；輸出時移除 `board`。目前只有 magong 設定（使用者指正：南海諸島交通船由遊客中心右側出發）。
+
+## 測速照相與科技執法（第16版）
+
+`dist/enforcement.js`：`loadEnforcement()` 先讀試算表（`ENFORCE_SHEET` gid 777020，export／gviz 兩種 CSV 網址），失敗改讀 `ENFORCE_FILE`。`normalizeRecord()` 只在緯度欄 >90 時對調欄位；`groupPoints()` 依座標（小數 5 位）合併同路口；`parseDirection('東南向西北')` 回傳行進方向單位向量（x 向東、z 向南）；`checkAlerts(points,pos,heading,{unit,range=300,techRange=50,rearm=600},alerted)` 判斷前方提醒（測速：夾角 45° 內、方向夾角 60° 內；科技執法：50 公尺內不分方向；`suspect` 不提醒）。`game.js` 的 `toggleEnforce()`、`prepareEnforcePoints()`（`alertAt`＝0.6 世界單位內最近收錄道路點，只用來算距離）、`placeEnforceMarkers()`、`enforceBearTick()`（4Hz，熊寶移動方向）、`enforceGpsCheck()`（GPS 連續定位，移動 ≥8 公尺才更新方向，時速 ≥5 公里才提醒）。重新產生資料：`node tools/build-enforcement.mjs`（同時輸出 `sources/enforcement/sheet-rows.json` 供寫回工作表）。
+
+## 驗證範圍
+
+第13版以無頭Chromium（SwiftShader）截圖檢查桌機1366×800與手機393×760、360×640、393×850；外部圖磚因環境網路限制未載入，畫面為陸域備援底圖。`npm run check` 在 Node.js 22.22.0 執行（Node 24 未實測）。實體手機與GitHub Actions尚未驗證。
+
+第15版：`npm run check` 八組 PASS（Node 22.22.0）；無頭 Chromium 以模擬 GPS 檢查手機 393×760、360×640 與桌機 1366×800。實體手機 GPS、APK 內定位權限未驗證。
+第16版：`npm run check` 九組 PASS（Node 22.22.0）；無頭 Chromium 檢查測速圖層、提醒與模擬 GPS。實體手機震動／提示音未驗證。
+第17版：`npm run check` 九組 PASS；無頭 Chromium 檢查騎車／搭船動畫位置。實體手機動畫順暢度未驗證。
+分海動畫場景（第17版修正）：`setRegion(area,null,'tide')` 的地點改用 `tideNodes()`，只有奎壁山摩西分海一筆；`makeTour()` 保留但遊戲不再使用。
+分海場景（第18版）：`TIDE_VIEW`（鏡頭）、`tidePlaying`（frame 內每秒推進 120 分鐘）、`updateTideBar()`（同步 `#tide-bar` 與 `updateSimulation`）；`setRegion` 在 `observingSea` 時顯示 `#tide-bar`、body 加 `tide-mode`、不設目的地；`mobile-layout.js` 把 `#tide-bar` 計入 `--ui-bottom`。
+分海動畫（第19版）：`enterTideView()` 設 `tideView`、`inspectPoint`（步道中點）、`tide-mode`；`drawTidePath(g)` 每格依 `interpolateTide` 決定露出比例（潮高 -10 開始、-80 全露）畫小圓石；`exitTideView()` 還原鏡頭。示意小島（`setRegion(area,null,'tide')`、`buildWorld`）已不再由介面使用。
+手機版面 v3（第20版）：`style.css` 末段；`.ask-results` 在手機改到下方卡片位置，`ask-open`／`region-open` 時隱藏 `#destination`；`#toast`、`#enforce-alert`、`.gps-chip`、`.geo-status` 同一條（top 112px），以 `body:has(#toast.visible)`、`.enforce-alerting` 決定誰顯示；`mobile-layout.js` 量測 `#ask-results`。
+WebGL 收回（第21版）：`webglcontextlost` 時存檔並標記，`webglcontextrestored` 或回到前景時 `sessionStorage['bear-penghu-resume']=1` 後重新載入，`init()` 讀到就直接 `start()`。測速標記 `placeEnforceMarkers()` 只在 `engine.zoom<=40` 且非分海動畫時顯示，`suspect` 點不建立標記。
+立體建築（第22版）：`dist/buildings.js` 的 `Buildings` 依 1 公里方格分組，`engine.render` 在底圖與道路之後呼叫 `buildings.render()`；只在 `mapVisible` 且 `engine.zoom<=MAX_ZOOM(24)` 時畫鏡頭附近方格，每幀最多新建 3 格（`triangulate()` 耳切法做屋頂）。資料 `dist/geo/penghu-buildings-20261021.json` 格式 `[高度公尺, 類型(1=廟宇), 推估(1=是), x0,z0,…]`，由 `node tools/build-buildings.mjs` 從 `sources/buildings/` 產生（輪廓不平移、略過地點所在建物）；`EXAG=1.5`。`game.js` 的 `MAP_3D_TILT=.9` 為一般地圖視角，`BEAR_TILT_FIX()` 讓熊寶大小固定為 1.12 視角時的大小。桌機（≥1101px）`.ask-results` 改在左側、`.geo-status` 在縮放鈕左側（`style.css` 末段第22版）。
+測速提醒（第23版）：`checkAlerts(points,pos,heading,{unit,route,step,lateral})`。有 `route` 時用 `alongRoute()` 找路線上（15 公尺內）第一個接近點，距離為沿路距離減 `step`（route[0] 為上次檢查位置）；沒有 route 時退回正前方走廊（`lateral`）。熊寶：`Journey.ahead(player)`（到下一個港口前的陸路），沿用上一次的 ahead 路線補間隔；搖桿與 GPS：`RoadNavigation.lookahead(x,z,heading,length,maxOffset)`。測速點 `alertAt` 由 `RoadNavigation.nearby()` 選與受測方向平行的道路，`axis` 為該路方向。GPS 方向基準距離 `max(30, 3×accuracy)` 公尺、15 秒內。
+我的位置導航（第24版）：`GpsNav(plan,end,meta)` 把規劃路線攤成帶累計距離的點列；`update(pos,unit,tol)` 投影（先在目前進度附近找）、進度只往前、`off` 計偏離次數；`remaining()`、`arrived()`、`ahead(from,len)`（測速用）、`geometry()`（橘線／船段藍色虛線）。`game.js`：`planTrip` 在 `gps.on` 時改呼叫 `startGpsNav`；`onGps` 依序 `gpsMotion`（方向、速度）→ `gpsNavUpdate`（進度、抵達、重新規劃、重畫路線）→ `enforceGpsCheck` → `gpsFollowBear`（目標點 `gpsRoadPoint()`；460 公尺內每 0.7 秒更新）；`frame` 中熊寶跟隨速度 `gpsBearSpeed()`、導航時地圖轉向（`navRotateHold`）。`keepScreenOn()` 管 Wake Lock。sessionStorage `bear-penghu-resume` 可為 JSON `{gps:1,nav:{end,meta}}`。
+測速提醒顯示（第25版）：`showEnforceAlert` 設 `enforce.active`，`trackEnforceAlert()` 每次檢查用 `distanceAhead()` 更新倒數（對不到路用移動距離往下扣，`miss` 達 3 次、還很遠時 6 次才收起；顯示距離不倒退、不跳太快），通過（<-5 公尺）收起，8 秒無更新收起；`enforceBeep()` 同一點 60 秒內只響一次，GPS 剩 100 公尺再響。`checkAlerts` 支援 `routes`（多條前方路線）。`RoadNavigation.lookaheadAll()` 岔路 45° 內都看。`tests/enforcement-sweep.mjs` 複製 game.js 的 GPS 判斷流程逐點模擬，修改時兩邊須同步。
