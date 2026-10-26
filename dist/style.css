@@ -317,3 +317,7 @@ button,select,a,#touch-action{touch-action:manipulation}.place-label,#joystick,#
 /* 2026-10-26 第22版：桌機的問熊寶結果／地區資訊改放左側（不蓋住地圖工具列）；底圖狀態移到縮放鈕左側（不蓋住＋） */
 @media(min-width:1101px){.ask-results{top:96px;left:34px;transform:none;width:min(400px,32vw);max-height:calc(100dvh - 296px)}}
 @media(min-width:1101px){.geo-status,.geo-status.ready{right:104px}}
+/* 2026-10-26 第26版：原生 App 子母畫面（html.pip，只在 App 內由原生程式加上）：只留地圖、熊寶、你的位置、定位資訊與測速提醒 */
+html.pip .topbar,html.pip .dock,html.pip .map-credit,html.pip .geo-status,html.pip #joystick,html.pip #touch-action,html.pip #labels,html.pip #enforce-labels,html.pip #toast,html.pip #panel,html.pip #hud>*:not(.gps-chip){display:none!important}
+html.pip .gps-chip,html.pip body.enforce-alerting .gps-chip,html.pip body:has(#toast.visible) .gps-chip{display:block!important;visibility:visible!important;position:absolute;top:4px!important;left:4px!important;right:4px!important;bottom:auto!important;max-width:none!important;transform:none!important;font-size:10px!important;line-height:1.35!important;padding:4px 6px!important;border-radius:8px!important;white-space:normal!important}
+html.pip #enforce-alert,html.pip .gps-on #enforce-alert{top:auto!important;bottom:4px!important;left:4px!important;right:4px!important;max-width:none!important;transform:none!important;font-size:12px!important;padding:5px 6px!important;border-radius:8px!important}

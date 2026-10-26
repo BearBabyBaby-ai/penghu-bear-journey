@@ -3,6 +3,7 @@
 只做等比例縮放；遮罩圖示另外在同色藍底上縮小置中，避免手機裁成圓形時切到帽子與耳朵。不改繪圖案。
 遊戲內的熊寶角色仍是 dist/assets/bearbao.png，與此圖示無關、不受影響。
 用法：python tools/build-app-icons.py   （需 Pillow）
+第26版起另外輸出原生 Android App 的啟動圖示到 android-app/res/（同一張原圖，只縮放）。
 """
 from pathlib import Path
 from PIL import Image, ImageDraw, ImageFilter, ImageStat
@@ -14,7 +15,7 @@ OUT = ROOT / 'dist/icons'
 def full(size, name):
     Image.open(SRC).convert('RGB').resize((size, size), Image.LANCZOS).save(OUT / name, optimize=True)
 
-def maskable(size, name, fill=.80):
+def maskable(size, name, fill=.80, out=None):
     src = Image.open(SRC).convert('RGB')
     # 底：取原圖四邊外框的平均藍色；圖案本身等比例縮小置中，邊緣柔和接到底色
     w, h = src.size; b = max(2, w // 60)
@@ -27,7 +28,8 @@ def maskable(size, name, fill=.80):
     ImageDraw.Draw(mask).rectangle((edge, edge, inner.width - edge, inner.height - edge), fill=255)
     mask = mask.filter(ImageFilter.GaussianBlur(edge / 2))
     canvas.paste(inner, ((size - inner.width) // 2, (size - inner.height) // 2), mask)
-    canvas.save(OUT / name, optimize=True)
+    canvas.save((out or OUT) / name, optimize=True)
+    return bg
 
 OUT.mkdir(parents=True, exist_ok=True)
 full(192, 'icon-192.png')
@@ -36,3 +38,17 @@ maskable(512, 'icon-maskable-512.png')
 full(180, 'apple-touch-icon.png')
 full(32, 'favicon-32.png')
 print('icons written to', OUT)
+
+# 原生 Android App（android-app/res）：一般圖示與圓形圖示＝原圖等比例縮放；自適應圖示前景＝原圖縮小置中在同色藍底（手機會裁成圓形或圓角方形）
+RES = ROOT / 'android-app/res'
+for dpi, legacy, adaptive in (('mdpi', 48, 108), ('hdpi', 72, 162), ('xhdpi', 96, 216), ('xxhdpi', 144, 324), ('xxxhdpi', 192, 432)):
+    d = RES / f'mipmap-{dpi}'; d.mkdir(parents=True, exist_ok=True)
+    for name in ('ic_launcher.png', 'ic_launcher_round.png'):
+        Image.open(SRC).convert('RGB').resize((legacy, legacy), Image.LANCZOS).save(d / name, optimize=True)
+    bg = maskable(adaptive, 'ic_launcher_foreground.png', fill=.66, out=d)
+(RES / 'mipmap-anydpi-v26').mkdir(parents=True, exist_ok=True)
+for name in ('ic_launcher.xml', 'ic_launcher_round.xml'):
+    (RES / 'mipmap-anydpi-v26' / name).write_text('<?xml version="1.0" encoding="utf-8"?>\n<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">\n  <background android:drawable="@color/ic_launcher_background"/>\n  <foreground android:drawable="@mipmap/ic_launcher_foreground"/>\n</adaptive-icon>\n', encoding='utf-8')
+(RES / 'values').mkdir(parents=True, exist_ok=True)
+(RES / 'values' / 'ic_launcher_background.xml').write_text('<?xml version="1.0" encoding="utf-8"?>\n<resources>\n  <color name="ic_launcher_background">#%02X%02X%02X</color>\n</resources>\n' % bg, encoding='utf-8')
+print('android icons written to', RES)

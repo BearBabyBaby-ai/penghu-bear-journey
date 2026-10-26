@@ -5,7 +5,7 @@
  <meta name="theme-color" content="#faf9ee"><meta name="description" content="跟著熊熊探索澎湖的 3D 島嶼探索與集章遊戲。">
  <title>熊熊澎湖之旅 · 3D 島嶼探索</title>
  <!-- App（PWA／APK）設定 -->
- <link rel="manifest" href="manifest.json"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="熊熊澎湖之旅"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="apple-touch-icon" href="icons/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png"><link rel="stylesheet" href="style.css?v=20261026-v22">
+ <link rel="manifest" href="manifest.json"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="熊熊澎湖之旅"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="apple-touch-icon" href="icons/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png"><link rel="stylesheet" href="style.css?v=20261026-app1">
 </head>
 <body>
  <canvas id="world" aria-label="澎湖 3D 探索場景，可用方向鍵或 WASD 移動熊寶"></canvas>
@@ -46,7 +46,7 @@
  <dialog id="help-dialog"><button class="dialog-close icon-button" aria-label="關閉說明">×</button><span class="eyebrow">WELCOME TO PENGHU</span><h2>你的島嶼，慢慢探索。</h2><p>類別下拉選單（桌機在左下、手機在左上）可選美食、景點、廟宇或全部；預設顯示景點。密集地點合併為數字標記，點開數字即可查看所有地點。上方鄉市選單會從熊寶目前位置自動導航，保留當前位置，並清除問熊寶的關鍵字、改顯示該鄉市資訊。目的地卡可按 × 關閉；桌機在右側，手機在下方，搖桿與 E 鍵會浮在卡片上方不被遮住。潮汐面板的「觀察分海動畫」會在真實地圖上移到奎壁山，自動播放一天的潮汐，退潮時奎壁山到赤嶼的礫石步道露出；可拖曳下方時間或暫停，按「返回地圖」回到熊寶身邊（熊寶不移動）。走到道路互動點後可蓋下旅行印章。</p><div class="help-grid"><span>WASD / 方向鍵</span><b>沿道路移動熊寶</b><span>Shift</span><b>加速行走</b><span>滑鼠點道路</span><b>沿路自動前往</b><span>拖曳 / 滾輪</span><b>旋轉 / 縮放視角</b><span>E</span><b>閱讀附近地點、集章</b><span>問熊寶</span><b>輸入地區、類別、神明或地點名稱，點「前往」沿路出發</b><span>手機</span><b>左側搖桿移動、右側 E 互動、兩指縮放；右側直排為跟隨、我的位置、地圖工具</b><span>我的位置</span><b>開啟 GPS 顯示你的實際位置，熊寶沿道路（離島經港口搭船）跟上；開著定位選目的地，就從你的位置導航，地圖跟著你並轉成行進方向朝上，螢幕保持亮著</b><span>測速／科技執法</span><b>地圖工具內開啟：顯示澎湖縣警察局公布的固定測速與路口科技執法；熊寶或你（GPS）接近時提醒。騎車請勿操作手機，以現場標誌為準</b></div><p class="small-note">陸海以內建國土測繪圖資的陸域輪廓判定，海面無法步行。手機可按＋／−或用兩指縮放地圖。點「北寮」會導航前往北寮保安宮。自動尋路和搖桿都沿收錄的道路中心線行走，無道路處會停止。橘線為規劃路線。道路快照為 2021-12-17，可能缺少新路；地標互動點設在附近道路，原表標記不移動。離島採港口對港口：望安、七美由馬公南海交通船碼頭搭船；吉貝由赤崁漁港、鳥嶼與員貝由岐頭漁港、大倉由馬公重光碼頭、桶盤與虎井由馬公南海遊客中心搭船；底部「交通船」可查看全部航線並直接前往港口，再沿路到目的地。藍色虛線為遊戲航線示意，航行中顯示熊寶搭船。航行時改目的地會在下一港口下船後接續，取消也會靠港後才停止。沒有已收錄交通路線時不移動。37 筆資料缺座標，保留在完整圖鑑。進度儲存在這個瀏覽器。潮汐採遊戲內的潮汐資料；遊戲場景與分海動畫供探索體驗，實際通行請依現場管制。</p><button class="primary" id="help-go">知道了，出發</button></dialog>
  <div id="toast" role="status" aria-live="polite"></div>
  <div id="loading"><img class="brand-bear" src="assets/bearbao.png" alt="熊寶"><p>熊寶正在準備旅行手帳…</p><small>載入地點與陸域輪廓</small></div>
- <script type="module" src="game.js?v=20261026-enf4"></script>
+ <script type="module" src="game.js?v=20261026-app1"></script>
  <script type="module" src="mobile-layout.js?v=20261017-m3"></script>
  <script src="pwa.js?v=20261016-app1"></script>
 </body></html>

@@ -1,0 +1,16 @@
+{
+  "appId": "io.github.bearbabybaby_ai.penghubear",
+  "appName": "熊熊澎湖之旅",
+  "webDir": "www",
+  "server": {
+    "url": "https://bearbabybaby-ai.github.io/penghu-bear-journey/",
+    "cleartext": false,
+    "allowNavigation": [
+      "bearbabybaby-ai.github.io"
+    ]
+  },
+  "android": {
+    "backgroundColor": "#e8eddd",
+    "allowMixedContent": false
+  }
+}

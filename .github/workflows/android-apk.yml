@@ -1,0 +1,91 @@
+name: Build Android App (原生 APK)
+
+on:
+  push:
+    branches: [main, native-app]
+    paths:
+      - 'android-app/**'
+      - '.github/workflows/android-apk.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: android-apk
+  cancel-in-progress: true
+
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    env:
+      KS_B64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+      KS_PASS: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+      KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+      KEY_PASS: ${{ secrets.ANDROID_KEY_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+          package-manager-cache: false
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Prepare Capacitor project
+        working-directory: android-app
+        run: |
+          set -o pipefail
+          mkdir -p ../build-logs
+          export VERSION_CODE=$((1000 + ${{ github.run_number }}))
+          export VERSION_NAME="26.${{ github.run_number }}"
+          if [ -n "$KS_B64" ]; then export TEST_BUILD=0; else export TEST_BUILD=1; fi
+          echo "VERSION_CODE=$VERSION_CODE" >> $GITHUB_ENV; echo "VERSION_NAME=$VERSION_NAME" >> $GITHUB_ENV; echo "TEST_BUILD=$TEST_BUILD" >> $GITHUB_ENV
+          npm install --no-audit --no-fund 2>&1 | tee ../build-logs/npm-install.log
+          npx cap add android 2>&1 | tee ../build-logs/cap-add.log
+          node scripts/patch-android.mjs 2>&1 | tee ../build-logs/patch.log
+          npx cap sync android 2>&1 | tee ../build-logs/cap-sync.log
+      - name: Build APK
+        working-directory: android-app/android
+        run: |
+          set -o pipefail
+          chmod +x gradlew
+          if [ "$TEST_BUILD" = "0" ]; then
+            echo "$KS_B64" | base64 -d > "$RUNNER_TEMP/release.keystore"
+            ./gradlew assembleRelease --no-daemon --stacktrace \
+              -Pandroid.injected.signing.store.file="$RUNNER_TEMP/release.keystore" \
+              -Pandroid.injected.signing.store.password="$KS_PASS" \
+              -Pandroid.injected.signing.key.alias="$KEY_ALIAS" \
+              -Pandroid.injected.signing.key.password="$KEY_PASS" 2>&1 | tee ../../build-logs/gradle.log
+            APK=$(ls app/build/outputs/apk/release/*.apk | head -1)
+          else
+            ./gradlew assembleDebug --no-daemon --stacktrace 2>&1 | tee ../../build-logs/gradle.log
+            APK=$(ls app/build/outputs/apk/debug/*.apk | head -1)
+          fi
+          mkdir -p ../../out
+          if [ "$TEST_BUILD" = "0" ]; then OUT="penghu-bear-journey-$VERSION_NAME.apk"; else OUT="penghu-bear-journey-$VERSION_NAME-test.apk"; fi
+          cp "$APK" "../../out/$OUT"; ls -la ../../out
+      - name: Publish release
+        run: |
+          TAG="android-v$VERSION_NAME"
+          if [ "$TEST_BUILD" = "0" ]; then
+            NOTES="熊熊澎湖之旅 原生 App $VERSION_NAME（正式簽章，可直接覆蓋安裝原本的 App）。"
+            gh release create "$TAG" out/*.apk --title "熊熊澎湖之旅 App $VERSION_NAME" --notes "$NOTES" --target "$GITHUB_SHA"
+          else
+            NOTES="熊熊澎湖之旅 原生 App $VERSION_NAME 測試版：尚未設定正式簽章金鑰，App 名稱為「熊熊澎湖之旅（測試）」，會和原本的 App 並存，不會覆蓋。"
+            gh release create "$TAG" out/*.apk --title "熊熊澎湖之旅 App $VERSION_NAME（測試版）" --notes "$NOTES" --prerelease --target "$GITHUB_SHA"
+          fi
+        env:
+          GH_TOKEN: ${{ github.token }}
+      - name: Save build logs
+        if: always()
+        run: |
+          mkdir -p build-logs; cp -r build-logs /tmp/logs
+          cd /tmp && rm -rf logrepo && git clone -q --depth 1 "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" logrepo && cd logrepo
+          git checkout -q --orphan android-build-log && git rm -rq . || true
+          cp /tmp/logs/* . 2>/dev/null || true; echo "run ${{ github.run_number }} ${{ job.status }} $GITHUB_SHA" > STATUS.txt
+          for f in *.log; do [ -f "$f" ] && tail -c 200000 "$f" > "$f.tmp" && mv "$f.tmp" "$f"; done
+          git -c user.name=github-actions -c user.email=github-actions@users.noreply.github.com add -A && git -c user.name=github-actions -c user.email=github-actions@users.noreply.github.com commit -qm "Android build log ${{ github.run_number }}" && git push -qf origin android-build-log
+        env:
+          GH_TOKEN: ${{ github.token }}

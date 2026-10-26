@@ -428,6 +428,9 @@ let gps={on:false,watch:null,fix:null,world:null,road:null,lastPlan:0,planned:nu
 /* 「我的位置」導航：開著定位選目的地時，路線從你的實際位置規劃（gpsNav），熊寶不自己跑去目的地，
    而是沿道路跟著你、照你的速度前進；地圖跟著你並轉成行進方向朝上 */
 let gpsNav=null,navRotateHold=0;
+/* 原生 Android App（第26版）：App 內才有 Capacitor；網頁版這些都是 null，行為完全不變 */
+const NATIVE=(()=>{try{return window.Capacitor?.isNativePlatform?.()?window.Capacitor:null}catch{return null}})();
+const nativePlugin=name=>NATIVE?.Plugins?.[name]||null;
 const GPS_ROAD_RANGE=1.5; // 世界單位，約 150 公尺內找道路
 const metres=d=>Math.round(d*WORLD_METRES*Math.cos(23.55*Math.PI/180));
 function closeMapMenu(){const t=$('#map-tools');if(t){t.classList.remove('open');$('#map-more')?.setAttribute('aria-expanded','false')}}
@@ -438,11 +441,20 @@ function toggleGps(){
  if(!isSecureContext){toast('定位需要 https 網址才能使用。');return}
  if(enforce.on)ensureEnforceAudio();returnToMap();start();Object.assign(gps,{on:true,follow:true,camera:true,lastPlan:0,planned:null,warned:'',message:'正在取得你的位置…'});updateGpsUI();
  toast('正在取得你的位置；第一次使用請允許「位置」權限。');
- gps.watch=navigator.geolocation.watchPosition(onGps,onGpsError,{enableHighAccuracy:true,maximumAge:1000,timeout:30000});keepScreenOn(true);
+ const BG=nativePlugin('BackgroundGeolocation');
+ if(BG){ /* App：用背景定位（回到桌面、子母畫面、鎖螢幕時繼續更新；通知列會顯示正在使用位置） */
+  gps.native=true;nativePlugin('LocalNotifications')?.requestPermissions?.().catch(()=>{});
+  BG.addWatcher({backgroundTitle:'熊熊澎湖之旅',backgroundMessage:'正在使用你的位置（導航與測速提醒）',requestPermissions:true,stale:false,distanceFilter:0},(loc,err)=>{
+   if(err){if(err.code==='NOT_AUTHORIZED')gpsStop('沒有定位權限。請到手機設定允許「熊熊澎湖之旅」使用位置後再按一次。');else onGpsError({code:2});return}
+   if(loc&&gps.on)onGps({coords:{latitude:loc.latitude,longitude:loc.longitude,accuracy:loc.accuracy,speed:loc.speed,heading:loc.bearing},timestamp:loc.time||Date.now()});
+  }).then(id=>{if(gps.on)gps.watch=id;else BG.removeWatcher({id}).catch(()=>{})}).catch(()=>gpsStop('無法開始定位，請確認手機的定位已開啟。'));
+ }else gps.watch=navigator.geolocation.watchPosition(onGps,onGpsError,{enableHighAccuracy:true,maximumAge:1000,timeout:30000});
+ keepScreenOn(true);
 }
 /* 開「我的位置」當導航時，螢幕保持亮著（不支援的裝置略過）；回到 App 時重新申請 */
-async function keepScreenOn(on){try{if(!on){await gps.wake?.release?.();gps.wake=null;return}if(gps.wake||!navigator.wakeLock||document.visibilityState!=='visible')return;gps.wake=await navigator.wakeLock.request('screen');gps.wake.addEventListener?.('release',()=>{gps.wake=null})}catch{gps.wake=null}}
-function gpsStop(msg){if(gps.watch!==null)navigator.geolocation.clearWatch(gps.watch);keepScreenOn(false);if(gpsNav){gpsNav=null;engine?.setRoute(null);routeRevision=-1}Object.assign(gps,{on:false,watch:null,fix:null,world:null,road:null,planned:null,message:'',heading:null,speed:0,hist:[],pendingNav:null});if(journey?.active&&journey.meta.gps)stopWalking();updateGpsUI();if(msg)toast(msg)}
+async function keepScreenOn(on){const pip=nativePlugin('NavPip');if(pip){pip.setEnabled({enabled:!!on}).catch(()=>{});return} /* App：螢幕常亮＋允許回桌面時縮成子母畫面 */
+ try{if(!on){await gps.wake?.release?.();gps.wake=null;return}if(gps.wake||!navigator.wakeLock||document.visibilityState!=='visible')return;gps.wake=await navigator.wakeLock.request('screen');gps.wake.addEventListener?.('release',()=>{gps.wake=null})}catch{gps.wake=null}}
+function gpsStop(msg){if(gps.watch!==null&&gps.watch!==undefined){if(gps.native)nativePlugin('BackgroundGeolocation')?.removeWatcher({id:gps.watch}).catch(()=>{});else navigator.geolocation.clearWatch(gps.watch)}gps.native=false;keepScreenOn(false);if(gpsNav){gpsNav=null;engine?.setRoute(null);routeRevision=-1}Object.assign(gps,{on:false,watch:null,fix:null,world:null,road:null,planned:null,message:'',heading:null,speed:0,hist:[],pendingNav:null});if(journey?.active&&journey.meta.gps)stopWalking();updateGpsUI();if(msg)toast(msg)}
 function onGps(pos){
  if(!gps.on)return;if(gps.warned==='error'){gps.warned='';gps.message=''}const {latitude:lat,longitude:lng,accuracy}=pos.coords;gps.fix={lat,lng,accuracy};gps.fixAt=Date.now();gps.world=mapPosition({lat,lng});
  if(!gps.world){gps.road=null;gpsWarn('outside','你目前不在澎湖圖資範圍內，熊寶留在原位。');updateGpsUI();return}
@@ -457,7 +469,7 @@ function gpsMotion(pos){
  if(hist.length&&now.t<hist[hist.length-1].t)hist.length=0;gps.prevFix=hist[hist.length-1]||null;hist.push(now);while(hist.length&&now.t-hist[0].t>15000)hist.shift();
  const acc=Math.min(50,Number(pos.coords?.accuracy)||10),need=Math.max(30,3*acc);let base=null;
  for(let i=hist.length-2;i>=0;i--)if(Math.hypot(now.x-hist[i].x,now.z-hist[i].z)*unit>=need){base=hist[i];break}
- const dist=base?Math.hypot(now.x-base.x,now.z-base.z)*unit:0,own=Number(pos.coords?.speed),hd=Number(pos.coords?.heading);
+ const dist=base?Math.hypot(now.x-base.x,now.z-base.z)*unit:0,num=v=>v===null||v===undefined||v===''?NaN:Number(v),own=num(pos.coords?.speed),hd=num(pos.coords?.heading) /* 沒有回報（null）不能當成 0（正北） */;
  gps.speed=Math.max(Number.isFinite(own)?own:0,base?dist/Math.max(.5,(now.t-base.t)/1000):0);
  /* 方向：手機有回報行進方向（衛星都卜勒，移動中最準）就用它；否則用 30 公尺以前的位置。
     定位飄移偶爾會算出相反方向：和上一次方向相反時，要連續兩次都相反才採用 */
@@ -597,7 +609,10 @@ function trackEnforceAlert(pos,heading,opts,moved=0){
  if(a.d!=null&&a.miss===0)d=Math.min(a.d,Math.max(d,a.d-(moved*1.5+15))); // 顯示距離平順：不倒退、也不比實際移動跳得快（定位飄移時）
  a.d=Math.max(0,d);setEnforceText(a.d);if(a.sound&&!a.near&&a.d<=100){a.near=true;enforceBeep()}
 }
+/* App 在背景（回到桌面但沒有子母畫面、或鎖螢幕）時，測速提醒改用手機通知（有聲音與震動） */
+async function nativeAlertNotify(text){const LN=nativePlugin('LocalNotifications');if(!LN||document.visibilityState!=='hidden')return;try{if(!enforce.channel){await LN.createChannel({id:'enforce',name:'測速提醒',description:'接近測速照相或科技執法路口時提醒',importance:5,vibration:true,visibility:1});enforce.channel=true}await LN.schedule({notifications:[{id:Math.floor(Date.now()%2000000000),title:'熊熊澎湖之旅',body:text,channelId:'enforce'}]})}catch{}}
 function enforceBeep(){
+ if(NATIVE&&document.visibilityState==='hidden'&&enforce.active)nativeAlertNotify(alertText({point:enforce.active.point,distance:enforce.active.d??0}));
  {try{navigator.vibrate?.([140,80,140])}catch{}try{const a=enforce.audio;if(a){a.resume?.();const t=a.currentTime;for(const [f,d] of [[880,0],[1175,.18]]){const o=a.createOscillator(),g=a.createGain();o.frequency.value=f;g.gain.setValueAtTime(.0001,t+d);g.gain.exponentialRampToValueAtTime(.25,t+d+.02);g.gain.exponentialRampToValueAtTime(.0001,t+d+.15);o.connect(g).connect(a.destination);o.start(t+d);o.stop(t+d+.16)}}}catch{}}
 
 }
