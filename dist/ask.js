@@ -1,6 +1,8 @@
 // 問熊寶：本機文字查詢（不連任何 AI／API）。
-// 從一句話找出「地區、類別、附近、關鍵字」，只在 data.json 的原表資料裡找，不產生不存在的地點。
+// 從一句話找出「地區、類別、附近、關鍵字」，只在原表資料裡找，不產生不存在的地點。
+// 廟宇主祀：多位主祀拆開、同一位神明的不同寫法都算（與其他系統同一套規則，見 deity.js）。
 import {AREAS,KINDS} from './model.js?v=20261015-travel8';
+import {deityHit} from './deity.js?v=20261125-live1';
 
 const AREA_WORDS=AREAS.map(area=>({area,words:[area,area.replace(/[市鄉]$/,'')]}));
 const KIND_WORDS={
@@ -55,6 +57,7 @@ export function askPlaces(text,records,{distanceOf=()=>Infinity,limit=12}={}){
         for(const [,value] of fieldsOf(r)){const v=String(value||'');hits=Math.max(hits,grams.filter(g=>v.includes(g)).length)}
         if(hits>=need){score=best;reason=why}
       }
+      if(!score&&r.kind==='temple'&&q.keyword&&deityHit(r.special,q.keyword)){score=6*3*Math.min(q.keyword.length,6);reason=''}
       if(!score)continue;
     }else{
       // 只有地區／類別／附近：景點優先、有照片優先

@@ -1,4 +1,4 @@
-// 由 sources/enforcement/ 的澎湖縣警察局官方 CSV 產生遊戲內建檔與試算表「測速與科技執法」的列。
+// 由 sources/enforcement/ 的澎湖縣警察局官方 CSV 產生試算表「測速與科技執法」的列（遊戲直接讀試算表，不產生內建檔）。
 // 只把原始資料中對調的經緯度欄位換回來；座標數值不改、不吸附道路。
 import fs from 'node:fs';
 import {parseCSV} from '../dist/ferry-sheet.js';
@@ -20,8 +20,8 @@ for(const [key,s] of Object.entries(SRC)){
  }
 }
 const out={version:'penghu-enforcement-20261016-v1',readAt:READ_AT,provider:'澎湖縣政府警察局交通警察隊（澎湖縣政府開放資料平台）',license:'政府資料開放授權條款',sources:Object.values(SRC).map(({label,page,updated})=>({label,page,updated})),records};
-fs.writeFileSync('dist/geo/penghu-enforcement-20261016.json',JSON.stringify(out,null,1)+'\n');
 const sheet=[ENFORCE_HEADERS,...records.map(r=>[r.type,Number(r.no),r.name,r.area,r.lat,r.lng,r.limit??'',r.direction,r.items,r.techKind,r.dept,r.model,r.source,r.updated,r.date,r.note])];
-fs.writeFileSync('sources/enforcement/sheet-rows.json',JSON.stringify(sheet));
+// 寫到暫存資料夾（貼進工作表用），不放進儲存庫
+const tmp=(await import('node:os')).tmpdir()+'/penghu-enforcement-sheet-rows.json';fs.writeFileSync(tmp,JSON.stringify(sheet));console.log('sheet rows:',tmp);
 const pts=groupPoints(records.map(normalizeRecord));
 console.log(records.length,'records,',pts.length,'points,',pts.filter(p=>p.tech).length,'tech,',pts.filter(p=>p.suspect).length,'suspect,',records.filter(r=>r.note.includes('對調')).length,'swapped');

@@ -94,20 +94,19 @@ python -m http.server 4173 --directory dist
 | `dist/places.js` | 全部地標與類別顯示 |
 | `dist/roads.js` | 沿道路尋路與移動 |
 | `dist/media.js` | 本地原表照片顯示 |
-| `dist/assets/places/` | 141張網頁照片與原圖對應清單 |
-| `sources/` | 美食／圖資欄原始快照與照片資產對應 |
+| `sources/` | 角色圖、圖示、建物與測速官方原始檔（不含原表資料） |
 | `HANDOFF_CLAUDE_GEMINI.md` | Claude／Gemini接手完整說明 |
 | `dist/assets/bearbao.png` | 原始透明熊寶圖檔 |
-| `dist/data.json` | 景點、廟宇與潮汐快照 |
+| `dist/sheet-data.js` | 開啟時直接讀原表的地點、分海與潮汐（不內建資料） |
 | `dist/geo/` | 陸域、道路與圖資授權 |
 | `tests/` | 資料與程式檢查 |
 | `tools/` | 陸域與道路資料重建工具 |
 | `DEVELOPMENT.md` | 實作細節、資料版本與檢核範圍 |
 | `EXPORT-MANIFEST.json` | 本次匯出資訊及檔案 SHA-256 |
 
-地點與潮汐資料為 2026-10-15 快照，GitHub 版本不會自動重新讀取 Google 試算表。更新資料時請修改 `dist/data.json` 並執行檢查。
+地點、潮汐與測速資料開啟時直接讀原表（2026-11-25 起不留資料備份、不在手機另外存），原表更新後重新開啟遊戲就是最新內容；讀不到時顯示提示。
 
-977筆地點中，940筆有有效座標；另37筆資料（18美食、19廟宇）保留於圖鑑。道路資料為 OSM 2021-12-17 快照，可能缺少新道路；地標不會因缺道路而從地圖消失。底圖圖磚仍需網路連線。
+地點筆數與座標依原表；沒有座標的地點保留於圖鑑。道路資料為 OSM 2021-12-17 快照，可能缺少新路，已知限制見 `DEVELOPMENT.md`。
 
 ## 第15版新增
 

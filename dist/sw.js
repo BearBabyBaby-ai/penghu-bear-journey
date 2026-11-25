@@ -2,11 +2,12 @@
    熊熊澎湖之旅 App - service worker（比照熊熊綜合系統 App 的做法）
    ・畫面與程式（html／js／css／json）：先連網取最新版，沒網路才用上次的版本
      → GitHub 更新後，App 下次開啟就是新版，不必重新安裝 APK
-   ・相片、圖示、熊寶圖：存一份在手機（檔名固定、內容不變），加快開啟
+   ・圖示、熊寶圖：存一份在手機（檔名固定、內容不變），加快開啟
+   ・地點資料與相片直接讀原表，不在手機另外存（舊版存的相片在更新時清掉）
    ・地圖圖磚（其他網站）：照常連網，不離線打包
    只有更換圖示或 manifest.json 時，才需要把下面的 VERSION 改一個新名稱
    ===================================================================== */
-const VERSION = 'penghu-bear-2026-10-16-v2';
+const VERSION = 'penghu-bear-2026-11-25-v3';
 const SHELL_CACHE = `shell-${VERSION}`;
 const MEDIA_CACHE = 'media';
 const SHELL = ['./', './index.html', './manifest.json', './style.css', './icons/icon-192.png', './icons/icon-512.png', './icons/icon-maskable-512.png', './assets/bearbao.png'];
@@ -19,6 +20,7 @@ self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys()
       .then(keys => Promise.all(keys.filter(k => k.startsWith('shell-') && k !== SHELL_CACHE).map(k => caches.delete(k))))
+      .then(() => caches.open(MEDIA_CACHE)).then(cache => cache.keys().then(reqs => Promise.all(reqs.filter(r => /\/assets\/places\//.test(new URL(r.url).pathname)).map(r => cache.delete(r)))))
       .then(() => self.clients.claim())
   );
 });

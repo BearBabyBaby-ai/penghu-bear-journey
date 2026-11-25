@@ -30,7 +30,7 @@
 
 ## 圖片與區域起點
 
-141張圖資皆按原表「工作表＋列號」對應到指定Drive原圖（美食11張、景點96張、廟宇34張）。網頁檔放在`dist/assets/places/`，不依賴Drive登入或短效下載網址。EXIF方向校正後，等比例限制1600像素、WebP品質84，不裁切或修飾內容；原圖ID、網址、原始檔雜湊及網頁檔雜湊保留在`PHOTO-MANIFEST.json`。一筆美食的圖資欄為Google Maps連結，保留連結資料而不當圖片。圖鑑縮圖、目的地卡和地點詳情皆使用實際對應照片。
+照片直接用原表同一列圖資欄的 Drive 檔（`lh3.googleusercontent.com`），不下載到儲存庫；圖資欄是地圖連結時不當照片。
 
 第一次啟動的六區起點、以及鄉市導航目的地明確指定：馬公觀音亭、湖西北寮保安宮、白沙澎湖水族館、西嶼二崁、七美神鷹寶塔、望安花宅。2026-10-16 起，上方鄉市選單（及問熊寶的「前往七美鄉」）選離島鄉市時，目的地改為該島港口本身（`game.js` 的 `REGION_PORTS`：望安鄉→**望安潭門港**、七美鄉→**七美南滬港**），下船即抵達，不再續走到花宅或神鷹寶塔；兩島的初始出生點不變。其他沒有收錄航線的離島（吉貝、虎井等）需先新增港口與航線。白沙不再因原表首列為姑婆嶼就移至離島；姑婆嶼的原始座標仍保留為可選地標。起點缺少可用道路時，從該區地點最多的連通道路群選擇，無路則停走。
 
@@ -61,7 +61,7 @@ WASD／方向鍵沿路移動、Shift加速、點道路沿路前往；點地標�
 
 ## 地點與潮汐資料
 
-使用2026-10-15快照：美食608筆、景點181筆、廟宇188筆、奎壁山摩西分海2,825筆潮汐、未來30天潮汐預報六區塊各31日／120筆。原表無站名時保留區塊名稱；日期只列月日時依讀取時間推定2026年；高度未註明單位時保留原值。分海動畫為獨立示意場景，只用極值插值，實際通行依現場管制。
+資料開啟時直接讀原表（`dist/sheet-data.js`）：美食清單、景點、廟宇、奎壁山摩西分海、澎湖縣-未來30天潮汐預報；筆數依原表。地點編號依名稱固定（`placeId()`），舊版列號編號由 `dist/id-migrate.js` 轉換。
 
 ## 執行與驗證
 
@@ -115,7 +115,7 @@ WASD／方向鍵沿路移動、Shift加速、點道路沿路前往；點地標�
 
 ## 測速照相與科技執法（第16版）
 
-`dist/enforcement.js`：`loadEnforcement()` 先讀試算表（`ENFORCE_SHEET` gid 777020，export／gviz 兩種 CSV 網址），失敗改讀 `ENFORCE_FILE`。`normalizeRecord()` 只在緯度欄 >90 時對調欄位；`groupPoints()` 依座標（小數 5 位）合併同路口；`parseDirection('東南向西北')` 回傳行進方向單位向量（x 向東、z 向南）；`checkAlerts(points,pos,heading,{unit,range=300,techRange=50,rearm=600},alerted)` 判斷前方提醒（測速：夾角 45° 內、方向夾角 60° 內；科技執法：50 公尺內不分方向；`suspect` 不提醒）。`game.js` 的 `toggleEnforce()`、`prepareEnforcePoints()`（`alertAt`＝0.6 世界單位內最近收錄道路點，只用來算距離）、`placeEnforceMarkers()`、`enforceBearTick()`（4Hz，熊寶移動方向）、`enforceGpsCheck()`（GPS 連續定位，移動 ≥8 公尺才更新方向，時速 ≥5 公里才提醒）。重新產生資料：`node tools/build-enforcement.mjs`（同時輸出 `sources/enforcement/sheet-rows.json` 供寫回工作表）。
+`dist/enforcement.js`：`loadEnforcement()` 直接讀試算表（`ENFORCE_SHEET` gid 777020，export／gviz 兩種 CSV 網址），讀不到就不顯示（不內建資料）；沒有座標的列略過。`normalizeRecord()` 只在緯度欄 >90 時對調欄位；`groupPoints()` 依座標（小數 5 位）合併同路口；`parseDirection('東南向西北')` 回傳行進方向單位向量（x 向東、z 向南）；`checkAlerts(points,pos,heading,{unit,range=300,techRange=50,rearm=600},alerted)` 判斷前方提醒（測速：夾角 45° 內、方向夾角 60° 內；科技執法：50 公尺內不分方向；`suspect` 不提醒）。`game.js` 的 `toggleEnforce()`、`prepareEnforcePoints()`（`alertAt`＝0.6 世界單位內最近收錄道路點，只用來算距離）、`placeEnforceMarkers()`、`enforceBearTick()`（4Hz，熊寶移動方向）、`enforceGpsCheck()`（GPS 連續定位，移動 ≥8 公尺才更新方向，時速 ≥5 公里才提醒）。重新產生資料：`node tools/build-enforcement.mjs`（同時輸出 `暫存資料夾的 penghu-enforcement-sheet-rows.json（不放進儲存庫）` 供寫回工作表）。
 
 ## 驗證範圍
 

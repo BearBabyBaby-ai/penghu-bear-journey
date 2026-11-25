@@ -1,4 +1,5 @@
 import {mapPosition,locateTour} from './map.js?v=20261015-travel8';
+import {migrateId} from './id-migrate.js?v=20261125-live1';
 // The real map always uses the complete source collection. The nine-stop tour
 // belongs only to the separate illustrative tide scene.
 export function mapPlaces(records,navigation){
@@ -9,7 +10,7 @@ export function placeCounts(records){
 }
 // Explicit familiar starts, never the first spreadsheet row (which may be an
 // offshore island). Other records and their real coordinates remain unchanged.
-export const REGION_STARTS={'馬公市':'sight-3','湖西鄉':'temple-76','白沙鄉':'sight-100','西嶼鄉':'sight-126','七美鄉':'sight-162','望安鄉':'sight-174'};
+export const REGION_STARTS=Object.fromEntries(Object.entries({'馬公市':'sight-3','湖西鄉':'temple-76','白沙鄉':'sight-100','西嶼鄉':'sight-126','七美鄉':'sight-162','望安鄉':'sight-174'}).map(([a,id])=>[a,migrateId(id)]));
 export function regionalSpawn(nodes,area){
  const local=nodes.filter(n=>n.record.area===area&&n.approach);
  let chosen=local.find(n=>n.record.id===REGION_STARTS[area]);

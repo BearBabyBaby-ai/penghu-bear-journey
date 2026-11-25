@@ -7,12 +7,14 @@ import {MAP,mapPosition,insideMap,locateTour,mapSpawn,geoToWorld,worldToGeo,tile
 import {LandNavigation} from '../dist/navigation.js';
 import {Coastline,loadTerrain,validateCoastline,LAND_FILE,GRID_FILE,LAND_VERSION} from '../dist/coastline.js';
 import {TileMap} from '../dist/tiles.js';
-const data=JSON.parse(fs.readFileSync(new URL('../dist/data.json',import.meta.url)));
+import {data as LIVE_DATA,enforcement as LIVE_ENF} from './live.mjs';
+import {migrateId} from '../dist/id-migrate.js';
+const data=LIVE_DATA;
 assert.deepEqual(data.meta.sheets,['美食清單','景點','廟宇','奎壁山摩西分海','澎湖縣-未來30天潮汐預報']);
-assert.equal(data.records.length,977);
-assert.equal(new Set(data.records.map(x=>x.id)).size,977);
-assert.deepEqual(Object.fromEntries(Object.keys(KINDS).map(k=>[k,data.records.filter(r=>r.kind===k).length])),{food:608,sight:181,temple:188});
-assert.equal(data.records.filter(r=>r.kind==='food'&&r.sheet==='美食清單').length,608);
+// 資料直接讀原表：筆數依原表，只檢查結構與編號唯一
+assert.equal(new Set(data.records.map(x=>x.id)).size,data.records.length);
+const kindCount=Object.fromEntries(Object.keys(KINDS).map(k=>[k,data.records.filter(r=>r.kind===k).length]));assert(kindCount.food>500&&kindCount.sight>150&&kindCount.temple>150,JSON.stringify(kindCount));
+assert(data.records.every(r=>r.sheet===({food:'美食清單',sight:'景點',temple:'廟宇'})[r.kind]&&/^(food|sight|temple)-h[0-9a-f]{8}(-\d+)?$/.test(r.id)));
 assert(Object.hasOwn(KINDS,'food'));
 assert(data.records.every(r=>r.name&&r.row>=2&&data.meta.sheets.includes(r.sheet)));
 for(const area of AREAS){
@@ -35,7 +37,7 @@ for(const r of data.records){
 for(const [lng,lat] of [[119.6704986,23.5970241],[119.672563,23.5978987],[119.42,23.2],[119.6,23.75]]){
  const p=geoToWorld(lng,lat);for(const z of [9,12,15,18]){const t=tileAt(z,p.x,p.z),b=tileBounds(z,t.x,t.y);assert(p.x>=b.minX&&p.x<=b.maxX&&p.z>=b.minZ&&p.z<=b.maxZ)}
 }
-const north=data.records.find(r=>r.id==='temple-76');assert.equal(north.village,'北寮村');assert.equal(north.name,'保安宮');
+const north=data.records.find(r=>r.id===migrateId('temple-76'));assert.equal(north.village,'北寮村');assert.equal(north.name,'保安宮');
 assert.deepEqual(mapPosition(north),geoToWorld(119.6704986,23.5970241));
 assert.equal(LAYERS.nlsc.url(15,27366,14127),'https://wmts.nlsc.gov.tw/wmts/EMAP/default/GoogleMapsCompatible/15/14127/27366');
 assert.equal(LAYERS.osm.url(15,27366,14127),'https://tile.openstreetmap.org/15/27366/14127.png');
@@ -64,8 +66,8 @@ await assert.rejects(loadTerrain(async()=>new Response('',{status:404})),/未載
 const realCoast=validateCoastline(terrain.geo),realNav=new LandNavigation(realCoast,terrain.grid),builtNav=new LandNavigation(realCoast);
 assert.deepEqual(realNav.walk,builtNav.walk,'Packaged navigation must match the shipped geometry');assert.equal(terrain.geo.geometry.coordinates.length,296);assert.equal(terrain.geo.properties.sourceFeatureCount,106);
 for(const [name,lng,lat,land] of [['北寮保安宮',119.6704986,23.5970241,true],['北寮東側海面',119.685,23.597,false],['澎湖內海',119.55,23.60,false],['七美島中央',119.427,23.205,true],['望安島中央',119.503,23.365,true]]){const p=geoToWorld(lng,lat);assert.equal(realCoast.isLand(p.x,p.z),land,name)}
-const northTour=locateTour([{record:north,index:0},{record:data.records.find(r=>r.id==='sight-47'),index:1}],'湖西鄉',realNav);assert.equal(northTour[0].positionOffset,0);assert(realNav.isLand(northTour[1].approach.x,northTour[1].approach.z));assert(northTour[1].positionOffset<1,'Tidal attraction uses nearby shore while preserving source coordinate');
-let validRecords=0;for(const r of data.records){const p=mapPosition(r),land=p&&realNav.snap(p.x,p.z);if(land){validRecords++;assert(realCoast.isLand(land.x,land.z))}}assert.equal(validRecords,940);
+const northTour=locateTour([{record:north,index:0},{record:data.records.find(r=>r.id===migrateId('sight-47')),index:1}],'湖西鄉',realNav);assert.equal(northTour[0].positionOffset,0);assert(realNav.isLand(northTour[1].approach.x,northTour[1].approach.z));assert(northTour[1].positionOffset<1,'Tidal attraction uses nearby shore while preserving source coordinate');
+let validRecords=0;for(const r of data.records){const p=mapPosition(r),land=p&&realNav.snap(p.x,p.z);if(land){validRecords++;assert(realCoast.isLand(land.x,land.z))}}assert(validRecords>=data.records.filter(r=>mapPosition(r)).length*.9,'most mapped records sit on land');
 // Compare the acceleration index with an independent full-ring point test.
 const brute=(x,z)=>{let inside=false;for(const r of realCoast.rings){let hit=false;for(let i=0,j=r.points.length-1;i<r.points.length;j=i++){const a=r.points[i],b=r.points[j];if((a.z>z)!==(b.z>z)&&x<(b.x-a.x)*(z-a.z)/(b.z-a.z)+a.x)hit=!hit}if(hit)inside=!inside}return inside};
 for(let i=0;i<600;i++){const x=MAP.minX+((i*7919)%600)/600*MAP.width,z=MAP.minZ+((i*3571)%601)/601*MAP.height;assert.equal(realCoast.isLand(x,z),brute(x,z))}
@@ -79,7 +81,7 @@ globalThis.Image=class{set src(v){this.url=v}};const tiles=new TileMap(engine);t
 // Search spans the complete data and respects independent kind and area filters.
 assert(filterRecords(data.records,{query:'奎壁山摩西分海',kind:'sight'}).some(r=>r.name==='奎壁山摩西分海'));
 assert(filterRecords(data.records,{area:'七美鄉',kind:'temple'}).every(r=>r.area==='七美鄉'&&r.kind==='temple'));
-assert.equal(filterRecords(data.records,{kind:'food'}).length,608);
+assert.equal(filterRecords(data.records,{kind:'food'}).length,data.records.filter(r=>r.kind==='food').length);
 assert.equal(filterRecords(data.records,{query:'確定不存在的地點 XYZ 987'}).length,0);
 // Walking remains on land, long frames do not teleport, and backwards input works.
 const p={x:20.9,z:0,facing:0};for(let i=0;i<100;i++)movePlayer(p,1,0,.016);assert(insideIsland(p.x,p.z));assert(p.x<21.1);
@@ -95,23 +97,22 @@ const disconnected=fixture.point(16);assert.equal(fixture.path(fa,disconnected),
 // All source extrema are recovered by the illustrative tide curve.
 let seaEvents=0;
 for(const day of Object.values(data.seaDays)){for(const event of day.events){seaEvents++;assert(Math.abs(interpolateTide(day.events,minute(event.time))-Number(event.height))<.001)}for(const m of [0,360,720,1080,1439])assert(Number.isFinite(interpolateTide(day.events,m)))}
-assert.equal(seaEvents,2825);
-assert.equal(data.forecasts.length,6);assert(data.forecasts.every(g=>Object.keys(g.days).length===31&&Object.values(g.days).reduce((s,d)=>s+d.events.length,0)===120));
-const d=data.forecasts[0].days['2026-10-15'];assert.deepEqual(d.events.map(e=>e.time),['01:06','07:31','14:10','19:37']);
-assert.deepEqual(data.seaDays['2026-10-15'].date,'2026-10-15');
+assert(seaEvents>1000);
+assert.equal(data.forecasts.length,6);assert(data.forecasts.every(g=>Object.keys(g.days).length>=28&&Object.values(g.days).every(d=>d.events.length>=3&&d.events.every(e=>/^\d{1,2}:\d\d$/.test(e.time)))));
+const firstSea=Object.keys(data.seaDays).sort()[0];assert.deepEqual(data.seaDays[firstSea].date,firstSea);
 // Existing stamp data and imported backups remain compatible.
-const stamps={};for(const r of data.records.filter(r=>r.kind==='sight').slice(0,6))stamps[r.id]='2026-10-15';
+const FOOD2=data.records.find(r=>r.kind==='food').id;const stamps={};for(const r of data.records.filter(r=>r.kind==='sight').slice(0,6))stamps[r.id]='2026-10-15';
 stamps[data.records.find(r=>r.kind==='temple').id]='2026-10-15';
-assert.deepEqual(cleanSave({stamps:{...stamps,'fake-id':'2026-10-15','food-2':123},area:'bogus'},data.records).area,'馬公市');
+assert.deepEqual(cleanSave({stamps:{...stamps,'fake-id':'2026-10-15',[FOOD2]:123},area:'bogus'},data.records).area,'馬公市');
 assert(!Object.hasOwn(cleanSave({stamps:{'fake-id':'2026-10-15'}},data.records).stamps,'fake-id'));
-stamps['food-2']='2026-10-15';
-const migration=cleanSave({version:1,stamps:{...stamps,'food-2':'2026-10-15'},observed:true},data.records);
+stamps[FOOD2]='2026-10-15';
+const migration=cleanSave({version:1,stamps:{...stamps,[FOOD2]:'2026-10-15'},observed:true},data.records);
 assert.deepEqual(migration.stamps,stamps);assert(migration.observed);
 const index=fs.readFileSync(new URL('../dist/index.html',import.meta.url),'utf8');
 assert(!/https?:\/\/[^"']+\.(js|css)/.test(index),'Game assets must not depend on a remote CDN');
-for(const file of ['engine.js','model.js','map.js','navigation.js','coastline.js','tiles.js','game.js','style.css','data.json','assets/penghu-map.jpg','assets/bearbao.png',LAND_FILE,GRID_FILE])assert(fs.existsSync(new URL('../dist/'+file,import.meta.url)));
+for(const file of ['engine.js','model.js','map.js','navigation.js','coastline.js','tiles.js','game.js','style.css','sheet-data.js','id-migrate.js','deity.js','assets/penghu-map.jpg','assets/bearbao.png',LAND_FILE,GRID_FILE])assert(fs.existsSync(new URL('../dist/'+file,import.meta.url)));
 assert(!/島嶼任務|僅使用：|id="quest"/.test(index));assert(index.includes('id="place-kind"'));assert(!index.includes('id="places-food"'));
 assert(index.includes('id="bearbao-avatar"')&&index.includes('assets/bearbao.png'));
 const gameSource=fs.readFileSync(new URL('../dist/game.js',import.meta.url),'utf8');assert(!gameSource.includes('drawBear('));assert(gameSource.includes('navigation.isOnRoad(player)||journey?.inTransit'),'Unknown terrain must freeze movement without a verified journey');assert(index.includes('id="ferry-boat"'),'Only ship travel permits an avatar over water');
 const avatarBytes=fs.readFileSync(new URL('../dist/assets/bearbao.png',import.meta.url));assert.equal(crypto.createHash('sha256').update(avatarBytes).digest('hex'),'2791856bcf16fd1fc39c67f7ec467659d15cb5790d598c3fb0c1b61d2d0556c7');assert.equal(avatarBytes[25],6,'The original avatar must preserve alpha transparency');
-console.log('PASS: same-origin bundled terrain loads without Overpass/cache; actual 2026 Northliao land/sea checks; 296 dissolved island polygons; navigation/geometry hash match; all six-region spawns and paths; indexed geometry agrees with full-ring tests; Bearbao and 977-record/tide/save regressions. Browser UI and external raster tiles were not tested here.');
+console.log('PASS: same-origin bundled terrain loads without Overpass/cache; actual 2026 Northliao land/sea checks; 296 dissolved island polygons; navigation/geometry hash match; all six-region spawns and paths; indexed geometry agrees with full-ring tests; Bearbao and live-record/tide/save regressions. Browser UI and external raster tiles were not tested here.');

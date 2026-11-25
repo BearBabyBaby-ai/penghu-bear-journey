@@ -4,18 +4,20 @@ import {MAP,mapPosition,worldToGeo,LAYERS,WORLD_METRES} from './map.js?v=2026101
 import {RoadNavigation,loadRoads} from './roads.js?v=20261026-enf4';
 import {Coastline,loadTerrain} from './coastline.js?v=20261015-travel8';
 import {TileMap} from './tiles.js?v=20261015-travel8';
-import {mapPlaces,placeCounts,shownPlaces,categoryKinds,labelLayout,regionalSpawn,REGION_STARTS,MAP_MARKER_LABEL_Y} from './places.js?v=20261015-travel8';
-import {placeImages,imageSource} from './media.js?v=20261015-travel8';
+import {mapPlaces,placeCounts,shownPlaces,categoryKinds,labelLayout,regionalSpawn,REGION_STARTS,MAP_MARKER_LABEL_Y} from './places.js?v=20261125-live1';
+import {placeImages,imageSource} from './media.js?v=20261125-live1';
 import {TravelPlanner,Journey,loadFerries} from './travel.js?v=20261026-enf2';
-import {askPlaces} from './ask.js?v=20261016-ask1';
+import {askPlaces} from './ask.js?v=20261125-live1';
 import {loadFerrySheet} from './ferry-sheet.js?v=20261016-sheet1';
 import {loadBuildings} from './buildings.js?v=20261025-3d1';
 import {GpsNav} from './gpsnav.js?v=20261026-enf4';
+import {loadSheetData} from './sheet-data.js?v=20261125-live1';
+import {migrateId,migrateSave} from './id-migrate.js?v=20261125-live1';
 // 立體建築試驗：地圖預設斜一點，才看得出建物高度（全區總覽與分海動畫仍維持原本角度）
 const MAP_3D_TILT=.9;
 // 熊寶大小不隨視角改變：一律換算成原本地圖視角（1.12）時的大小，騎車／搭船熊寶跟著原始熊寶等比
 const BEAR_REF_TILT=1.12,BEAR_TILT_FIX=()=>Math.cos(BEAR_REF_TILT)/Math.max(.2,Math.cos(engine.tilt));
-import {loadEnforcement,groupPoints,checkAlerts,alertText,alongRoute,distanceAhead} from './enforcement.js?v=20261026-enf4';
+import {loadEnforcement,groupPoints,checkAlerts,alertText,alongRoute,distanceAhead} from './enforcement.js?v=20261125-live1';
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const escape=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const today=()=>new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Taipei',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
@@ -37,7 +39,7 @@ function stopWalking(){destination=null;route=[];if(mapMode())journey?.cancel();
 function clearTarget(){target=null;destinationKey='';stopWalking();if(gpsNav){gpsNav=null;engine?.setRoute(null);routeRevision=-1}gps.pendingNav=null;gps.navDone=false;$('#destination').hidden=true;document.body.classList.remove('has-target');$$('.place-label').forEach(el=>el.classList.remove('target'))}
 function updatePlaceLayers(){
  const counts=placeCounts(data.records),mapped=Object.values(counts).reduce((s,c)=>s+c.mapped,0),shown=displayedNodes().length;
- for(const [kind,c] of Object.entries(counts))$('#place-kind').querySelector(`[value="${kind}"]`).textContent=`${KINDS[kind].label}（${c.total}）`;
+ for(const [kind,c] of Object.entries(counts))$('#place-kind').querySelector(`[value="${kind}"]`).textContent=`${KINDS[kind].label}（${c.total}）`;$('#place-kind').querySelector('[value="all"]').textContent=`全部地點（${data.records.length}）`;
  $('#places-summary').textContent=`顯示 ${shown} 個地點 · 數字標記可點開查看`;
  $('#place-layers').hidden=!mapMode();
 }
@@ -107,7 +109,7 @@ function setRegion(area,record=null,mode='map'){
  routeRevision=-1;updatePlaceLayers();persist();updateProgress();updateDestination();
 }
 /* 分海動畫場景只放「奎壁山摩西分海」本身（放在礫石步道起點旁），不再隨機帶入湖西鄉其他地點 */
-function tideNodes(){const r=data.records.find(x=>x.id==='sight-47');return r?[{record:r,x:17.5,z:-1.5,index:0}]:[]}
+function tideNodes(){const r=data.records.find(x=>x.id===migrateId('sight-47'));return r?[{record:r,x:17.5,z:-1.5,index:0}]:[]}
 function returnToMap(){if(!mapMode())setRegion(mapReturn?.area||save.area)}
 /* 沿路／搭船前往某個港口（鄉市選單的離島、交通船面板共用） */
 function goToPort(port,area=port.area){if($('#details').open)$('#details').close();closePanel();returnToMap();start();target=null;destinationKey='';$('#destination').hidden=true;document.body.classList.remove('has-target');$$('.place-label').forEach(el=>el.classList.remove('target'));if(area)$('#region').value=area;$('#scene-label').textContent=`前往${port.name}`;planTrip({...port.road},port.name);persist()}
@@ -154,7 +156,7 @@ function navigateTo(r){
  setTarget(nodes.find(n=>n.record.id===r.id),true);persist();
 }
 function safeURL(url){try{const u=new URL(url);return ['https:','http:'].includes(u.protocol)?u.href:''}catch{return ''}}
-function photoGallery(record){const images=placeImages(record);return images.length?`<div class="place-gallery">${images.map(image=>`<a class="place-photo" href="${escape(imageSource(image))}" target="_blank" rel="noopener noreferrer"><img data-place-photo src="${escape(image.src)}" alt="${escape(record.name)}" width="${image.width}" height="${image.height}" loading="lazy" decoding="async"><span class="photo-error" hidden>圖片未載入，點此開啟原圖 ↗</span></a>`).join('')}</div>`:''}
+function photoGallery(record){const images=placeImages(record);return images.length?`<div class="place-gallery">${images.map(image=>`<a class="place-photo" href="${escape(imageSource(image))}" target="_blank" rel="noopener noreferrer"><img data-place-photo src="${escape(image.src)}" alt="${escape(record.name)}" ${image.width>0?`width="${image.width}" height="${image.height}" `:''}loading="lazy" decoding="async"><span class="photo-error" hidden>圖片未載入，點此開啟原圖 ↗</span></a>`).join('')}</div>`:''}
 function bindPhotoErrors(root=document){root.querySelectorAll('[data-place-photo]').forEach(img=>img.addEventListener('error',()=>{img.hidden=true;const notice=img.parentElement.querySelector('.photo-error');if(notice)notice.hidden=false},{once:true}))}
 function showDetail(r,atPlace=false){
  stopWalking();keys.clear();const kind=KINDS[r.kind],stamped=save.stamps[r.id],node=nodes.find(n=>n.record.id===r.id),near=node&&distanceTo(node)<interactionRange();
@@ -235,7 +237,7 @@ function renderTideContent(){
   $('#observe-sea').onclick=()=>{start();save.observed=true;persist();updateProgress();enterTideView()};updateSimulation(day);
  }else{
   const group=data.forecasts[forecastBlock];
-  $('#tide-content').innerHTML=`<div class="tide-summary"><h3>${escape(tideDate)} · 區塊 ${group.index}</h3><p class="small-note">${escape(day.label).replace(/\n/g,'<br>')}</p></div><p class="small-note">原表重複六組表頭，未提供各區塊的站名。這裡保留原始分組，不對應任何鄉市。日期年份依本次讀取日期推定為 2026。</p><table class="tide-table"><thead><tr><th>潮汐</th><th>時間</th><th>臺灣高程</th><th>當地平均</th><th>海圖</th></tr></thead><tbody>${day.events.map(e=>`<tr><td class="${e.type==='乾潮'?'low':''}">${escape(e.type)}</td><td>${escape(e.time)}</td><td>${escape(e.heightTW)}</td><td>${escape(e.heightLocal)}</td><td>${escape(e.heightChart)}</td></tr>`).join('')}</tbody></table><p class="small-note">高度保留原表值，原表未標單位。區塊表頭位於第 ${group.headerRow} 列。本區資料涵蓋 ${Object.keys(group.days).sort()[0]}–${Object.keys(group.days).sort().at(-1)}，共 ${Object.keys(group.days).length} 日。</p><h4 style="font-size:12px">本區塊所列分／合海欄位</h4><p class="small-note">${day.events.filter(e=>e.open||e.close).map(e=>`${e.open?'緩慢分海 '+escape(e.open):''}${e.close?'緩慢合海 '+escape(e.close):''}（第 ${e.row} 列）`).join('<br>')||'原表未列。'}</p>`;
+  $('#tide-content').innerHTML=`<div class="tide-summary"><h3>${escape(tideDate)} · 區塊 ${group.index}</h3><p class="small-note">${escape(day.label).replace(/\n/g,'<br>')}</p></div><p class="small-note">原表重複六組表頭，未提供各區塊的站名。這裡保留原始分組，不對應任何鄉市。日期年份依讀取日期推定。</p><table class="tide-table"><thead><tr><th>潮汐</th><th>時間</th><th>臺灣高程</th><th>當地平均</th><th>海圖</th></tr></thead><tbody>${day.events.map(e=>`<tr><td class="${e.type==='乾潮'?'low':''}">${escape(e.type)}</td><td>${escape(e.time)}</td><td>${escape(e.heightTW)}</td><td>${escape(e.heightLocal)}</td><td>${escape(e.heightChart)}</td></tr>`).join('')}</tbody></table><p class="small-note">高度保留原表值，原表未標單位。區塊表頭位於第 ${group.headerRow} 列。本區資料涵蓋 ${Object.keys(group.days).sort()[0]}–${Object.keys(group.days).sort().at(-1)}，共 ${Object.keys(group.days).length} 日。</p><h4 style="font-size:12px">本區塊所列分／合海欄位</h4><p class="small-note">${day.events.filter(e=>e.open||e.close).map(e=>`${e.open?'緩慢分海 '+escape(e.open):''}${e.close?'緩慢合海 '+escape(e.close):''}（第 ${e.row} 列）`).join('<br>')||'原表未列。'}</p>`;
  }
 }
 /* 分海場景：鏡頭對準奎壁山→赤嶼礫石步道，自動播放一天的潮汐（約 12 秒），下方時間條可拖曳／暫停／返回地圖 */
@@ -648,17 +650,17 @@ async function prepareCoastline(){
 }
 async function init(){
  try{
-  const r=await fetch('data.json');if(!r.ok)throw Error('無法載入遊戲資料');data=await r.json();
-  let raw={};try{raw=JSON.parse(localStorage.getItem(SAVE_KEY)||'{}')}catch{saveAvailable=false}save=cleanSave(raw,data.records);
+  data=await loadSheetData();$('#intro-count').textContent=`${data.records.length} 筆美食、景點與廟宇`;
+  let raw={};try{raw=JSON.parse(localStorage.getItem(SAVE_KEY)||'{}')}catch{saveAvailable=false}save=cleanSave(migrateSave(raw),data.records);
   engine=new Engine($('#world'));engine.configureMap(MAP);engine.tiles=new TileMap(engine,s=>{$('#tile-state').textContent=s;$('.geo-status').classList.toggle('has-map-error',s.includes('未載入'))});engine.zoom=44;loadBuildings(engine).then(b=>{if(b&&engine)engine.buildings=b});
   $('#region').innerHTML=AREAS.map(a=>`<option value="${a}">${a}</option>`).join('');bindControls();setRegion(save.area);
   $('#map-layer').onchange=e=>{engine.tiles.setLayer(e.target.value);$('#layer-credit').textContent=LAYERS[e.target.value].credit;$('#layer-credit').href=LAYERS[e.target.value].href};
   $('#coast-retry').onclick=()=>{engine.tiles.retry();prepareCoastline()};$('#map-retry').onclick=()=>engine.tiles.retry();
-  $('#north-liao').onclick=()=>navigateTo(data.records.find(r=>r.id==='temple-76'));
+  $('#north-liao').onclick=()=>navigateTo(data.records.find(r=>r.id===migrateId('temple-76')));
   const sea=data.seaDays[tideDate]||Object.values(data.seaDays)[0];updateSimulation(sea);
   $('#loading').hidden=true;requestAnimationFrame(frame);prepareCoastline();
   /* 畫面被系統收回後自動重新載入：直接回到地圖，不再顯示開場 */
-  try{const r=sessionStorage.getItem('bear-penghu-resume');if(r){sessionStorage.removeItem('bear-penghu-resume');start();const info=r.startsWith('{')?JSON.parse(r):null;if(info?.gps)setTimeout(()=>{if(!gps.on)toggleGps();const nav=info.nav;if(nav?.end){const n=nav.meta?.recordId&&nodes.find(x=>x.record.id===nav.meta.recordId);if(n)setTarget(n);gps.pendingNav={point:nav.end,meta:nav.meta||{}}}},600)}}catch{} /* 原本開著定位：自動接續（已允許過權限，不會再詢問） */
+  try{const r=sessionStorage.getItem('bear-penghu-resume');if(r){sessionStorage.removeItem('bear-penghu-resume');start();const info=r.startsWith('{')?JSON.parse(r):null;if(info?.gps)setTimeout(()=>{if(!gps.on)toggleGps();const nav=info.nav;if(nav?.end){const n=nav.meta?.recordId&&nodes.find(x=>x.record.id===migrateId(nav.meta.recordId));if(n)setTarget(n);gps.pendingNav={point:nav.end,meta:nav.meta||{}}}},600)}}catch{} /* 原本開著定位：自動接續（已允許過權限，不會再詢問） */
  }catch(e){$('#loading').classList.add('error');$('#loading').innerHTML=`<div class="error-box"><h2>熊寶暫時無法出發</h2><p>${escape(e.message)}</p><button class="primary" onclick="location.reload()">重新載入</button></div>`;console.error(e)}
 }
 init();

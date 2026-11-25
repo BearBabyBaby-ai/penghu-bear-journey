@@ -2,6 +2,8 @@
 import fs from 'node:fs';import assert from 'node:assert/strict';
 import {triangulate} from '../dist/buildings.js';
 import {MAP,geoToWorld} from '../dist/map.js';
+import {data as LIVE_DATA,enforcement as LIVE_ENF} from './live.mjs';
+import {migrateId} from '../dist/id-migrate.js';
 const data=JSON.parse(fs.readFileSync('dist/geo/penghu-buildings-20261021.json','utf8'));
 assert.ok(data.buildings.length>7000);
 const area=(xs,zs,idx)=>{let s=0;for(let i=0;i<idx.length;i+=3){const [a,b,c]=idx.slice(i,i+3);s+=Math.abs((xs[b]-xs[a])*(zs[c]-zs[a])-(zs[b]-zs[a])*(xs[c]-xs[a]))/2}return s};
@@ -13,7 +15,7 @@ for(const [h,,,...f] of data.buildings){
 }
 assert.ok(bad/data.buildings.length<.005,`三角化失敗 ${bad}`);
 const inside=(p,xs,zs)=>{let c=false;for(let i=0,j=xs.length-1;i<xs.length;j=i++)if((zs[i]>p.z)!==(zs[j]>p.z)&&p.x<(xs[j]-xs[i])*(p.z-zs[i])/(zs[j]-zs[i])+xs[i])c=!c;return c};
-const recs=JSON.parse(fs.readFileSync('dist/data.json','utf8')).records.filter(r=>Number.isFinite(r.lat)).slice(0,200).map(r=>geoToWorld(r.lng,r.lat));
+const recs=LIVE_DATA.records.filter(r=>Number.isFinite(r.lat)).slice(0,200).map(r=>geoToWorld(r.lng,r.lat));
 let covered=0;for(const [,,,...f] of data.buildings){const xs=[],zs=[];for(let i=0;i<f.length;i+=2){xs.push(f[i]);zs.push(f[i+1])}if(recs.some(p=>inside(p,xs,zs)))covered++}
 assert.equal(covered,0);
 console.log(`PASS buildings: ${data.buildings.length} footprints inside the map, roof triangulation area matches (${bad} fallback), no place marker enclosed. Experiment only.`);

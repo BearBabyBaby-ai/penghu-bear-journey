@@ -5,9 +5,11 @@ import {RoadNavigation} from '../dist/roads.js';
 import {Coastline} from '../dist/coastline.js';
 import {mapPlaces,regionalSpawn} from '../dist/places.js';
 import {cleanSave} from '../dist/model.js';
+import {data as LIVE_DATA,enforcement as LIVE_ENF} from './live.mjs';
+import {migrateId} from '../dist/id-migrate.js';
 const read=f=>JSON.parse(fs.readFileSync(new URL('../dist/'+f,import.meta.url)));
 const coast=new Coastline(read('geo/penghu-land-20260407.geojson')),roads=new RoadNavigation(read('geo/penghu-roads-20211217.json'),coast),ferries=read(FERRY_FILE),hash=read('geo/penghu-grid-20260407.json').sourceSHA256;
-const planner=new TravelPlanner(roads,ferries,hash),data=read('data.json'),nodes=mapPlaces(data.records,roads),get=area=>regionalSpawn(nodes,area),distance=(a,b)=>Math.hypot(a.x-b.x,a.z-b.z);
+const planner=new TravelPlanner(roads,ferries,hash),data=LIVE_DATA,nodes=mapPlaces(data.records,roads),get=area=>regionalSpawn(nodes,area),distance=(a,b)=>Math.hypot(a.x-b.x,a.z-b.z);
 assert.throws(()=>new TravelPlanner(roads,ferries,'wrong'),/版本/);
 const broken=structuredClone(ferries);broken.links[0].points[1]=[119.5725,23.5665];assert.throws(()=>new TravelPlanner(roads,broken,hash),/陸地/);
 for(const from of ['馬公市','西嶼鄉','望安鄉','七美鄉'])for(const to of ['馬公市','西嶼鄉','望安鄉','七美鄉']){
@@ -35,7 +37,7 @@ const raw=cleanSave({version:1,stamps:{},position:{edge:a.edge,t:a.t},journey:or
 for(let i=0;i<30;i++){original.advance(atSea,.06);resumed.advance(restored,.06)}assert(distance(restored,atSea)<1e-6);
 assert.equal(cleanSave({position:{edge:-1,t:10},journey:{origin:{edge:1,t:0},end:{edge:2,t:0},elapsed:Infinity}},data.records).journey,null);
 // 白沙鄉公所交通船：赤崁⇄吉貝、岐頭⇄鳥嶼、岐頭⇄員貝；跨島需下船沿路走到另一港再搭船
-const byId=id=>nodes.find(n=>n.record.id===id);
+const byId=id=>nodes.find(n=>n.record.id===migrateId(id));
 for(const [id,ports] of [['sight-96',['赤崁漁港（北海遊客中心）','吉貝漁港']],['sight-118',['岐頭漁港','鳥嶼漁港']],['temple-132',['岐頭漁港','員貝漁港']],['temple-118',['重光碼頭','大倉漁港']],['sight-43',['馬公南海交通船碼頭','桶盤漁港']],['sight-44',['馬公南海交通船碼頭','虎井漁港']]]){
  const target=byId(id);assert(target?.approach,id+' has a road approach');const plan=planner.plan(a,target.approach);assert(plan,id+' reachable by ferry');assert.deepEqual(plan.ports,ports);
  const actor={...a},trip=new Journey(planner);trip.request(actor,target.approach,{recordId:id});let last={...actor},guard=0;

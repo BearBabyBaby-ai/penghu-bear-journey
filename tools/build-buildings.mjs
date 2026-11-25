@@ -4,11 +4,12 @@
 import fs from 'node:fs';
 import zlib from 'node:zlib';
 import {geoToWorld,WORLD_METRES} from '../dist/map.js';
+import {loadSheetData} from '../dist/sheet-data.js';
 
 const SRC='sources/buildings/overture-buildings-2026-10-21.json.gz';
 const OUT='dist/geo/penghu-buildings-20261021.json';
 const src=JSON.parse(zlib.gunzipSync(fs.readFileSync(SRC)));
-const places=JSON.parse(fs.readFileSync('dist/data.json','utf8')).records.filter(r=>Number.isFinite(r.lat)&&Number.isFinite(r.lng));
+const places=(await loadSheetData()).records.filter(r=>Number.isFinite(r.lat)&&Number.isFinite(r.lng));
 
 const inside=(pt,ring)=>{let c=false;for(let i=0,j=ring.length-1;i<ring.length;j=i++){const [xi,yi]=ring[i],[xj,yj]=ring[j];if((yi>pt[1])!==(yj>pt[1])&&pt[0]<(xj-xi)*(pt[1]-yi)/(yj-yi)+xi)c=!c}return c};
 // 穩定的偽亂數（同一棟每次都同高）

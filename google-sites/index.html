@@ -3,8 +3,9 @@
 <head>
  <!-- Google 協作平台全頁嵌入版（由 tools/build-google-sites.mjs 從 dist/ 產生，程式碼全部內嵌；資料與圖片從正式網址讀取） -->
  <base href="https://bearbabybaby-ai.github.io/penghu-bear-journey/">
- <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
- <meta name="theme-color" content="#faf9ee"><meta name="description" content="跟著熊熊探索澎湖。以熊熊綜合系統指定工作表製作的 3D 島嶼探索與集章遊戲。">
+ <meta charset="utf-8">
+<script>/*記住目前所在系統*/try{var s=location.pathname.split("/")[1];if(s)sessionStorage.setItem("bb-last-system",s);localStorage.removeItem("bb-last-system")}catch(e){}</script><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+ <meta name="theme-color" content="#faf9ee"><meta name="description" content="跟著熊熊探索澎湖的 3D 島嶼探索與集章遊戲。">
  <title>熊熊澎湖之旅 · 3D 島嶼探索</title>
  <!-- App（PWA／APK）設定 -->
  <meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="熊熊澎湖之旅"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="apple-touch-icon" href="https://bearbabybaby-ai.github.io/penghu-bear-journey/icons/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="https://bearbabybaby-ai.github.io/penghu-bear-journey/icons/favicon-32.png"><style>
@@ -324,6 +325,10 @@ button,select,a,#touch-action{touch-action:manipulation}.place-label,#joystick,#
  body:has(#toast.visible) .gps-chip,body:has(#toast.visible) .geo-status,.enforce-alerting .gps-chip,.enforce-alerting .geo-status{visibility:hidden}
 }
 
+/* 2026-10-26 第22版：桌機的問熊寶結果／地區資訊改放左側（不蓋住地圖工具列）；底圖狀態移到縮放鈕左側（不蓋住＋） */
+@media(min-width:1101px){.ask-results{top:96px;left:34px;transform:none;width:min(400px,32vw);max-height:calc(100dvh - 296px)}}
+@media(min-width:1101px){.geo-status,.geo-status.ready{right:104px}}
+
 </style>
 </head>
 <body>
@@ -339,9 +344,9 @@ button,select,a,#touch-action{touch-action:manipulation}.place-label,#joystick,#
    <h1>把海風，<br>收進旅行裡。</h1>
    <p>跟著熊寶走一段海島小路，<br>尋找風景、古蹟，還有藏在廟埕裡的故事。</p>
    <button class="primary" id="start">出發去探索 <span>↗</span></button>
-   <div class="intro-meta"><span>3D 道路探索</span><span>977 筆美食、景點與廟宇</span><span>旅行集章</span></div>
+   <div class="intro-meta"><span>3D 道路探索</span><span id="intro-count">美食、景點與廟宇</span><span>旅行集章</span></div>
   </section>
-  <div class="map-tools glass" id="map-tools"><button id="map-follow" aria-label="跟隨熊寶"><svg class="tool-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2.4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg><span>跟隨熊寶</span></button><button id="gps-toggle" aria-pressed="false" aria-label="GPS 我的位置"><svg class="tool-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.2-6.5-11a6.5 6.5 0 0 1 13 0c0 4.8-6.5 11-6.5 11Z"/><circle cx="12" cy="10" r="2.4"/></svg><span>我的位置</span></button><span class="map-extra" id="map-extra"><button id="map-overview">全圖</button><button id="north-liao">北寮</button><select id="map-layer" aria-label="底圖來源"><option value="nlsc">臺灣通用電子地圖</option><option value="osm">OpenStreetMap</option></select><button id="map-retry" aria-label="重新載入底圖">↻</button><label class="enforce-toggle" for="enforce-toggle"><input type="checkbox" id="enforce-toggle"><span>測速／科技執法</span></label></span><button id="map-more" aria-expanded="false" aria-controls="map-extra" aria-label="更多地圖工具"><svg class="tool-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 9 5-9 5-9-5Z"/><path d="m3 13 9 5 9-5"/></svg><span>地圖</span></button></div><button class="gps-chip glass" id="gps-chip" hidden></button><div class="map-zoom glass"><button id="zoom-in" aria-label="放大地圖">＋</button><button id="zoom-out" aria-label="縮小地圖">−</button></div><div class="compass" aria-hidden="true"><span>N</span><svg viewBox="0 0 60 60"><path d="M30 7 38 40 30 34 22 40Z" fill="#55766a"/><path d="M30 7 30 34 22 40Z" fill="#f4f2dc"/></svg></div>
+  <div class="map-tools glass" id="map-tools"><button id="map-follow" aria-label="跟隨熊寶"><svg class="tool-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2.4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg><span>跟隨熊寶</span></button><button id="gps-toggle" aria-pressed="false" aria-label="GPS 我的位置"><svg class="tool-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.2-6.5-11a6.5 6.5 0 0 1 13 0c0 4.8-6.5 11-6.5 11Z"/><circle cx="12" cy="10" r="2.4"/></svg><span>我的位置</span></button><span class="map-extra" id="map-extra"><button id="map-overview">全圖</button><button id="north-liao">北寮</button><select id="map-layer" aria-label="底圖"><option value="nlsc">臺灣通用電子地圖</option><option value="osm">OpenStreetMap</option></select><button id="map-retry" aria-label="重新載入底圖">↻</button><label class="enforce-toggle" for="enforce-toggle"><input type="checkbox" id="enforce-toggle"><span>測速／科技執法</span></label></span><button id="map-more" aria-expanded="false" aria-controls="map-extra" aria-label="更多地圖工具"><svg class="tool-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 9 5-9 5-9-5Z"/><path d="m3 13 9 5 9-5"/></svg><span>地圖</span></button></div><button class="gps-chip glass" id="gps-chip" hidden></button><div class="map-zoom glass"><button id="zoom-in" aria-label="放大地圖">＋</button><button id="zoom-out" aria-label="縮小地圖">−</button></div><div class="compass" aria-hidden="true"><span>N</span><svg viewBox="0 0 60 60"><path d="M30 7 38 40 30 34 22 40Z" fill="#55766a"/><path d="M30 7 30 34 22 40Z" fill="#f4f2dc"/></svg></div>
   <section class="destination glass" id="destination" hidden></section><section class="tide-bar glass" id="tide-bar" hidden aria-label="分海時間"><div class="tide-bar-head"><b>奎壁山摩西分海</b><span id="tide-bar-time"></span></div><input id="tide-bar-range" type="range" min="0" max="1439" aria-label="分海示意時間"><small id="tide-bar-note"></small><div class="tide-bar-actions"><button id="tide-play" class="small-button">⏸ 暫停</button><button id="tide-exit" class="primary">返回地圖</button></div></section>
   <form class="ask glass" id="ask" role="search" autocomplete="off"><img class="ask-bear" src="https://bearbabybaby-ai.github.io/penghu-bear-journey/assets/bearbao.png" alt=""><span class="ask-pill" aria-hidden="true">問熊寶</span><input id="ask-input" type="search" enterkeyhint="search" placeholder="問熊寶：想去哪？例：玄天上帝廟、七美" aria-label="問熊寶想去哪裡"><button type="submit">查詢</button></form>
   <section class="ask-results glass" id="ask-results" hidden aria-live="polite" aria-label="問熊寶查詢結果"></section>
@@ -352,7 +357,7 @@ button,select,a,#touch-action{touch-action:manipulation}.place-label,#joystick,#
   <div class="scene-caption"><span class="status-dot"></span><span id="scene-label">海風正好，適合出發。</span><small id="map-note">真實道路 · 陸海判定</small></div>
   <div class="controls-hint" id="controls-hint"><kbd>W A S D</kbd> 移動 <span>·</span> <kbd>E</kbd> 集章 <span>·</span> 拖曳轉視角</div>
  </main>
-<div class="geo-status glass"><span id="terrain-state">載入道路與陸域中</span><span id="coast-state">載入道路與陸域資料…</span><button id="coast-retry" hidden>重試道路與陸域</button><span id="tile-state"></span></div><div class="map-credit"><a id="layer-credit" href="https://maps.nlsc.gov.tw/" target="_blank" rel="noopener noreferrer">© 內政部國土測繪中心</a> · 陸域 <a href="https://data.gov.tw/dataset/7438" target="_blank" rel="noopener noreferrer">© 國土測繪中心</a> · 道路 <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">© OSM contributors</a></div>
+<div class="geo-status glass"><span id="terrain-state">載入道路與陸域中</span><span id="coast-state">載入道路與陸域資料…</span><button id="coast-retry" hidden>重試道路與陸域</button><span id="tile-state"></span></div><div class="map-credit"><a id="layer-credit" href="https://maps.nlsc.gov.tw/" target="_blank" rel="noopener noreferrer">© 內政部國土測繪中心</a> · 陸域 <a href="https://data.gov.tw/dataset/7438" target="_blank" rel="noopener noreferrer">© 國土測繪中心</a> · 道路 <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">© OSM contributors</a> · 建物 <a href="https://overturemaps.org/" target="_blank" rel="noopener noreferrer">© Overture Maps</a></div>
  <nav class="dock glass" aria-label="旅程工具">
   <button data-panel="atlas"><svg viewBox="0 0 24 24"><path d="m3 5 6-2 6 2 6-2v16l-6 2-6-2-6 2Zm6-2v16m6-14v16"/></svg><span>探索圖鑑</span></button>
   <button data-panel="stamps"><svg viewBox="0 0 24 24"><path d="M6 3h12v18H6zM9 7h6m-3 3 1.3 2.5 2.7.4-2 1.9.5 2.7-2.5-1.3-2.5 1.3.5-2.7-2-1.9 2.7-.4Z"/></svg><span>集章手帳 <b id="stamp-count">0</b></span></button>
@@ -362,7 +367,7 @@ button,select,a,#touch-action{touch-action:manipulation}.place-label,#joystick,#
  <div id="joystick" aria-label="觸控方向搖桿"><div id="stick"></div></div><button id="touch-action" aria-label="地點互動">E</button>
  <aside id="panel" class="panel" hidden aria-label="旅程工具面板"><div class="panel-head"><div><span class="eyebrow" id="panel-kicker"></span><h2 id="panel-title"></h2></div><button id="close-panel" class="icon-button" aria-label="關閉面板">×</button></div><div id="panel-body"></div></aside>
  <dialog id="details"><button class="dialog-close icon-button" aria-label="關閉詳情">×</button><div id="detail-body"></div></dialog>
- <dialog id="help-dialog"><button class="dialog-close icon-button" aria-label="關閉說明">×</button><span class="eyebrow">WELCOME TO PENGHU</span><h2>你的島嶼，慢慢探索。</h2><p>類別下拉選單（桌機在左下、手機在左上）可選美食、景點、廟宇或全部；預設顯示景點。密集地點合併為數字標記，點開數字即可查看所有地點。上方鄉市選單會從熊寶目前位置自動導航，保留當前位置，並清除問熊寶的關鍵字、改顯示該鄉市資訊。目的地卡可按 × 關閉；桌機在右側，手機在下方，搖桿與 E 鍵會浮在卡片上方不被遮住。潮汐面板的「觀察分海動畫」會在真實地圖上移到奎壁山，自動播放一天的潮汐，退潮時奎壁山到赤嶼的礫石步道露出；可拖曳下方時間或暫停，按「返回地圖」回到熊寶身邊（熊寶不移動）。走到道路互動點後可蓋下旅行印章。</p><div class="help-grid"><span>WASD / 方向鍵</span><b>沿道路移動熊寶</b><span>Shift</span><b>加速行走</b><span>滑鼠點道路</span><b>沿路自動前往</b><span>拖曳 / 滾輪</span><b>旋轉 / 縮放視角</b><span>E</span><b>閱讀附近地點、集章</b><span>問熊寶</span><b>輸入地區、類別、神明或地點名稱，點「前往」沿路出發</b><span>手機</span><b>左側搖桿移動、右側 E 互動、兩指縮放；右側直排為跟隨、我的位置、地圖工具</b><span>我的位置</span><b>開啟 GPS 顯示你的實際位置，熊寶沿道路（離島經港口搭船）跟上</b><span>測速／科技執法</span><b>地圖工具內開啟：顯示澎湖縣警察局公布的固定測速與路口科技執法；熊寶或你（GPS）接近時提醒。騎車請勿操作手機，以現場標誌為準</b></div><p class="small-note">陸海以內建國土測繪圖資的陸域輪廓判定，海面無法步行。手機可按＋／−或用兩指縮放地圖。點「北寮」會導航前往北寮保安宮。自動尋路和搖桿都沿收錄的道路中心線行走，無道路處會停止。橘線為規劃路線。道路快照為 2021-12-17，可能缺少新路；地標互動點設在附近道路，原表標記不移動。離島採港口對港口：望安、七美由馬公南海交通船碼頭搭船；吉貝由赤崁漁港、鳥嶼與員貝由岐頭漁港、大倉由馬公重光碼頭、桶盤與虎井由馬公南海遊客中心搭船；底部「交通船」可查看全部航線並直接前往港口，再沿路到目的地。藍色虛線為遊戲航線示意，航行中顯示熊寶搭船。航行時改目的地會在下一港口下船後接續，取消也會靠港後才停止。沒有已收錄交通路線時不移動。37 筆資料缺座標，保留在完整圖鑑。進度儲存在這個瀏覽器。潮汐採本次讀取的試算表快照；遊戲場景與分海動畫供探索體驗，實際通行請依現場管制。</p><button class="primary" id="help-go">知道了，出發</button></dialog>
+ <dialog id="help-dialog"><button class="dialog-close icon-button" aria-label="關閉說明">×</button><span class="eyebrow">WELCOME TO PENGHU</span><h2>你的島嶼，慢慢探索。</h2><p>類別下拉選單（桌機在左下、手機在左上）可選美食、景點、廟宇或全部；預設顯示景點。密集地點合併為數字標記，點開數字即可查看所有地點。上方鄉市選單會從熊寶目前位置自動導航，保留當前位置，並清除問熊寶的關鍵字、改顯示該鄉市資訊。目的地卡可按 × 關閉；桌機在右側，手機在下方，搖桿與 E 鍵會浮在卡片上方不被遮住。潮汐面板的「觀察分海動畫」會在真實地圖上移到奎壁山，自動播放一天的潮汐，退潮時奎壁山到赤嶼的礫石步道露出；可拖曳下方時間或暫停，按「返回地圖」回到熊寶身邊（熊寶不移動）。走到道路互動點後可蓋下旅行印章。</p><div class="help-grid"><span>WASD / 方向鍵</span><b>沿道路移動熊寶</b><span>Shift</span><b>加速行走</b><span>滑鼠點道路</span><b>沿路自動前往</b><span>拖曳 / 滾輪</span><b>旋轉 / 縮放視角</b><span>E</span><b>閱讀附近地點、集章</b><span>問熊寶</span><b>輸入地區、類別、神明或地點名稱，點「前往」沿路出發</b><span>手機</span><b>左側搖桿移動、右側 E 互動、兩指縮放；右側直排為跟隨、我的位置、地圖工具</b><span>我的位置</span><b>開啟 GPS 顯示你的實際位置，熊寶沿道路（離島經港口搭船）跟上；開著定位選目的地，就從你的位置導航，地圖跟著你並轉成行進方向朝上，螢幕保持亮著</b><span>測速／科技執法</span><b>地圖工具內開啟：顯示澎湖縣警察局公布的固定測速與路口科技執法；熊寶或你（GPS）接近時提醒。騎車請勿操作手機，以現場標誌為準</b></div><p class="small-note">陸海以內建國土測繪圖資的陸域輪廓判定，海面無法步行。手機可按＋／−或用兩指縮放地圖。點「北寮」會導航前往北寮保安宮。自動尋路和搖桿都沿收錄的道路中心線行走，無道路處會停止。橘線為規劃路線。道路快照為 2021-12-17，可能缺少新路；地標互動點設在附近道路，原表標記不移動。離島採港口對港口：望安、七美由馬公南海交通船碼頭搭船；吉貝由赤崁漁港、鳥嶼與員貝由岐頭漁港、大倉由馬公重光碼頭、桶盤與虎井由馬公南海遊客中心搭船；底部「交通船」可查看全部航線並直接前往港口，再沿路到目的地。藍色虛線為遊戲航線示意，航行中顯示熊寶搭船。航行時改目的地會在下一港口下船後接續，取消也會靠港後才停止。沒有已收錄交通路線時不移動。37 筆資料缺座標，保留在完整圖鑑。進度儲存在這個瀏覽器。潮汐採遊戲內的潮汐資料；遊戲場景與分海動畫供探索體驗，實際通行請依現場管制。</p><button class="primary" id="help-go">知道了，出發</button></dialog>
  <div id="toast" role="status" aria-live="polite"></div>
  <div id="loading"><img class="brand-bear" src="https://bearbabybaby-ai.github.io/penghu-bear-journey/assets/bearbao.png" alt="熊寶"><p>熊寶正在準備旅行手帳…</p><small>載入地點與陸域輪廓</small></div>
 <script>
@@ -469,7 +474,7 @@ class Engine{
   const depth=Math.max(150,this.zoom*3);this.matrix=mult(ortho(-this.zoom*aspect,this.zoom*aspect,-this.zoom,this.zoom,-depth,depth+100),lookAt(eye,f));
   gl.uniformMatrix4fv(this.uniform.uMatrix,false,this.matrix);gl.uniform1f(this.uniform.uTime,time);gl.uniform1f(this.uniform.uNight,this.night);
   gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,this.mapTexture);gl.uniform1i(this.uniform.uTexture,0);gl.uniform2f(this.uniform.uMapSize,...(this.mapSize||[1,1]));gl.uniform2f(this.uniform.uMapOrigin,...(this.mapOrigin||[0,0]));
-  if(this.mapVisible&&this.mapMesh){this.draw(this.mapMesh,0,1);this.tiles?.render();if(this.roadMesh)this.draw(this.roadMesh);if(this.routeMesh)this.draw(this.routeMesh)}else if(this.water)this.draw(this.water,1);if(this.world)this.draw(this.world);
+  if(this.mapVisible&&this.mapMesh){this.draw(this.mapMesh,0,1);this.tiles?.render();if(this.roadMesh)this.draw(this.roadMesh);this.buildings?.render();if(this.routeMesh)this.draw(this.routeMesh)}else if(this.water)this.draw(this.water,1);if(this.world)this.draw(this.world);
   gl.bindBuffer(gl.ARRAY_BUFFER,this.dynamic);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(dynamic.v),gl.DYNAMIC_DRAW);this.draw({buffer:this.dynamic,count:dynamic.v.length/9});
  }
  project(p){if(!this.matrix)return null;const m=this.matrix;return{x:((m[0]*p[0]+m[4]*p[1]+m[8]*p[2]+m[12])*.5+.5)*this.canvas.clientWidth,y:(.5-(m[1]*p[0]+m[5]*p[1]+m[9]*p[2]+m[13])*.5)*this.canvas.clientHeight}}
@@ -612,9 +617,9 @@ function cleanSave(raw,records){
 return {KINDS,AREAS,SPOTS,makeTour,filterRecords,minute,interpolateTide,cleanSave};
 })();
 const __m_media=(()=>{
-// Only the spreadsheet's actual photo files are displayed. No stock/generated
-// replacements, expiring download URLs, or Google Maps links are used as images.
-function placeImages(record){return(record.images||[]).filter(image=>/^assets\/places\/[A-Za-z0-9_-]+\.webp$/.test(image.src||'')&&image.width>0&&image.height>0)}
+// Only the spreadsheet's actual photo files are displayed (read directly from the
+// sheet's photo column, same row). No stock/generated replacements or Google Maps links are used as images.
+function placeImages(record){return(record.images||[]).filter(image=>/^https:\/\/lh3\.googleusercontent\.com\/d\/[A-Za-z0-9_-]{20,}=w\d+$/.test(image.src||'')&&/^[A-Za-z0-9_-]{20,}$/.test(image.driveFileId||''))}
 function imageSource(image){try{const url=new URL(image.sourceURL);return['https:','http:'].includes(url.protocol)?url.href:''}catch{return''}}
 
 return {placeImages,imageSource};
@@ -730,8 +735,26 @@ class LandNavigation{
 
 return {LandNavigation};
 })();
+const __m_id_migrate=(()=>{
+// 舊版集章使用「種類＋原表列號」當地點編號（例如 food-11）；原表列的順序會變動，改為依名稱固定的編號。
+// 這裡只有新舊編號對照（不含任何地點資料），讀取舊存檔時把集章與行程轉成新編號。
+const OLD_IDS={"sight-2":"sight-h601bc537","sight-3":"sight-hca6a6ca1","sight-4":"sight-hbafba2e8","sight-5":"sight-h637a49ca","sight-6":"sight-hfff42faa","sight-7":"sight-h09c20f4c","sight-8":"sight-h96848cf4","sight-9":"sight-hebc34372","sight-10":"sight-h05a4a7dd","sight-11":"sight-hf0c4dbb0","sight-12":"sight-hcd29b5b0","sight-13":"sight-h277d78b6","sight-14":"sight-h00a875ae","sight-15":"sight-hc55fb187","sight-16":"sight-h90e672d0","sight-17":"sight-h9aa63d06","sight-18":"sight-h33eb3101","sight-19":"sight-he1fcc3cd","sight-20":"sight-h10ce9a9c","sight-21":"sight-h7047ed42","sight-22":"sight-he932df3b","sight-23":"sight-hff598bed","sight-24":"sight-hea475d9c","sight-25":"sight-h348aec4a","sight-26":"sight-h8eda9b24","sight-27":"sight-h1f456c60","sight-28":"sight-h5f20fa1e","sight-29":"sight-hfe927f89","sight-30":"sight-hbb426fb3","sight-31":"sight-h2101c869","sight-32":"sight-heb5da621","sight-33":"sight-h19d95fb3","sight-34":"sight-h923cfef0","sight-35":"sight-hd9485eb8","sight-36":"sight-h3d41761c","sight-37":"sight-h9ece5f48","sight-38":"sight-h0268cab7","sight-39":"sight-h6fbf3589","sight-40":"sight-h1ce06acd","sight-41":"sight-h07a7833d","sight-42":"sight-h06ed8208","sight-43":"sight-h53ed1a74","sight-44":"sight-h578157ef","sight-45":"sight-h8d5338a3","sight-46":"sight-h17971eb0","sight-47":"sight-h2ef4a158","sight-48":"sight-hb3d7d50c","sight-49":"sight-h7352ee09","sight-50":"sight-h1590f658","sight-51":"sight-hde550c81","sight-52":"sight-h05a9faab","sight-53":"sight-h26efa249","sight-54":"sight-hc295a67c","sight-55":"sight-h2d954065","sight-56":"sight-h9c4718bd","sight-57":"sight-hcd6c56b1","sight-58":"sight-hc9c877d9","sight-59":"sight-h10ef96b5","sight-60":"sight-h39cb0e61","sight-61":"sight-h3fb1f2fb","sight-62":"sight-h9803ed86","sight-63":"sight-hf0645422","sight-64":"sight-h7a2e564c","sight-65":"sight-h76856c18","sight-66":"sight-h6cd8105c","sight-67":"sight-hd77a7250","sight-68":"sight-h9d769e94","sight-69":"sight-h8f57b77c","sight-70":"sight-h42396ea1","sight-71":"sight-h62b05729","sight-72":"sight-h433902e8","sight-73":"sight-h27b8ccf1","sight-74":"sight-h04bc5494","sight-75":"sight-haae32c4d","sight-76":"sight-h553840c2","sight-77":"sight-h2edff669","sight-78":"sight-h06103041","sight-79":"sight-h1c382c8a","sight-80":"sight-hdb6bbae1","sight-81":"sight-h1ec62d0c","sight-82":"sight-hc9130480","sight-83":"sight-h15f732be","sight-84":"sight-h78e89d4c","sight-85":"sight-h2320919c","sight-86":"sight-h69bda186","sight-87":"sight-h1937a29a","sight-88":"sight-h6a55ef9c","sight-89":"sight-hb42c0ca2","sight-90":"sight-h3f0d504f","sight-91":"sight-h70489134","sight-92":"sight-h0cdf4a7f","sight-93":"sight-h4ddd2cda","sight-94":"sight-h1135623c","sight-95":"sight-h63f98d20","sight-96":"sight-hb77ea8a4","sight-97":"sight-h7e9c5d58","sight-98":"sight-he4b69aed","sight-99":"sight-hc8773013","sight-100":"sight-h84a0c32a","sight-101":"sight-h65c6ed4d","sight-102":"sight-h23a95254","sight-103":"sight-h3a842a52","sight-104":"sight-h938b303b","sight-105":"sight-h0257920c","sight-106":"sight-hb258d131","sight-107":"sight-hf0f7aff3","sight-108":"sight-h1f9e057f","sight-109":"sight-h9c94f40f","sight-110":"sight-h8c067daa","sight-111":"sight-h6ed13983","sight-112":"sight-hb047d6b0","sight-113":"sight-hcd28c0eb","sight-114":"sight-h3b8a1c22","sight-115":"sight-h260af783","sight-116":"sight-h0f102919","sight-117":"sight-ha726498e","sight-118":"sight-h73841fa5","sight-119":"sight-hde7170ef","sight-120":"sight-h03c5e5e7","sight-121":"sight-hacfefeab","sight-122":"sight-h59e82f18","sight-123":"sight-h29e10d24","sight-124":"sight-h58f7c745","sight-125":"sight-h567b0f15","sight-126":"sight-h59682f59","sight-127":"sight-h21a5790d","sight-128":"sight-he67aafab","sight-129":"sight-hbef3ae9d","sight-130":"sight-hbbbe6f36","sight-131":"sight-he11dc011","sight-132":"sight-h312ccd6e","sight-133":"sight-h8bb32e55","sight-134":"sight-h265adf05","sight-135":"sight-he8272bba","sight-136":"sight-hc367156f","sight-137":"sight-h0da1f08d","sight-138":"sight-ha6497d9a","sight-139":"sight-hd1080cef","sight-140":"sight-h65ab99ed","sight-141":"sight-h6b824f47","sight-142":"sight-h33de191f","sight-143":"sight-h771ebeae","sight-144":"sight-ha7be71f4","sight-145":"sight-h3baa9624","sight-146":"sight-h25e92ee4","sight-147":"sight-hd4b6b6af","sight-148":"sight-hcebd7685","sight-149":"sight-h8a07e939","sight-150":"sight-he3fb5fb2","sight-151":"sight-h56e1c6d8","sight-152":"sight-h63e96a7a","sight-153":"sight-hece6e996","sight-154":"sight-hc4c28667","sight-155":"sight-hd841b023","sight-156":"sight-h4bc5f7a1","sight-157":"sight-hd57bbec4","sight-158":"sight-hfd9ddd11","sight-159":"sight-h9c9b84bf","sight-160":"sight-h6ed5e963","sight-161":"sight-h4fb23ff8","sight-162":"sight-hc58bb74a","sight-163":"sight-h3f70fae2","sight-164":"sight-he37b1513","sight-165":"sight-he2fcf9dd","sight-166":"sight-hcfd833bf","sight-167":"sight-h36f26610","sight-168":"sight-h73072873","sight-169":"sight-h8363505f","sight-170":"sight-h9f74d4ae","sight-171":"sight-hb3986875","sight-172":"sight-heb429d86","sight-173":"sight-hf9529689","sight-174":"sight-h1e4887c2","sight-175":"sight-h3a4c1d4c","sight-176":"sight-haef183f6","sight-177":"sight-ha1644bb7","sight-178":"sight-h2ee9cf04","sight-179":"sight-hbd9da9df","sight-180":"sight-h74c88298","sight-181":"sight-h8b5b5137","sight-182":"sight-hf2ca54cd","food-2":"food-h32f674b7","food-3":"food-he81f60f3","food-4":"food-h45c11802","food-5":"food-h9079a3fd","food-6":"food-h13f21c81","food-7":"food-h81862d6f","food-8":"food-hee7b7b9c","food-9":"food-h0ff432fa","food-10":"food-h1531a8b4","food-11":"food-h780f96a6","food-12":"food-h6674b97d","food-13":"food-hb92a24c5","food-14":"food-h0b383ebe","food-15":"food-h80d54875","food-16":"food-h34f95e5c","food-17":"food-h93e9ae14","food-18":"food-haa570080","food-19":"food-h522ddfe9","food-20":"food-h96bac1c7","food-21":"food-h7a3df932","food-22":"food-hb6f27ff7","food-23":"food-hafc560c2","food-24":"food-hdc0d90a3","food-25":"food-h14b8826c","food-26":"food-h320c0365","food-27":"food-h523a839d","food-28":"food-heb4f21d6","food-29":"food-h34a7e084","food-30":"food-h3af3f199","food-31":"food-h592dd32f","food-32":"food-ha3c08fac","food-33":"food-h05ed5709","food-34":"food-h087b98b9","food-35":"food-hb4398838","food-36":"food-h67bd4196","food-37":"food-h5eb88f6d","food-38":"food-h52c7741e","food-39":"food-hccece989","food-40":"food-hcefe545c","food-41":"food-hfa65ab3b","food-42":"food-h1182c972","food-43":"food-h0d33a914","food-44":"food-h6231ee00","food-45":"food-h5e5aea6a","food-46":"food-h5b3fb260","food-47":"food-h6628c36f","food-48":"food-h2f64cddd","food-49":"food-hac857854","food-50":"food-hbe67bfc3","food-51":"food-h1831be63","food-52":"food-hfbad4873","food-53":"food-h1292ca38","food-54":"food-he6c8afa6","food-55":"food-hfcd7eb9b","food-56":"food-h71d6b7f6","food-57":"food-hb1c7eac8","food-58":"food-he483a97b","food-59":"food-h56060139","food-60":"food-h65e5e2d4","food-61":"food-hf2a18324","food-62":"food-h3398efff","food-63":"food-hf634d3f6","food-64":"food-hb64f2f75","food-65":"food-hb68c881c","food-66":"food-h4e7b48e8","food-67":"food-hd2870da7","food-68":"food-hcd30a1b2","food-69":"food-hce05bb06","food-70":"food-h76c5209c","food-71":"food-hc1b15621","food-72":"food-h82433b2b","food-73":"food-h95395351","food-74":"food-ha51020a9","food-75":"food-hbbd2d71b","food-76":"food-h97ebcf92","food-77":"food-h1f0578da","food-78":"food-h872d80ea","food-79":"food-hdb08d207","food-80":"food-h4b7ee53e","food-81":"food-hd2f6a512","food-82":"food-h7806ceb2","food-83":"food-h6d35d314","food-84":"food-h948673be","food-85":"food-hcc67b805","food-86":"food-h0a2da9b2","food-87":"food-hac3bc349","food-88":"food-h8fa1c8e7","food-89":"food-hf1ce5cef","food-90":"food-h2011ffc1","food-91":"food-h525e92d5","food-92":"food-h8d948602","food-93":"food-h47923191","food-94":"food-h610f8529","food-95":"food-he507df71","food-96":"food-hc93c3436","food-97":"food-h64843234","food-98":"food-h8c01d862","food-99":"food-h2d0ba7b7","food-100":"food-h896cbaa2","food-101":"food-h036dec0f","food-102":"food-h8d74773f","food-103":"food-hbfb5b525","food-104":"food-hd831d8df","food-105":"food-h885a923c","food-106":"food-hfb835f12","food-107":"food-h7e9010fc","food-108":"food-h3e32b36c","food-109":"food-hcef7a63e","food-110":"food-hc7a3f070","food-111":"food-he7aba3ed","food-112":"food-h719b111d","food-113":"food-h112eab38","food-114":"food-hfb6881e0","food-115":"food-h8f588e89","food-116":"food-hdb7ac3fc","food-117":"food-h3e3f8782","food-118":"food-hcbf0d615","food-119":"food-h935ca31c","food-120":"food-h671d9889","food-121":"food-h1641cf5e","food-122":"food-h799ea1a2","food-123":"food-h4fde070e","food-124":"food-h4a45defe","food-125":"food-hfd872e9d","food-126":"food-h1bbb3350","food-127":"food-hdfde664f","food-128":"food-h0bf43064","food-129":"food-hfeb98bce","food-130":"food-h8111b35f","food-131":"food-h31a53de7","food-132":"food-h02e2a59c","food-133":"food-h8e9a57ca","food-134":"food-hc806edcf","food-135":"food-hd5d85231","food-136":"food-h8d901e38","food-137":"food-h97a73138","food-138":"food-h555afac5","food-139":"food-h29357dd2","food-140":"food-h46bcd4e8","food-141":"food-h88b512c5","food-142":"food-haad9c589","food-143":"food-h1844dd87","food-144":"food-h4393484f","food-145":"food-hfecd133c","food-146":"food-hb32f6370","food-147":"food-h49a2ab8a","food-148":"food-ha8f88a55","food-149":"food-h73a330b2","food-150":"food-h979dadd7","food-151":"food-h67f18319","food-152":"food-h3ceea38d","food-153":"food-h76b53f1b","food-154":"food-h7cd934c2","food-155":"food-hab08913b","food-156":"food-h97f855d7","food-157":"food-hadc0da27","food-158":"food-h190102bc","food-159":"food-hcbb7a491","food-160":"food-h385f8fd6","food-161":"food-h640b7d23","food-162":"food-hd5f4e4b9","food-163":"food-h65f16d58","food-164":"food-h3829ed33","food-165":"food-heaca4ca8","food-166":"food-hd58d989e","food-167":"food-h78eb9fc6","food-168":"food-h8e5bceac","food-169":"food-hf560b467","food-170":"food-h0122606c","food-171":"food-h6ae8a2ba","food-172":"food-h2f0a2858","food-173":"food-h9dff5cea","food-174":"food-h541b184f","food-175":"food-h70ebd239","food-176":"food-hbceef37b","food-177":"food-h2b22b95d","food-178":"food-h2e21f613","food-179":"food-hde506592","food-180":"food-h061d35a4","food-181":"food-h8b49452e","food-182":"food-h37d3f8f1","food-183":"food-hae4817bf","food-184":"food-he996ba3b","food-185":"food-h54b72006","food-186":"food-h0bc0f61c","food-187":"food-he3fd468f","food-188":"food-h12f1ff48","food-189":"food-he2b83198","food-190":"food-h19a12d1a","food-191":"food-hb58f2630","food-192":"food-ha7d4b925","food-193":"food-h4c019f8a","food-194":"food-h93f8136d","food-195":"food-hfac3eb98","food-196":"food-hcd3c6cf9","food-197":"food-h7e6aa4ea","food-198":"food-ha53f64d8","food-199":"food-h2ac45234","food-200":"food-h23942c58","food-201":"food-he09d1054","food-202":"food-h2418a31b","food-203":"food-habd16fcf","food-204":"food-hcf51ebc8","food-205":"food-hd048d73a","food-206":"food-hea09828b","food-207":"food-h6bc436ec","food-208":"food-ha186ab30","food-209":"food-hedc966a6","food-210":"food-h612c341d","food-211":"food-h0f6d29c9","food-212":"food-h5b17ba05","food-213":"food-h612188b7","food-214":"food-hba59762b","food-215":"food-ha96a255e","food-216":"food-h2b827442","food-217":"food-h186e220c","food-218":"food-h2635450d","food-219":"food-h47f78cc2","food-220":"food-h2ca1807c","food-221":"food-hc255d22e","food-222":"food-hb44eaa03","food-223":"food-h89a63161","food-224":"food-h76642c9e","food-225":"food-hac107e67","food-226":"food-h3b52a194","food-227":"food-h33b03f78","food-228":"food-h2e6feec2","food-229":"food-h0d4efdd9","food-230":"food-hb99b2d86","food-231":"food-hf06bf9f2","food-232":"food-hec41d854","food-233":"food-h443c12c2","food-234":"food-ha174972b","food-235":"food-hde9ce9f2","food-236":"food-h929aa6f9","food-237":"food-hc2b7f7ad","food-238":"food-h53c24f20","food-239":"food-hc668f45f","food-240":"food-h22efe75d","food-241":"food-h7c764ee1","food-242":"food-h3e921b85","food-243":"food-hf9de192d","food-244":"food-h421559b1","food-245":"food-h9ad14e3e","food-246":"food-h176f2906","food-247":"food-ha29b0eb5","food-248":"food-h03b5375a","food-249":"food-he8675bbe","food-250":"food-h5a6659ef","food-251":"food-h22a2155a","food-252":"food-hddf8b205","food-253":"food-he3a47bdc","food-254":"food-h87cf1a5b","food-255":"food-h78e7257e","food-256":"food-h5ccc1b81","food-257":"food-hf708dcfe","food-258":"food-ha1da0163","food-259":"food-h56dcdc00","food-260":"food-h740cd1de","food-261":"food-h89283566","food-262":"food-h7d1f7728","food-263":"food-hac1cddb2","food-264":"food-h8cb14794","food-265":"food-h7946c2de","food-266":"food-h7b2be218","food-267":"food-h4126dc64","food-268":"food-h29161297","food-269":"food-h5f71d7db","food-270":"food-h9799e5b1","food-271":"food-hf4e72ec2","food-272":"food-h62405d82","food-273":"food-h51723c4f","food-274":"food-h780d5bdb","food-275":"food-he86e5568","food-276":"food-hf8566d9b","food-277":"food-hb7c7fbcf","food-278":"food-hb0005d73","food-279":"food-h83e543c9","food-280":"food-h8641f54c","food-281":"food-hcc5da1ed","food-282":"food-h67988bbc","food-283":"food-h1749cc7a","food-284":"food-hf4b217d3","food-285":"food-hb44c3baf","food-286":"food-h07d267a5","food-287":"food-hee30fa97","food-288":"food-h275dbff8","food-289":"food-he37bd290","food-290":"food-h7720958a","food-291":"food-h3a3cc52e","food-292":"food-h2f01cd01","food-293":"food-h946f7840","food-294":"food-hd3a04878","food-295":"food-h0c9dee34","food-296":"food-hdefb99a2","food-297":"food-h58568410","food-298":"food-hf6ea5b8a","food-299":"food-hb856b96b","food-300":"food-hfd1cb810","food-301":"food-hb0d2019b","food-302":"food-ha7df6356","food-303":"food-h422060c9","food-304":"food-h6c026255","food-305":"food-h9b7f30ff","food-306":"food-h6ea0be0c","food-307":"food-had1a434f","food-308":"food-h0c42047c","food-309":"food-h121f55b2","food-310":"food-hf0e9a1f3","food-311":"food-h590e78f2","food-312":"food-h690cecd5","food-313":"food-h4cf58045","food-314":"food-h824dde9f","food-315":"food-h2107a998","food-316":"food-he659b438","food-317":"food-hb128a77b","food-318":"food-h5d0f65d3","food-319":"food-h02d0c06d","food-320":"food-h11cf5922","food-321":"food-h3923052b","food-322":"food-h035157c7","food-323":"food-hb42a442a","food-324":"food-h9cab29b7","food-325":"food-h806d7eea","food-326":"food-hdfee696d","food-327":"food-h5bd748b9","food-328":"food-hdf0ca46b","food-329":"food-hff98e2b8","food-330":"food-h58d24730","food-331":"food-h1d1cd77c","food-332":"food-h89ec73a2","food-333":"food-h4cc96277","food-334":"food-h21db10a0","food-335":"food-hc8a4f4c4","food-336":"food-h00a9f8cc","food-337":"food-he3708f86","food-338":"food-h6132105c","food-339":"food-h5e6740f1","food-340":"food-h9331b3bc","food-341":"food-hdb03c0f7","food-342":"food-hc8859066","food-343":"food-h1546cda6","food-344":"food-h7f904439","food-345":"food-h444ecb1c","food-346":"food-hd19a8e33","food-347":"food-h87c65ebf","food-348":"food-h8fb2e28b","food-349":"food-h050419bd","food-350":"food-hf0c8f47b","food-351":"food-h2751e11a","food-352":"food-h0a719066","food-353":"food-h0b5b9f6e","food-354":"food-h34be19ab","food-355":"food-hf674edf4","food-356":"food-he75ac154","food-357":"food-h5028e5fb","food-358":"food-h27813c44","food-359":"food-h790189fe","food-360":"food-h2107bbab","food-361":"food-h76cae71f","food-362":"food-ha7145a3b","food-363":"food-h0f9a20b1","food-364":"food-h48180cf7","food-365":"food-h08533bcf","food-366":"food-h7f28629e","food-367":"food-hcda94dd9","food-368":"food-h2909881b","food-369":"food-h3e9ec134","food-370":"food-h98cbf6df","food-371":"food-h99f2a8ea","food-372":"food-hc100feab","food-373":"food-h1e27f6ee","food-374":"food-h23faeea1","food-375":"food-h06192df0","food-376":"food-h606109d8","food-377":"food-h04a07427","food-378":"food-h50d16a14","food-379":"food-h9fe307f5","food-380":"food-hc9c08c6b","food-381":"food-h79d13554","food-382":"food-hc7bfbd17","food-383":"food-hae448324","food-384":"food-h768d53a8","food-385":"food-h83a3defe","food-386":"food-hae84030b","food-387":"food-hfde8641e","food-388":"food-h2dd9159d","food-389":"food-hb64574f3","food-390":"food-he3c38d2a","food-391":"food-h1968b822","food-392":"food-ha89bb5de","food-393":"food-hbc911c31","food-394":"food-h0102ce67","food-395":"food-h620086eb","food-396":"food-h478336fe","food-397":"food-h7fe0f3de","food-398":"food-h5dc3f6f1","food-399":"food-h75e1b3e6","food-400":"food-h8362935e","food-401":"food-h8adccfd6","food-402":"food-he01f9b0f","food-403":"food-h4a092863","food-404":"food-he0dfcf9a","food-405":"food-h30c8fb76","food-406":"food-hab8e48b9","food-407":"food-h96a1b52e","food-408":"food-hc9f32112","food-409":"food-hc23eaacc","food-410":"food-hba0d5c3d","food-411":"food-h6c5ec8d1","food-412":"food-h603669be","food-413":"food-h262de78d","food-414":"food-h729ba9ce","food-415":"food-h28448b63","food-416":"food-hb2eb5b89","food-417":"food-h43bbde8b","food-418":"food-hebb9646c","food-419":"food-h4f778222","food-420":"food-hbac50eb7","food-421":"food-h1363ce1a","food-422":"food-h81bc3cbc","food-423":"food-hfbb1db27","food-424":"food-h92408cae","food-425":"food-haaf819c8","food-426":"food-h4dd9a16f","food-427":"food-he5a2f391","food-428":"food-h83abce1a","food-429":"food-hdafc98c5","food-430":"food-h8dcfd9cf","food-431":"food-h1a198a4b","food-432":"food-he7620f47","food-433":"food-h2afc04a1","food-434":"food-h6ac81bfd","food-435":"food-h81096e5d","food-436":"food-h2cea443d","food-437":"food-h3b079cbd","food-438":"food-h7df57d01","food-439":"food-hb09df5f1","food-440":"food-hd2a3391d","food-441":"food-he676e8eb","food-442":"food-h8a50135d","food-443":"food-h4e00b41f","food-444":"food-h213a902f","food-445":"food-h045d9a29","food-446":"food-h39500fba","food-447":"food-h06f40113","food-448":"food-h05361526","food-449":"food-h7e55d302","food-450":"food-h90b52157","food-451":"food-he5f9f7d9","food-452":"food-h9c93e473","food-453":"food-hb99eb9f1","food-454":"food-h94a5b254","food-455":"food-h9ed11bce","food-456":"food-h5c5dae0d","food-457":"food-h9cbf52ea","food-458":"food-hf6f60e61","food-459":"food-h868ba01d","food-460":"food-h02a3c811","food-461":"food-ha1132f67","food-462":"food-ha7e9ca06","food-463":"food-hbe57c40d","food-464":"food-h36f99b81","food-465":"food-he338350c","food-466":"food-h99dce8ce","food-467":"food-h342c84ec","food-468":"food-h58f8aa4f","food-469":"food-h651e24a0","food-470":"food-he4312566","food-471":"food-h82e428db","food-472":"food-h1c4ee48d","food-473":"food-h3a7eb78b","food-474":"food-he2338c4b","food-475":"food-hd55e7a98","food-476":"food-he01e6b13","food-477":"food-h8908f796","food-478":"food-h1d55ea3d","food-479":"food-h6de5563a","food-480":"food-h35250dba","food-481":"food-h9c5f9a5a","food-482":"food-h58dbe496","food-483":"food-h37a94f44","food-484":"food-h2338ebc1","food-485":"food-h3dc354b1","food-486":"food-h2c030b68","food-487":"food-h636cfcbb","food-488":"food-h293ee9d2","food-489":"food-hec3a4047","food-490":"food-hb7d2d8da","food-491":"food-hd445c21c","food-492":"food-h4ade3087","food-493":"food-h6c77ad8e","food-494":"food-h205be3ec","food-495":"food-h9b1796bc","food-496":"food-hf156a032","food-497":"food-hcfcf70ac","food-498":"food-h7efc6067","food-499":"food-hca93a63e","food-500":"food-h62a53e74","food-501":"food-hf75d7d3a","food-502":"food-hafb4fbde","food-503":"food-he9fcf2f2","food-504":"food-hd945ef93","food-505":"food-h08754c24","food-506":"food-h09e04719","food-507":"food-h8442b93f","food-508":"food-h4b07c2b6","food-509":"food-h645cc867","food-510":"food-hadf15359","food-511":"food-h315501aa","food-512":"food-h3a217da8","food-513":"food-h0c0e87ef","food-514":"food-h9c04980f","food-515":"food-h02b892d4","food-516":"food-haf7440cd","food-517":"food-hd15ead6f","food-518":"food-hfaf9f5fc","food-519":"food-habdd323e","food-520":"food-hb283cd66","food-521":"food-ha29f8542","food-522":"food-h9689ea63","food-523":"food-h85cef16e","food-524":"food-h5e0540fe","food-525":"food-h4b4ad009","food-526":"food-ha06f0549","food-527":"food-h4aa5202d","food-528":"food-h8c041396","food-529":"food-he86f1a88","food-530":"food-hd41858e4","food-531":"food-h82396c12","food-532":"food-h903f743a","food-533":"food-hb35e5540","food-534":"food-haa974359","food-535":"food-h5c1a639b","food-536":"food-h8e508545","food-537":"food-h79018ca8","food-538":"food-hbb7407d5","food-539":"food-h09a429db","food-540":"food-h91aa3216","food-541":"food-h95dbcaf5","food-542":"food-hdf16cc90","food-543":"food-hf683c33e","food-544":"food-h071a46f8","food-545":"food-h0959ddb9","food-546":"food-h0b0afd2c","food-547":"food-he07fd47a","food-548":"food-hcc466297","food-549":"food-hdbda094b","food-550":"food-hc6ce76c6","food-551":"food-h8d026ed8","food-552":"food-h48588bfb","food-553":"food-ha6411d8a","food-554":"food-h86b95381","food-555":"food-hc46e4342","food-556":"food-ha2721a7b","food-557":"food-h6cae9369","food-558":"food-haaa7f9fb","food-559":"food-h7b0e3cc2","food-560":"food-h1b212750","food-561":"food-h2a17d28c","food-562":"food-h6d3cfc45","food-563":"food-hef51f303","food-564":"food-ha379b29c","food-565":"food-h5ae7580a","food-566":"food-h71d50669","food-567":"food-ha1faaf13","food-568":"food-h4cd350fb","food-569":"food-h5d88e5e2","food-570":"food-h39fd4e1d","food-571":"food-h84bf6f6d","food-572":"food-hb3ce0d4e","food-573":"food-hfc77a8a0","food-574":"food-h1b68a1b3","food-575":"food-h726d04e7","food-576":"food-haf3f9025","food-577":"food-h50fe4450","food-578":"food-h8759a2d8","food-579":"food-h13cf3329","food-580":"food-h99b3f791","food-581":"food-h03f5ed66","food-582":"food-h1c7e5bab","food-583":"food-h3d8615b3","food-584":"food-hf3fa1f55","food-585":"food-he2374890","food-586":"food-h3f2d621b","food-587":"food-h37930535","food-588":"food-h0dd41946","food-589":"food-h2b5a5e31","food-590":"food-h118c5013","food-591":"food-h84fdc8f5","food-592":"food-hea0abeca","food-593":"food-h8b5e20a1","food-594":"food-h2700fdfc","food-595":"food-haaaaf121","food-596":"food-h888a0c4c","food-597":"food-h35979d0e","food-598":"food-h3d8283de","food-599":"food-h895e56b1","food-600":"food-hde5d4d54","food-601":"food-h9686b082","food-602":"food-hd00ec33e","food-603":"food-ha375271c","food-604":"food-h4b35a581","food-605":"food-h3dfcd23c","food-606":"food-hf9b99c85","food-607":"food-h4a1d86b7","food-608":"food-h1d435d16","food-609":"food-h1d5a4989","temple-2":"temple-hbd70c0fa","temple-3":"temple-h46368448","temple-4":"temple-h50699c29","temple-5":"temple-h8f5c3c4f","temple-6":"temple-h7e6e8698","temple-7":"temple-hc7c41fc3","temple-8":"temple-he66b0c95","temple-9":"temple-h2ae7c178","temple-10":"temple-he53e9a05","temple-11":"temple-h47e400f1","temple-12":"temple-hb24b9c45","temple-13":"temple-h488ef37a","temple-14":"temple-hbfbbe18f","temple-15":"temple-h9968c923","temple-16":"temple-hc202099c","temple-17":"temple-h20571a6a","temple-18":"temple-h3d837286","temple-19":"temple-hb24508f4","temple-20":"temple-h996f33e7","temple-21":"temple-h96ec5159","temple-22":"temple-hf09b3071","temple-23":"temple-hdfcc8568","temple-24":"temple-hb9cc7e2f","temple-25":"temple-h6c0d7c10","temple-26":"temple-h7ffab565","temple-27":"temple-h5b6b2418","temple-28":"temple-h0ec9ccba","temple-29":"temple-hf93faccb","temple-30":"temple-h86f49b11","temple-31":"temple-hb8759006","temple-32":"temple-h2fcab46c","temple-33":"temple-h39501d59","temple-34":"temple-h0bcf3229","temple-35":"temple-hf4d8637b","temple-36":"temple-h5b015296","temple-37":"temple-h48fca94a","temple-38":"temple-h0bf50d08","temple-39":"temple-h122e3b10","temple-40":"temple-hb9bac7c7","temple-41":"temple-hd0498687","temple-42":"temple-heb92d2fc","temple-43":"temple-hed67d583","temple-44":"temple-hfca72d0d","temple-45":"temple-hb4d50d17","temple-46":"temple-h8a6edb7f","temple-47":"temple-h256ec29d","temple-48":"temple-h0dfa8b1b","temple-49":"temple-hf88e4073","temple-50":"temple-h8eb35802","temple-51":"temple-ha7fe8129","temple-52":"temple-h98c9bedc","temple-53":"temple-h95de4c0b","temple-54":"temple-h3d1e9532","temple-55":"temple-h77421138","temple-56":"temple-h2f6002a4","temple-57":"temple-h0438af9e","temple-58":"temple-h8e447781","temple-59":"temple-h1d2151cc","temple-60":"temple-h7a99e07d","temple-61":"temple-ha4be67e8","temple-62":"temple-h15fef72e","temple-63":"temple-haa07801e","temple-64":"temple-hc16578a5","temple-65":"temple-h3fb00fac","temple-66":"temple-h83a314ca","temple-67":"temple-hd0a611cb","temple-68":"temple-h0191eddd","temple-69":"temple-h06606d69","temple-70":"temple-hdb8a4d86","temple-71":"temple-h852749b3","temple-72":"temple-h40a245fc","temple-73":"temple-hebe12231","temple-74":"temple-h486b1666","temple-75":"temple-h7cf8f3c5","temple-76":"temple-habcd6247","temple-77":"temple-h2a560071","temple-78":"temple-h6feed662","temple-79":"temple-h77bbbe78","temple-80":"temple-hf1516a76","temple-81":"temple-h2d6ae9c6","temple-82":"temple-h5303c434","temple-83":"temple-h26f6ba80","temple-84":"temple-hda69ad49","temple-85":"temple-hf9425ac2","temple-86":"temple-h55081d44","temple-87":"temple-h84d366ee","temple-88":"temple-h1e1b8588","temple-89":"temple-h62a5adc2","temple-90":"temple-hc64800ed","temple-91":"temple-h9adc07dd","temple-92":"temple-h634b66c8","temple-93":"temple-hd684bd22","temple-94":"temple-h561243c4","temple-95":"temple-h70732f87","temple-96":"temple-h72952e69","temple-97":"temple-hfcf24c5c","temple-98":"temple-h73a34b80","temple-99":"temple-h0b6a1fdf","temple-100":"temple-hf2921d70","temple-101":"temple-h7a7408fe","temple-102":"temple-h6599ec81","temple-103":"temple-he3702d5d","temple-104":"temple-h7bec936c","temple-105":"temple-h87d1a80a","temple-106":"temple-h93cf1de7","temple-107":"temple-h2406e3a3","temple-108":"temple-he33ada29","temple-109":"temple-h4111466a","temple-110":"temple-hf393a608","temple-111":"temple-h7a6ffe92","temple-112":"temple-ha8d5e3f6","temple-113":"temple-hce420f30","temple-114":"temple-h0cfd4ecd","temple-115":"temple-hcdc3e3aa","temple-116":"temple-h19f6d03c","temple-117":"temple-hdc12af1c","temple-118":"temple-h94124dbb","temple-119":"temple-h3325f96e","temple-120":"temple-h87e9fbf7","temple-121":"temple-h5502c7a3","temple-122":"temple-h72c43430","temple-123":"temple-hea655f0d","temple-124":"temple-hea495191","temple-125":"temple-he36a7d0b","temple-126":"temple-h2ed2a042","temple-127":"temple-hdeb047c7","temple-128":"temple-h8d6cc7e3","temple-129":"temple-h132654cb","temple-130":"temple-hfff9fe23","temple-131":"temple-h8a1cf27c","temple-132":"temple-hc9d23947","temple-133":"temple-hc287789c","temple-134":"temple-hfcc9f0b3","temple-135":"temple-h9e482a2e","temple-136":"temple-h409a15c8","temple-137":"temple-hc38e1e01","temple-138":"temple-h3face53e","temple-139":"temple-hab8db9a4","temple-140":"temple-hde1ff3fb","temple-141":"temple-h463b625f","temple-142":"temple-hecdb1eeb","temple-143":"temple-hd8ece16f","temple-144":"temple-hc06e1ac3","temple-145":"temple-haaa7d408","temple-146":"temple-hff57d16f","temple-147":"temple-ha7d4f992","temple-148":"temple-h7d8432aa","temple-149":"temple-h4044d225","temple-150":"temple-h9aba379a","temple-151":"temple-h05694208","temple-152":"temple-h20443d6f","temple-153":"temple-h8372f9a3","temple-154":"temple-h26d53ba6","temple-155":"temple-h0ee4777a","temple-156":"temple-ha8b8a377","temple-157":"temple-hff8c3af7","temple-158":"temple-h574a26df","temple-159":"temple-h8a173fad","temple-160":"temple-h8d4a6cdb","temple-161":"temple-h4e60f137","temple-162":"temple-h6a89427b","temple-163":"temple-h9b93017f","temple-164":"temple-hdeb30229","temple-165":"temple-h2a4f4d8c","temple-166":"temple-he610013f","temple-167":"temple-h973c3ba7","temple-168":"temple-he8e117ac","temple-169":"temple-h2f591ec9","temple-170":"temple-hbffa8eb4","temple-171":"temple-h617708fa","temple-172":"temple-h2344ca36","temple-173":"temple-h01d8cd04","temple-174":"temple-h0c8d5c12","temple-175":"temple-hfa136e0f","temple-176":"temple-hdc63fef6","temple-177":"temple-h09fe04b2","temple-178":"temple-h8fecb869","temple-179":"temple-h60ec3e6a","temple-180":"temple-hc33e9fb3","temple-181":"temple-hfd29672b","temple-182":"temple-hc31131af","temple-183":"temple-h70111672","temple-184":"temple-hf923c035","temple-185":"temple-hc0ae3a23","temple-186":"temple-h05e03ae0","temple-187":"temple-h20ccb46a","temple-188":"temple-he90a299b","temple-189":"temple-h8eb14949"};
+function migrateId(id){return Object.hasOwn(OLD_IDS,id)?OLD_IDS[id]:id}
+/* 舊存檔：集章、行程目的地改成新編號（同一地點有兩個舊章時保留較早的日期） */
+function migrateSave(raw){
+  if(!raw||typeof raw!=='object')return raw;
+  const out={...raw};
+  if(raw.stamps&&typeof raw.stamps==='object'){const s={};for(const [k,v] of Object.entries(raw.stamps)){const id=migrateId(k);if(!s[id]||String(v)<String(s[id]))s[id]=v}out.stamps=s}
+  const meta=m=>m&&typeof m==='object'&&m.recordId?{...m,recordId:migrateId(m.recordId)}:m;
+  if(raw.journey&&typeof raw.journey==='object')out.journey={...raw.journey,meta:meta(raw.journey.meta),pending:raw.journey.pending?{...raw.journey.pending,meta:meta(raw.journey.pending.meta)}:raw.journey.pending};
+  return out;
+}
+
+return {OLD_IDS,migrateId,migrateSave};
+})();
 const __m_places=(()=>{
 const {mapPosition,locateTour}=__m_map;
+const {migrateId}=__m_id_migrate;
 // The real map always uses the complete source collection. The nine-stop tour
 // belongs only to the separate illustrative tide scene.
 function mapPlaces(records,navigation){
@@ -742,7 +765,7 @@ function placeCounts(records){
 }
 // Explicit familiar starts, never the first spreadsheet row (which may be an
 // offshore island). Other records and their real coordinates remain unchanged.
-const REGION_STARTS={'馬公市':'sight-3','湖西鄉':'temple-76','白沙鄉':'sight-100','西嶼鄉':'sight-126','七美鄉':'sight-162','望安鄉':'sight-174'};
+const REGION_STARTS=Object.fromEntries(Object.entries({'馬公市':'sight-3','湖西鄉':'temple-76','白沙鄉':'sight-100','西嶼鄉':'sight-126','七美鄉':'sight-162','望安鄉':'sight-174'}).map(([a,id])=>[a,migrateId(id)]));
 function regionalSpawn(nodes,area){
  const local=nodes.filter(n=>n.record.area===area&&n.approach);
  let chosen=local.find(n=>n.record.id===REGION_STARTS[area]);
@@ -808,6 +831,47 @@ class RoadNavigation{
    // Do not pick an isolated tile sliver as a normal exploration start.
    if(d<dist&&this.sizes[p.component]>=3){dist=d;best={...p,offset:d}}
   }return best;
+ }
+ /* 附近所有道路（每條線段取最近點），附道路方向；給測速提醒點選「同方向的那條路」用 */
+ nearby(x,z,maxDistance=.6){
+  if(!Number.isFinite(x)||!Number.isFinite(z))return[];const out=[],seen=new Set();
+  for(let iz=Math.floor((z-maxDistance)/this.bin);iz<=Math.floor((z+maxDistance)/this.bin);iz++)for(let ix=Math.floor((x-maxDistance)/this.bin);ix<=Math.floor((x+maxDistance)/this.bin);ix++)for(const id of this.cells.get(ix+':'+iz)||[]){
+   if(seen.has(id))continue;seen.add(id);const e=this.edges[id],a=this.nodes[e.a],b=this.nodes[e.b],t=clamp(((x-a.x)*(b.x-a.x)+(z-a.z)*(b.z-a.z))/e.length**2),p=this.point(id,t),d=Math.hypot(p.x-x,p.z-z);
+   if(d<=maxDistance&&this.sizes[p.component]>=3)out.push({...p,offset:d,axis:{x:(b.x-a.x)/e.length,z:(b.z-a.z)/e.length}});
+  }return out.sort((p,q)=>p.offset-q.offset);
+ }
+ /* 沿目前道路往前看：從 (x,z) 附近、方向與 heading 一致的道路出發，遇到路口選最直的那條（轉角 45° 內），
+    最多 length 世界單位；給 GPS／搖桿模式的測速提醒用（沒有規劃路線時，預測「照這條路直走」會經過哪裡） */
+ lookahead(x,z,heading,length,maxOffset=.35){
+  if(!heading)return null;
+  const c=this.nearby(x,z,maxOffset).find(q=>Math.abs(q.axis.x*heading.x+q.axis.z*heading.z)>=.7);if(!c)return null;
+  const e=this.edges[c.edge],fwd=c.axis.x*heading.x+c.axis.z*heading.z>0;let node=fwd?e.b:e.a,prevEdge=c.edge;
+  const pts=[{x:c.x,z:c.z},{x:this.nodes[node].x,z:this.nodes[node].z}];let len=Math.hypot(pts[1].x-c.x,pts[1].z-c.z);
+  for(let guard=0;len<length&&guard<500;guard++){
+   const here=this.nodes[node],prev=pts[pts.length-2],L0=Math.hypot(here.x-prev.x,here.z-prev.z),dir=L0>1e-6?{x:(here.x-prev.x)/L0,z:(here.z-prev.z)/L0}:heading; // 起點剛好在路口節點上時用行進方向
+   let best=null,bestDot=.7;const exits=this.adj[node].filter(id=>id!==prevEdge);
+   for(const id of exits){const ed=this.edges[id],other=ed.a===node?ed.b:ed.a,o=this.nodes[other],L=Math.hypot(o.x-here.x,o.z-here.z)||1,d=((o.x-here.x)*dir.x+(o.z-here.z)*dir.z)/L;if(d>bestDot||exits.length===1&&d>-.3){bestDot=d;best={id,other,L}}} // 只有一條路可走（道路本身轉彎）就跟著彎
+   if(!best)break;node=best.other;prevEdge=best.id;pts.push({x:this.nodes[node].x,z:this.nodes[node].z});len+=best.L;
+  }
+  return pts;
+ }
+ /* 同 lookahead，但路口有好幾條「大致直行」（45° 內）的路時每條都看（最多 maxRoutes 條），
+    道路本身轉彎（只有一條路可走）就跟著彎；回傳多條路線，給沒有規劃路線時的測速提醒用 */
+ lookaheadAll(x,z,heading,length,maxOffset=.35,maxRoutes=8){
+  if(!heading)return[];
+  const c=this.nearby(x,z,maxOffset).find(q=>Math.abs(q.axis.x*heading.x+q.axis.z*heading.z)>=.7);if(!c)return[];
+  const e=this.edges[c.edge],fwd=c.axis.x*heading.x+c.axis.z*heading.z>0,first=fwd?e.b:e.a,out=[];
+  const start={x:c.x,z:c.z},n0={x:this.nodes[first].x,z:this.nodes[first].z};
+  const stack=[{pts:[start,n0],len:Math.hypot(n0.x-start.x,n0.z-start.z),node:first,prevEdge:c.edge}];
+  for(let guard=0;stack.length&&guard<4000;guard++){
+   const cur=stack.pop();if(cur.len>=length||out.length+stack.length>=maxRoutes*2){out.push(cur.pts);if(out.length>=maxRoutes)break;continue}
+   const here=this.nodes[cur.node],prev=cur.pts[cur.pts.length-2],L0=Math.hypot(here.x-prev.x,here.z-prev.z),dir=L0>1e-6?{x:(here.x-prev.x)/L0,z:(here.z-prev.z)/L0}:heading;
+   const exits=this.adj[cur.node].filter(id=>id!==cur.prevEdge),next=[];
+   for(const id of exits){const ed=this.edges[id],other=ed.a===cur.node?ed.b:ed.a,o=this.nodes[other],L=Math.hypot(o.x-here.x,o.z-here.z)||1,d=((o.x-here.x)*dir.x+(o.z-here.z)*dir.z)/L;if(d>=.7||exits.length===1&&d>-.3)next.push({id,other,L})}
+   if(!next.length){out.push(cur.pts);if(out.length>=maxRoutes)break;continue}
+   for(const nx of next)stack.push({pts:[...cur.pts,{x:this.nodes[nx.other].x,z:this.nodes[nx.other].z}],len:cur.len+nx.L,node:nx.other,prevEdge:nx.id});
+  }
+  return out;
  }
  path(start,end,limit=Infinity){
   if(!this.isOnRoad(start)||!this.isOnRoad(end)||start.component!==end.component)return null;
@@ -988,6 +1052,12 @@ class Journey{
   while(remaining>1e-9&&this.active){const dt=Math.min(.5,remaining);this.advance(player,dt);remaining-=dt}
   if(raw.pending&&this.active){const end=decode(raw.pending.end);if(end)this.pending={end,meta:raw.pending.meta||{}}}this.cancelAtPort=!!raw.cancelAtPort;return true;
  }
+ /* 熊寶接下來要走的陸路（到下一個港口前為止），第一點是目前位置；給測速提醒沿路判斷用 */
+ ahead(player){
+  if(!this.active||this.wait>0||this.leg.type!=='walk')return null;const out=[{x:player.x,z:player.z}];
+  for(let i=this.legIndex;i<this.plan.legs.length;i++){const leg=this.plan.legs[i];if(leg.type!=='walk')break;for(const p of leg.points.slice(i===this.legIndex?this.pointIndex:1))out.push({x:p.x,z:p.z})}
+  return out;
+ }
  geometry(player){
   const g=new Geometry();if(!this.active)return g;
   const draw=(a,b,type)=>{const distance=gap(a,b);if(distance<1e-8)return;const dx=-(b.z-a.z)/distance*.045,dz=(b.x-a.x)/distance*.045,steps=type==='ferry'?Math.ceil(distance/.8):1;
@@ -1000,10 +1070,75 @@ async function loadFerries(fetcher=fetch){const r=await fetcher(FERRY_FILE);if(!
 
 return {FERRY_FILE,FERRY_VERSION,TravelPlanner,Journey,loadFerries};
 })();
+const __m_deity=(()=>{
+// 主祀判斷（與熊熊綜合系統、熊寶系統等共用同一套規則）
+/* ===== 主祀判斷（各系統共用）=====
+   一間廟有多位主祀時拆開，每一位依資料歸回同一位神明（例：協天大帝(關聖帝君)→關聖帝君、銅陵媽祖→天上聖母、虎將軍→虎爺）；
+   畫面一律顯示主祀原文。資料出現新寫法時再補進這張表。 */
+const DEITY_ALIASES = [
+  ["關聖帝君", ["關聖帝君","文衡聖帝","文衡關聖帝君","協天大帝","五天聖帝","關公","關帝","恩主公"]],
+  ["天上聖母", ["天上聖母","媽祖","銅陵媽祖","天后","天妃","媽祖娘娘"]],
+  ["虎爺", ["虎爺","虎將軍"]],
+  ["玄天上帝", ["玄天上帝","真武大帝","上帝公","北極大帝","玄天大帝"]],
+  ["觀世音菩薩", ["觀世音菩薩","觀音佛祖","觀音菩薩","南海觀世音菩薩","觀音","觀音大士","觀世音","二觀音菩薩"]],
+  ["福德正神", ["福德正神","土地公","伯公"]],
+  ["中壇元帥", ["中壇元帥","哪吒三太子","哪吒太子","三太子","中壇元帥三太子","太子爺"]],
+  ["玉皇大帝", ["玉皇大帝","玉皇大天尊","天公"]],
+  ["城隍", ["城隍","城隍尊神","城隍爺"]],
+  ["釋迦牟尼佛", ["釋迦牟尼佛","釋迦佛"]],
+  ["神農大帝", ["神農大帝","開天仙帝","神農氏"]],
+  ["五府千歲", ["五府千歲","五府王爺"]]
+];
+/* 單一位神明 → 歸回的神明名稱（括號裡的名字也算；同姓的王爺、府王爺、千歲是同一位） */
+function deityName(raw) {
+  const s = String(raw || "").replace(/\s/g, "");
+  if (!s) return "";
+  const inParen = (s.match(/[（(]([^）)]+)[）)]/) || [])[1] || "";
+  const bare = s.replace(/[（(].*$/, "");
+  for (const [main, names] of DEITY_ALIASES) {
+    if (names.includes(s) || names.includes(bare) || (inParen && names.includes(inParen))) return main;
+  }
+  const wang = s.match(/^([^府王千五諸])府?(王爺|千歲)$/) || s.match(/^([^府王千五諸])王$/);
+  if (wang) return wang[1] + "府王爺";
+  return s;
+}
+/* 主祀欄拆成每一位神明（括號裡的頓號不拆） */
+function deitySplit(raw) {
+  const out = []; let cur = "", depth = 0;
+  for (const ch of String(raw || "")) {
+    if (ch === "(" || ch === "（") depth++;
+    if (ch === ")" || ch === "）") depth = Math.max(0, depth - 1);
+    if (!depth && /[、／/,，;；]/.test(ch)) { if (cur.trim()) out.push(cur.trim()); cur = ""; } else cur += ch;
+  }
+  if (cur.trim()) out.push(cur.trim());
+  return out;
+}
+function deityGroups(raw) { return [...new Set(deitySplit(raw).map(deityName).filter(Boolean))]; }
+/* 查詢的字詞是不是這間廟的主祀（別名都算；王爺、千歲找所有王爺；其他照原文包含） */
+function deityHit(raw, query) {
+  const q = String(query || "").replace(/\s/g, "");
+  if (!q) return false;
+  const groups = deityGroups(raw);
+  if (groups.includes(deityName(q))) return true;
+  if (/^(王爺|千歲)$/.test(q) && groups.some(g => /(王爺|千歲)$/.test(g))) return true;
+  return String(raw || "").replace(/\s/g, "").includes(q);
+}
+/* 這個字詞是不是神明名稱（別名表裡的名字、王爺／千歲） */
+function isDeityWord(query) {
+  const q = String(query || "").replace(/\s/g, "");
+  if (!q) return false;
+  if (/^(王爺|千歲)$/.test(q) || deityName(q) !== q || DEITY_ALIASES.some(([m]) => m === q)) return true;
+  return q.length >= 2 && DEITY_ALIASES.some(([, names]) => names.some(n => n.includes(q)));
+}
+
+return {DEITY_ALIASES,deityName,deitySplit,deityGroups,deityHit,isDeityWord};
+})();
 const __m_ask=(()=>{
 // 問熊寶：本機文字查詢（不連任何 AI／API）。
-// 從一句話找出「地區、類別、附近、關鍵字」，只在 data.json 的原表資料裡找，不產生不存在的地點。
+// 從一句話找出「地區、類別、附近、關鍵字」，只在原表資料裡找，不產生不存在的地點。
+// 廟宇主祀：多位主祀拆開、同一位神明的不同寫法都算（與其他系統同一套規則，見 deity.js）。
 const {AREAS,KINDS}=__m_model;
+const {deityHit}=__m_deity;
 const AREA_WORDS=AREAS.map(area=>({area,words:[area,area.replace(/[市鄉]$/,'')]}));
 const KIND_WORDS={
   food:['美食','好吃','吃的','吃什麼','餐廳','小吃','早餐','午餐','晚餐','宵夜','下午茶','咖啡','冰品','甜點','海鮮','伴手禮','餐'],
@@ -1057,6 +1192,7 @@ function askPlaces(text,records,{distanceOf=()=>Infinity,limit=12}={}){
         for(const [,value] of fieldsOf(r)){const v=String(value||'');hits=Math.max(hits,grams.filter(g=>v.includes(g)).length)}
         if(hits>=need){score=best;reason=why}
       }
+      if(!score&&r.kind==='temple'&&q.keyword&&deityHit(r.special,q.keyword)){score=6*3*Math.min(q.keyword.length,6);reason=''}
       if(!score)continue;
     }else{
       // 只有地區／類別／附近：景點優先、有照片優先
@@ -1107,11 +1243,10 @@ return {FERRY_SHEET,parseCSV,ferryRowsFromCSV,loadFerrySheet};
 })();
 const __m_enforcement=(()=>{
 // 測速照相與科技執法：讀取熊熊綜合系統試算表「測速與科技執法」工作表（公開 CSV，不需 API 金鑰），
-// 讀不到時改用內建檔。資料來源為澎湖縣政府警察局開放資料；座標保留原值（只把原始資料對調的經緯度欄位換回來）。
+// 讀不到時不顯示（不內建資料）。資料來源為澎湖縣政府警察局開放資料；座標保留原值（只把原始資料對調的經緯度欄位換回來）。
 // 本檔只做資料整理與「前方提醒」判斷，不移動熊寶。
 const {parseCSV}=__m_ferry_sheet;
 const ENFORCE_SHEET={id:'1LOr4_3ugTHvTIi4UIfgVz2atVFh2K32zh7YKrrHxTwk',gid:777020,name:'測速與科技執法'};
-const ENFORCE_FILE='geo/penghu-enforcement-20261016.json';
 const ENFORCE_HEADERS=['類型','設備編號','設置地點','鄉市','緯度','經度','速限','拍攝方向','取締項目','科技執法種類','管轄分局','型式','官方資料','資料更新日期','整理日期','備註'];
 
 // 世界座標：x 向東、z 向南
@@ -1122,7 +1257,7 @@ function parseDirection(text){
   const v=[...m[2]].reduce((a,c)=>[a[0]+DIRS[c][0],a[1]+DIRS[c][1]],[0,0]),n=Math.hypot(v[0],v[1]);
   return n?{x:v[0]/n,z:v[1]/n}:null;
 }
-const num=v=>{const n=Number(String(v??'').replace(/^'/,'').trim());return Number.isFinite(n)?n:null};
+const num=v=>{const t=String(v??'').replace(/^'/,'').trim();if(!t)return null;const n=Number(t);return Number.isFinite(n)?n:null};
 
 /* 一筆紀錄：經緯度若明顯對調（緯度欄 >90）就換回來，其餘數值不改 */
 function normalizeRecord(r){
@@ -1142,29 +1277,78 @@ function enforcementRowsFromCSV(text){
 /* 同一座標（同一路口）的測速與科技執法合併成一個點 */
 function groupPoints(records){
   const map=new Map();
-  for(const r of records){const key=r.lat.toFixed(5)+','+r.lng.toFixed(5);if(!map.has(key))map.set(key,{id:'enf-'+(map.size+1),lat:r.lat,lng:r.lng,records:[]});map.get(key).records.push(r)}
+  for(const r of records){if(!Number.isFinite(r.lat)||!Number.isFinite(r.lng))continue;const key=r.lat.toFixed(5)+','+r.lng.toFixed(5);if(!map.has(key))map.set(key,{id:'enf-'+(map.size+1),lat:r.lat,lng:r.lng,records:[]});map.get(key).records.push(r)}
   return [...map.values()].map(p=>{const speed=p.records.find(r=>r.type==='speed'),tech=p.records.find(r=>r.type==='tech'),main=tech||speed;
     return{...p,name:main.name,area:main.area,speed:!!speed,tech:!!tech,limit:(speed||tech).limit,direction:(speed||tech).direction,dir:parseDirection((speed||tech).direction),items:[...new Set(p.records.flatMap(r=>r.items.split(/[、,，]/)).map(s=>s.trim()).filter(Boolean))],suspect:p.records.some(r=>r.suspect)}});
 }
 
+/* 沿路線往前找：回傳路線上離提醒點最近（橫向 tol 公尺內）的第一個位置與該段行進方向。
+   route[0] 為目前位置；第一段只看前方（已經通過的不算）。 */
+function alongRoute(route,a,unit,tol,max){
+  let s=0;
+  for(let i=0;i<route.length-1;i++){
+    const A=route[i],B=route[i+1],dx=B.x-A.x,dz=B.z-A.z,L=Math.hypot(dx,dz);if(L<1e-9)continue;
+    let t=((a.x-A.x)*dx+(a.z-A.z)*dz)/(L*L);
+    if(i===0&&t<0){s+=L;continue}
+    t=Math.max(0,Math.min(1,t));
+    const lat=Math.hypot(A.x+dx*t-a.x,A.z+dz*t-a.z)*unit;
+    if(lat<=tol)return{s:(s+t*L)*unit,dir:{x:dx/L,z:dz/L}};
+    s+=L;if(s*unit>max)break;
+  }
+  return null;
+}
+
 /* 前方提醒：pos／heading 為世界座標與行進方向單位向量，unit＝每世界單位的實際公尺數。
-   測速：前方（夾角 45° 內）range 公尺內且行進方向與受測方向相同（夾角 60° 內）。
-   科技執法路口：techRange 公尺內（不分方向）；若同時測速且方向相同，以測速距離提早提醒。
+   有 route（熊寶自動前往的道路路線，第一點為上次檢查位置）時：提醒點必須在路線上（橫向 15 公尺內），距離用沿路距離，
+   測速還要求該段路的行進方向與受測方向相同（夾角 60° 內）；這樣旁邊平行道路、交叉路口另一條路的測速不會誤報。
+   沒有路線（搖桿、GPS）時：提醒點必須在行進方向正前方的走廊內（橫向 lateral 公尺內），
+   測速點所在道路須與行進方向平行，且受測方向相同。
+   科技執法路口：沿路（或直線）techRange 公尺內，不分方向。step＝上次檢查後移動的公尺數，
+   用來補足檢查間隔，避免移動較快時直接跳過 50 公尺的路口範圍。
    同一點提醒一次，離開 rearm 公尺後才會再提醒。原始座標疑似有誤的點不提醒。 */
-function checkAlerts(points,pos,heading,{unit=1,range=300,techRange=50,rearm=600}={},alerted=new Set()){
-  const out=[];
+function checkAlerts(points,pos,heading,opts={},alerted=new Set()){
+  /* routes：多條可能的前方路線（沒有規劃路線、路口有幾條直行方向時），任一條上有就提醒，取最近的距離 */
+  if(opts.routes){const seen=new Map();for(const route of opts.routes){const probe=new Set(alerted);for(const r of checkAlertsOne(points,pos,heading,{...opts,routes:null,route},probe))if(!seen.has(r.point.id)||r.distance<seen.get(r.point.id).distance)seen.set(r.point.id,r)}
+    if(!opts.routes.length)checkAlertsOne(points,pos,null,{...opts,routes:null},alerted);
+    for(const r of seen.values())alerted.add(r.point.id);
+    // 可再提醒：離開 rearm 公尺後
+    for(const p of points){const a=p.alertAt||p.world;if(a&&alerted.has(p.id)&&!seen.has(p.id)&&Math.hypot(a.x-pos.x,a.z-pos.z)*(opts.unit||1)>(opts.rearm||600))alerted.delete(p.id)}
+    return [...seen.values()].sort((a,b)=>a.distance-b.distance)}
+  return checkAlertsOne(points,pos,heading,opts,alerted);
+}
+function checkAlertsOne(points,pos,heading,{unit=1,range=300,techRange=50,rearm=600,route=null,lateral=20,step=0}={},alerted=new Set()){
+  const out=[],techReach=techRange+Math.max(0,Math.min(step,150));
   for(const p of points){
     const a=p.alertAt||p.world;if(!a||p.suspect)continue;
-    const dx=a.x-pos.x,dz=a.z-pos.z,dw=Math.hypot(dx,dz),d=dw*unit;
+    const dx=a.x-pos.x,dz=a.z-pos.z,d=Math.hypot(dx,dz)*unit;
     if(alerted.has(p.id)){if(d>rearm)alerted.delete(p.id);continue}
-    if(!heading)continue;
-    const ahead=dw<1e-9?1:(dx*heading.x+dz*heading.z)/dw,same=!p.dir||(heading.x*p.dir.x+heading.z*p.dir.z)>=.5;
-    let hit=false;
-    if(p.speed&&d<=range&&ahead>=Math.SQRT1_2&&same)hit=true;
-    if(p.tech&&d<=techRange&&ahead>=0)hit=true;
-    if(hit){alerted.add(p.id);out.push({point:p,distance:d})}
+    let hit=null;
+    if(route&&route.length>1){
+      // route[0] 是上次檢查時的位置，step 公尺後才是目前位置：剛好在這段間隔經過的點也不會漏掉
+      const r=alongRoute(route,a,unit,15,range+step);
+      if(r){
+        const ahead=Math.max(0,r.s-step),same=!p.dir||(r.dir.x*p.dir.x+r.dir.z*p.dir.z)>=.5;
+        if(p.speed&&r.s-step<=range&&same)hit=ahead;
+        if(p.tech&&r.s-step<=techRange)hit=hit===null?ahead:Math.min(hit,ahead);
+      }
+    }else if(heading){
+      const along=(dx*heading.x+dz*heading.z)*unit,lat=Math.abs(dx*heading.z-dz*heading.x)*unit;
+      const same=!p.dir||(heading.x*p.dir.x+heading.z*p.dir.z)>=.5,parallel=!p.axis||Math.abs(heading.x*p.axis.x+heading.z*p.axis.z)>=.7;
+      if(p.speed&&along>=0&&along<=range&&lat<=lateral&&same&&parallel)hit=along;
+      if(p.tech&&d<=techReach&&along>=0)hit=hit===null?d:Math.min(hit,d);
+    }
+    if(hit!==null){alerted.add(p.id);out.push({point:p,distance:hit})}
   }
   return out.sort((a,b)=>a.distance-b.distance);
+}
+
+/* 已提醒的點：沿路線（或正前方走廊）還剩多少公尺；回傳負值或 null 表示已經通過 */
+function distanceAhead(p,pos,heading,{unit=1,route=null,routes=null,step=0,lateral=20,max=400}={}){
+  const a=p.alertAt||p.world;if(!a)return null;
+  if(routes){let best=null;for(const r of routes){const d=distanceAhead(p,pos,heading,{unit,route:r,step,lateral,max});if(d!==null&&(best===null||d<best))best=d}return best}
+  if(route&&route.length>1){const r=alongRoute(route,a,unit,15,max+step);return r?r.s-step:null}
+  if(!heading)return null;const dx=a.x-pos.x,dz=a.z-pos.z,along=(dx*heading.x+dz*heading.z)*unit,lat=Math.abs(dx*heading.z-dz*heading.x)*unit;
+  return lat<=lateral*2?along:null;
 }
 
 function alertText({point:p,distance}){
@@ -1180,14 +1364,258 @@ async function loadEnforcementSheet(fetcher=globalThis.fetch){
   return null;
 }
 
-/* 先讀試算表，讀不到改用內建檔；回傳 {records,from} */
+/* 直接讀試算表（不內建資料）；回傳 {records,from} */
 async function loadEnforcement(fetcher=globalThis.fetch){
   const sheet=await loadEnforcementSheet(fetcher);if(sheet)return{records:sheet,from:'sheet'};
-  try{const res=await fetcher(ENFORCE_FILE);if(res.ok){const data=await res.json();return{records:data.records.map(normalizeRecord),from:'bundled',meta:data}}}catch{}
   return{records:[],from:'none'};
 }
 
-return {ENFORCE_SHEET,ENFORCE_FILE,ENFORCE_HEADERS,parseDirection,normalizeRecord,enforcementRowsFromCSV,groupPoints,checkAlerts,alertText,loadEnforcementSheet,loadEnforcement};
+return {ENFORCE_SHEET,ENFORCE_HEADERS,parseDirection,normalizeRecord,enforcementRowsFromCSV,groupPoints,alongRoute,checkAlerts,distanceAhead,alertText,loadEnforcementSheet,loadEnforcement};
+})();
+const __m_sheet_data=(()=>{
+// 遊戲資料：開啟時直接讀熊熊綜合系統的五個工作表（景點、美食清單、廟宇、奎壁山摩西分海、澎湖縣-未來30天潮汐預報），
+// 不在儲存庫留資料備份、不在手機另外存。地點 id 依名稱固定（景點、廟宇：區域(村里)＋名稱；美食：區域(鄉市)＋名稱），
+// 試算表調整列的順序也不會影響集章；改了村里或名稱就視為新的地點。
+
+const BOOK='1LOr4_3ugTHvTIi4UIfgVz2atVFh2K32zh7YKrrHxTwk';
+const SHEETS={food:['美食清單',1582663006],sight:['景點',2085392869],temple:['廟宇',2137991614],sea:['奎壁山摩西分海',1122135459],forecast:['澎湖縣-未來30天潮汐預報',776158339]};
+
+const tx=v=>String(v??'').trim();
+const num=v=>{const s=tx(v).replace(/,/g,'');if(!s)return null;const n=Number(s);return Number.isFinite(n)?n:null};
+/* FNV-1a 32 位元：同樣的名稱永遠得到同樣的編號 */
+function hash(text){let h=0x811c9dc5;for(const ch of String(text)){h^=ch.codePointAt(0);h=Math.imul(h,0x01000193)>>>0}return h.toString(16).padStart(8,'0')}
+function placeId(kind,name,place){return `${kind}-h${hash(`${tx(place)}|${tx(name)}`)}`}
+const placeOf=o=>o.kind==='food'?o.area:o.village;
+
+const DRIVE=/drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?(?:[^#]*&)?id=|thumbnail\?id=)([\w-]{20,})/;
+function photos(raw){
+  const value=tx(raw);if(!value)return{images:[],imageLinks:[]};
+  const id=(value.match(DRIVE)||[])[1];
+  if(id)return{images:[{sourceURL:`https://drive.google.com/file/d/${id}/view`,driveFileId:id,src:`https://lh3.googleusercontent.com/d/${id}=w1600`,width:0,height:0}],imageLinks:[]};
+  return{images:[],imageLinks:/^https?:\/\//.test(value)?[value]:[]};
+}
+
+
+/* parseCSV 會略過空白列；列號要對回原表，所以這裡另外保留空白列 */
+function rawRows(text){
+  const rows=[];let row=[],cell='',quoted=false;text=String(text||'').replace(/^﻿/,'');
+  for(let i=0;i<text.length;i++){const c=text[i];
+    if(quoted){if(c==='"'){if(text[i+1]==='"'){cell+='"';i++}else quoted=false}else cell+=c;continue}
+    if(c==='"')quoted=true;else if(c===','){row.push(cell);cell=''}else if(c==='\n'||c==='\r'){if(c==='\r'&&text[i+1]==='\n')i++;row.push(cell);rows.push(row);row=[];cell=''}else cell+=c}
+  if(cell!==''||row.length){row.push(cell);rows.push(row)}
+  return rows;
+}
+function sheetRows(text){const all=rawRows(text),head=(all[0]||[]).map(s=>String(s).replace(/\s+/g,''));const col=k=>head.indexOf(k);return all.slice(1).map((r,i)=>({row:i+2,get:k=>{const c=col(k);return c<0?'':tx(r[c])}}))}
+
+function buildRecords(csv){
+  const out=[],seen=new Map();
+  const add=(kind,sheet,r,o)=>{if(!o.name)return;let id=placeId(kind,o.name,placeOf({...o,kind}));const n=(seen.get(id)||0)+1;seen.set(id,n);if(n>1)id+=`-${n}`;
+    const p=photos(r.get('圖資來源'));out.push({...o,lat:num(r.get('Latitude')),lng:num(r.get('Longitude')),url:r.get('完整網址')||r.get('短網址'),id,kind,sheet,row:r.row,images:p.images,...(p.imageLinks.length?{imageLinks:p.imageLinks}:{})})};
+  for(const r of sheetRows(csv.sight))add('sight','景點',r,{name:r.get('景點名稱'),area:r.get('區域(鄉市)'),village:r.get('區域(村里)'),category:r.get('主類別'),description:r.get('簡易說明'),special:r.get('次類別'),phone:'',address:r.get('地址'),hours:'',legend:r.get('傳說')});
+  for(const r of sheetRows(csv.food))add('food','美食清單',r,{area:r.get('區域(鄉市)'),village:'',mainCategory:r.get('主類別'),category:r.get('類別'),name:r.get('名稱'),description:r.get('代表餐食／服務'),special:r.get('推薦菜色／行程'),phone:r.get('電話'),address:r.get('地址'),hours:r.get('營業時間'),legend:''});
+  for(const r of sheetRows(csv.temple))add('temple','廟宇',r,{name:r.get('廟宇名稱'),area:r.get('區域(鄉市)'),village:r.get('區域(村里)'),category:'廟宇',description:r.get('廟宇史蹟'),special:r.get('主祀'),phone:r.get('電話'),address:r.get('地址'),hours:'',legend:r.get('傳說'),
+    festival:{theme:r.get('元宵主題'),feature:r.get('元宵特色'),dates:r.get('元宵活動日期範圍(YYYY/MM/DD-YYYY/MM/DD)'),hours:r.get('元宵活動時間'),content:r.get('元宵活動內容')}});
+  return out;
+}
+
+const iso=s=>{const m=tx(s).match(/(\d{4})\D(\d{1,2})\D(\d{1,2})/);return m?`${m[1]}-${m[2].padStart(2,'0')}-${m[3].padStart(2,'0')}`:''};
+function buildSeaDays(text){
+  const days={};
+  for(const r of sheetRows(text)){
+    const date=iso(r.get('完整日期'));if(!date)continue;
+    const d=days[date]||(days[date]={date,events:[],open:[],close:[],reference:[],sunrise:'',sunset:''});
+    if(r.get('潮時'))d.events.push({time:r.get('潮時'),type:r.get('狀態'),height:r.get('潮汐高度'),row:r.row});
+    if(r.get('緩慢分海'))d.open.push(r.get('緩慢分海'));
+    if(r.get('緩慢合海'))d.close.push(r.get('緩慢合海'));
+    if(r.get('參考安全通行'))d.reference.push(r.get('參考安全通行'));
+    if(!d.sunrise&&r.get('日出'))d.sunrise=r.get('日出');
+    if(!d.sunset&&r.get('日沒'))d.sunset=r.get('日沒');
+  }
+  return days;
+}
+
+/* 30 天潮汐預報：原表重複六組表頭；日期只有月日，年份依讀取當天推定（跨年自動往後一年） */
+function buildForecasts(text,today=new Date()){
+  const rows=rawRows(text),out=[];let group=null,day=null;
+  const now=new Date(today.toLocaleString('en-US',{timeZone:'Asia/Taipei'})),year=now.getFullYear(),month=now.getMonth()+1;
+  const yearOf=m=>m<month-6?year+1:m>month+6?year-1:year;
+  rows.forEach((r,i)=>{
+    const first=tx(r[0]);
+    if(first==='日期'){group={index:out.length+1,headerRow:i+1,days:{}};out.push(group);day=null;return}
+    if(!group)return;
+    if(first){const m=first.match(/(\d{1,2})\/(\d{1,2})/);if(m){const key=`${yearOf(+m[1])}-${m[1].padStart(2,'0')}-${m[2].padStart(2,'0')}`;day=group.days[key]={label:first,events:[]}}else day=null}
+    if(!day||!tx(r[1]))return;
+    day.events.push({type:tx(r[1]),time:tx(r[2]),heightTW:tx(r[3]),heightLocal:tx(r[4]),heightChart:tx(r[5]),open:tx(r[6]),close:tx(r[7]),row:i+1});
+  });
+  return out;
+}
+
+async function grab(key,fetcher){
+  const [name,gid]=SHEETS[key],base=`https://docs.google.com/spreadsheets/d/${BOOK}`;
+  for(const url of [`${base}/export?format=csv&gid=${gid}&_=${Date.now()}`,`${base}/gviz/tq?tqx=out:csv&headers=1&sheet=${encodeURIComponent(name)}&_=${Date.now()}`]){
+    try{const res=await fetcher(url,{cache:'no-store'});if(!res.ok)continue;const text=await res.text();if(text&&!/^\s*</.test(text))return text}catch{}
+  }
+  return null;
+}
+
+async function loadSheetData(fetcher=globalThis.fetch){
+  const keys=Object.keys(SHEETS),texts=await Promise.all(keys.map(k=>grab(k,fetcher))),csv=Object.fromEntries(keys.map((k,i)=>[k,texts[i]]));
+  if(!csv.food||!csv.sight||!csv.temple)throw Error('目前讀不到最新資料，請連上網路後重新載入');
+  const records=buildRecords(csv);if(!records.length)throw Error('目前讀不到最新資料，請連上網路後重新載入');
+  return{meta:{sheets:keys.map(k=>SHEETS[k][0])},records,seaDays:csv.sea?buildSeaDays(csv.sea):{},forecasts:csv.forecast?buildForecasts(csv.forecast):[]};
+}
+
+return {BOOK,SHEETS,placeId,buildRecords,buildSeaDays,buildForecasts,loadSheetData};
+})();
+const __m_buildings=(()=>{
+// 立體建築試驗：把建物輪廓拉高成方塊。只畫熊寶／鏡頭附近、拉近時才畫，避免手機負擔過重。
+// 輪廓不平移；高度多為推估示意值（見 geo/penghu-buildings-*.json 的 note）。
+const BUILDINGS_FILE='geo/penghu-buildings-20261021.json';
+const CHUNK=10;          // 每格 10 世界單位＝1 公里
+const BASE=.985;         // 底圖圖磚在 y=.98，建物底部略高一點
+const EXAG=1.5;   // 高度誇大倍數，讓澎湖低矮的房子看得出立體
+const MAX_ZOOM=24;// 視野半高超過 2.4 公里就不畫
+
+const hex=h=>[0,2,4].map(n=>parseInt(h.slice(n+1,n+3),16)/255);
+const STYLE=[{wall:hex('#efe7d8'),roof:hex('#d9d1c3')},{wall:hex('#efe0bc'),roof:hex('#b9694f')}];
+
+/* 簡單的耳切法三角化（輪廓已統一方向） */
+function triangulate(xs,zs){
+  const n=xs.length,idx=[...Array(n).keys()],out=[];
+  let area=0;for(let i=0;i<n;i++){const j=(i+1)%n;area+=xs[i]*zs[j]-xs[j]*zs[i]}
+  const sgn=area<0?-1:1,cr=(a,b,c)=>((xs[b]-xs[a])*(zs[c]-zs[a])-(zs[b]-zs[a])*(xs[c]-xs[a]))*sgn;
+  const inTri=(p,a,b,c)=>cr(a,b,p)>=0&&cr(b,c,p)>=0&&cr(c,a,p)>=0;
+  let guard=0;
+  while(idx.length>3&&guard++<n*n){
+    let cut=false;
+    for(let i=0;i<idx.length;i++){
+      const a=idx[(i+idx.length-1)%idx.length],b=idx[i],c=idx[(i+1)%idx.length];
+      if(cr(a,b,c)<=0)continue;
+      if(idx.some(p=>p!==a&&p!==b&&p!==c&&inTri(p,a,b,c)))continue;
+      out.push(a,b,c);idx.splice(i,1);cut=true;break;
+    }
+    if(!cut)break;
+  }
+  if(idx.length===3)out.push(...idx);
+  else if(idx.length>3)for(let i=1;i<idx.length-1;i++)out.push(idx[0],idx[i],idx[i+1]); // 退而求其次：扇形
+  return out;
+}
+
+class Buildings{
+  constructor(engine,data){
+    this.engine=engine;this.chunks=new Map();this.count=0;
+    for(const b of data.buildings){
+      const [h,kind,,...flat]=b,xs=[],zs=[];for(let i=0;i<flat.length;i+=2){xs.push(flat[i]);zs.push(flat[i+1])}
+      const cx=xs.reduce((s,v)=>s+v,0)/xs.length,cz=zs.reduce((s,v)=>s+v,0)/zs.length,key=Math.floor(cx/CHUNK)+','+Math.floor(cz/CHUNK);
+      if(!this.chunks.has(key))this.chunks.set(key,{cx:(Math.floor(cx/CHUNK)+.5)*CHUNK,cz:(Math.floor(cz/CHUNK)+.5)*CHUNK,items:[],mesh:null});
+      this.chunks.get(key).items.push({h:h/100*EXAG,kind,xs,zs});this.count++;
+    }
+  }
+  build(chunk){
+    const v=[];
+    const push=(x,y,z,n,c)=>v.push(x,y,z,n[0],n[1],n[2],c[0],c[1],c[2]);
+    for(const b of chunk.items){
+      const {xs,zs,h}=b,s=STYLE[b.kind],top=BASE+h,n=xs.length;
+      // 牆面：每邊一個四邊形，法線朝外
+      for(let i=0;i<n;i++){
+        const j=(i+1)%n,dx=xs[j]-xs[i],dz=zs[j]-zs[i],len=Math.hypot(dx,dz)||1,nm=[-dz/len,0,dx/len];
+        const shade=s.wall;
+        push(xs[i],BASE,zs[i],nm,shade);push(xs[j],BASE,zs[j],nm,shade);push(xs[j],top,zs[j],nm,shade);
+        push(xs[i],BASE,zs[i],nm,shade);push(xs[j],top,zs[j],nm,shade);push(xs[i],top,zs[i],nm,shade);
+      }
+      // 屋頂
+      const t=triangulate(xs,zs);
+      for(const k of t)push(xs[k],top,zs[k],[0,1,0],s.roof);
+    }
+    const gl=this.engine.gl,buf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buf);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(v),gl.STATIC_DRAW);
+    chunk.mesh={buffer:buf,count:v.length/9};
+  }
+  visible(){
+    const e=this.engine;if(!e.mapVisible||e.zoom>MAX_ZOOM)return [];
+    const c=e.canvas,aspect=Math.max(1,c.clientWidth/Math.max(1,c.clientHeight)),r=e.zoom*aspect*2.2+CHUNK,f=e.focus;
+    return [...this.chunks.values()].filter(k=>Math.hypot(k.cx-f[0],k.cz-f[2])<r);
+  }
+  render(){
+    let built=0;
+    for(const k of this.visible()){
+      if(!k.mesh){if(built>=3)continue;this.build(k);built++} // 每幀最多新建 3 格，避免卡頓
+      this.engine.draw(k.mesh);
+    }
+  }
+}
+
+async function loadBuildings(engine,fetcher=globalThis.fetch){
+  try{const res=await fetcher(BUILDINGS_FILE);if(!res.ok)return null;return new Buildings(engine,await res.json())}catch{return null}
+}
+
+return {BUILDINGS_FILE,EXAG,MAX_ZOOM,triangulate,Buildings,loadBuildings};
+})();
+const __m_gpsnav=(()=>{
+// 「我的位置」導航：開著定位選目的地時，路線從使用者的實際位置規劃，
+// 依每次定位把使用者對到路線上，算出已走距離、剩餘距離與是否偏離路線。
+// 本檔只做路線計算，不移動熊寶（熊寶仍由 game.js 沿收錄道路跟著使用者）。
+const {Geometry}=__m_engine;
+class GpsNav{
+  constructor(plan,end,meta={}){
+    this.plan=plan;this.end={...end};this.meta=meta;this.pts=[];this.s=0;this.off=0;this.lastLat=0;
+    let s=0,prev=null;
+    for(const leg of plan.legs)for(const p of leg.points){
+      if(prev){const d=Math.hypot(p.x-prev.x,p.z-prev.z);if(d<1e-9){continue}s+=d}
+      this.pts.push({x:p.x,z:p.z,s,type:leg.type});prev=p;
+    }
+    this.total=s;
+  }
+  /* 把位置投影到路線上：先在目前進度附近（往回 back、往前 ahead 世界單位）找，找不到再全段找 */
+  locate(p,back=.6,ahead=6){
+    const near=this.project(p,this.s-back,this.s+ahead);
+    if(near&&near.d<.45)return near;
+    const all=this.project(p,-Infinity,Infinity);return !near||all&&all.d<near.d?all:near;
+  }
+  project(p,from,to){
+    let best=null;
+    for(let i=0;i<this.pts.length-1;i++){
+      const A=this.pts[i],B=this.pts[i+1];if(B.s<from||A.s>to)continue;
+      const dx=B.x-A.x,dz=B.z-A.z,L=B.s-A.s;if(L<1e-9)continue;
+      const t=Math.max(0,Math.min(1,((p.x-A.x)*dx+(p.z-A.z)*dz)/(L*L))),x=A.x+dx*t,z=A.z+dz*t,d=Math.hypot(p.x-x,p.z-z);
+      if(!best||d<best.d)best={s:A.s+t*L,d,x,z,dir:{x:dx/L,z:dz/L},type:B.type};
+    }
+    return best;
+  }
+  /* 每次定位呼叫：unit＝每世界單位公尺數，tol＝離路線多遠算偏離（公尺） */
+  update(p,unit,tol=40){
+    const r=this.locate(p);if(!r)return null;
+    this.lastLat=r.d*unit;
+    /* 進度只往前：定位飄移造成的小倒退不算；往回走超過約 27 公尺視同偏離，之後重新規劃 */
+    if(this.lastLat<=tol&&r.s>=this.s-.3){this.off=0;this.s=Math.max(this.s,r.s)}else this.off++;
+    return r;
+  }
+  remaining(){return Math.max(0,this.total-this.s)}
+  arrived(unit,within=30){return this.remaining()*unit<=within}
+  point(s){
+    s=Math.max(0,Math.min(this.total,s));
+    for(let i=0;i<this.pts.length-1;i++){const A=this.pts[i],B=this.pts[i+1];if(s<=B.s){const L=B.s-A.s||1,t=(s-A.s)/L;return{x:A.x+(B.x-A.x)*t,z:A.z+(B.z-A.z)*t,type:B.type}}}
+    const q=this.pts[this.pts.length-1];return{x:q.x,z:q.z,type:q.type};
+  }
+  /* 從 s 起往前的陸路（遇到港口／船段就停），給測速提醒用 */
+  ahead(from,length){
+    const out=[this.point(from)];if(out[0].type&&out[0].type!=='walk')return null;
+    for(const q of this.pts){if(q.s<=from)continue;if(q.type!=='walk')break;if(q.s-from>length){const e=this.point(from+length);out.push({x:e.x,z:e.z});break}out.push({x:q.x,z:q.z})} // 長直路段也看到 length 為止
+    if(out.length<2){const end=this.point(Math.min(this.total,from+length));if(end.type!=='walk')return null;out.push({x:end.x,z:end.z})}
+    return out;
+  }
+  /* 從目前進度起的路線（橘線＝道路、虛線＝船），與熊寶自動前往同樣的畫法 */
+  geometry(){
+    const g=new Geometry(),pts=[this.point(this.s),...this.pts.filter(q=>q.s>this.s)];
+    for(let i=0;i<pts.length-1;i++){
+      const a=pts[i],b=pts[i+1],type=b.type,d=Math.hypot(b.x-a.x,b.z-a.z);if(d<1e-8)continue;
+      const nx=-(b.z-a.z)/d*.045,nz=(b.x-a.x)/d*.045,steps=type==='ferry'?Math.ceil(d/.8):1,col=type==='ferry'?'#468fa7':'#d98736';
+      for(let k=0;k<steps;k++){const t=k/steps,u=Math.min(1,(k+(type==='ferry'?.6:1))/steps),p={x:a.x+(b.x-a.x)*t,z:a.z+(b.z-a.z)*t},q={x:a.x+(b.x-a.x)*u,z:a.z+(b.z-a.z)*u};g.quad([p.x-nx,1.016,p.z-nz],[p.x+nx,1.016,p.z+nz],[q.x+nx,1.016,q.z+nz],[q.x-nx,1.016,q.z-nz],col)}
+    }
+    return g;
+  }
+}
+
+return {GpsNav};
 })();
 (()=>{
 const {Engine,Geometry,buildWorld,buildMapMarkers,movePlayer,insideIsland,clamp}=__m_engine;
@@ -1201,7 +1629,15 @@ const {placeImages,imageSource}=__m_media;
 const {TravelPlanner,Journey,loadFerries}=__m_travel;
 const {askPlaces}=__m_ask;
 const {loadFerrySheet}=__m_ferry_sheet;
-const {loadEnforcement,groupPoints,checkAlerts,alertText}=__m_enforcement;
+const {loadBuildings}=__m_buildings;
+const {GpsNav}=__m_gpsnav;
+const {loadSheetData}=__m_sheet_data;
+const {migrateId,migrateSave}=__m_id_migrate;
+// 立體建築試驗：地圖預設斜一點，才看得出建物高度（全區總覽與分海動畫仍維持原本角度）
+const MAP_3D_TILT=.9;
+// 熊寶大小不隨視角改變：一律換算成原本地圖視角（1.12）時的大小，騎車／搭船熊寶跟著原始熊寶等比
+const BEAR_REF_TILT=1.12,BEAR_TILT_FIX=()=>Math.cos(BEAR_REF_TILT)/Math.max(.2,Math.cos(engine.tilt));
+const {loadEnforcement,groupPoints,checkAlerts,alertText,alongRoute,distanceAhead}=__m_enforcement;
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const escape=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const today=()=>new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Taipei',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
@@ -1220,10 +1656,10 @@ const approach=n=>mapMode()?n.approach:{x:n.x,z:n.z+1.8};
 const distanceTo=n=>{const p=approach(n);if(!p)return Infinity;const straight=Math.hypot(p.x-player.x,p.z-player.z);return mapMode()?(straight>interactionRange()?Infinity:navigation?.distance(player,p,interactionRange())??Infinity):straight};
 const interactionRange=()=>mapMode()?.3:2.8;
 function stopWalking(){destination=null;route=[];if(mapMode())journey?.cancel();if(engine?.routeMesh&&!journey?.inTransit)engine.setRoute(null);routeRevision=-1}
-function clearTarget(){target=null;destinationKey='';stopWalking();$('#destination').hidden=true;document.body.classList.remove('has-target');$$('.place-label').forEach(el=>el.classList.remove('target'))}
+function clearTarget(){target=null;destinationKey='';stopWalking();if(gpsNav){gpsNav=null;engine?.setRoute(null);routeRevision=-1}gps.pendingNav=null;gps.navDone=false;$('#destination').hidden=true;document.body.classList.remove('has-target');$$('.place-label').forEach(el=>el.classList.remove('target'))}
 function updatePlaceLayers(){
  const counts=placeCounts(data.records),mapped=Object.values(counts).reduce((s,c)=>s+c.mapped,0),shown=displayedNodes().length;
- for(const [kind,c] of Object.entries(counts))$('#place-kind').querySelector(`[value="${kind}"]`).textContent=`${KINDS[kind].label}（${c.total}）`;
+ for(const [kind,c] of Object.entries(counts))$('#place-kind').querySelector(`[value="${kind}"]`).textContent=`${KINDS[kind].label}（${c.total}）`;$('#place-kind').querySelector('[value="all"]').textContent=`全部地點（${data.records.length}）`;
  $('#places-summary').textContent=`顯示 ${shown} 個地點 · 數字標記可點開查看`;
  $('#place-layers').hidden=!mapMode();
 }
@@ -1237,17 +1673,18 @@ function selectMapPlace(n){
  keys.clear();$('#detail-body').innerHTML=`<span class="eyebrow">地標選擇</span><h2>此處有 ${nearby.length} 個地標</h2><p>選擇要查看的美食、景點或廟宇。</p><div class="atlas-list">${nearby.map(other=>`<button class="atlas-item" data-map-place="${other.index}"><span class="kind-tile" style="--tag:${KINDS[other.record.kind].color}">${KINDS[other.record.kind].symbol}</span><div><h3>${escape(other.record.name)}</h3><p>${KINDS[other.record.kind].label} · ${escape(other.record.area)}</p></div></button>`).join('')}</div>`;
  $$('[data-map-place]').forEach(button=>button.onclick=()=>{$('#details').close();setTarget(nodes[Number(button.dataset.mapPlace)])});$('#details').showModal();
 }
-function planTrip(point){
+function planTrip(point,label=''){
  if(!mapMode()){destination=point;return true}
  if(!navigation||!journey||!point){toast(navigation?'此地點附近沒有已收錄道路。':'道路與港口資料尚未就緒。');return false}
  if(!navigation.isOnRoad(point))point=navigation.snap(point.x,point.z,.4);
  if(!point){toast('請點選道路；熊寶不會穿越建物或步行渡海。');return false}
+ if(gps.on)return startGpsNav(point,{recordId:target?.record.id||'',area:$('#region').value,name:target?.record.name||label||''}); /* 開著定位：從你的位置導航，熊寶跟著你 */
  const result=journey.request(player,point,{recordId:target?.record.id||'',area:$('#region').value,name:target?.record.name||''});
  if(!result){stopWalking();toast('此處沒有連通道路或已收錄港口航線，熊寶留在原位。');return false}
  inspectPoint=null;mapOverview=false;routeRevision=-1;if(gps.on&&(gps.follow||gps.camera)){gps.follow=false;gps.camera=false;updateGpsUI()}persist();
  toast(result.queued?'已更新目的地，抵達下一港口後會接續導航。':result.plan.ports.length?`先沿路到港口，再搭船：${result.plan.ports.join(' → ')}`:`沿道路自動前往${target?.record.name||'目的地'}。`);return true;
 }
-const sourceFooter=()=>`<div class="source-foot"><p>讀取日期 ${data.meta.readAt}，本版使用讀取時的資料快照。<br>底圖：臺灣通用電子地圖／OpenStreetMap，地標依原表經緯度定位。陸海採隨遊戲提供的國土測繪村里圖資聯集外輪廓判定。<br>道路：© OpenStreetMap contributors，來源 mapstew 向量資料快照 2021-12-17，可能缺少新道路。自動前往和搖桿僅沿收錄道路；離島經已收錄港口搭船；未收錄航線不會自動轉移。地標位置保留原表坐標，互動點取附近道路，與入口可能有距離。<br>陸域資料版本：${escape(navigation?.coast.meta.timestamp||'尚未取得')}。陸域檔案與遊戲一同提供，出發不需查詢外部海岸服務。此輪廓由行政圖資衍生，不反映即時潮位，也不代表實際可通行範圍。</p><a href="https://maps.nlsc.gov.tw/" target="_blank" rel="noopener noreferrer">國土測繪圖資服務雲 ↗</a> · <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">© OpenStreetMap contributors（ODbL）↗</a></div>`;
+const sourceFooter=()=>`<div class="source-foot"><p>讀取日期 ${data.meta.readAt}，本版使用讀取時的資料快照。<br>底圖：臺灣通用電子地圖／OpenStreetMap，地標依原表經緯度定位。陸海採隨遊戲提供的國土測繪村里圖資聯集外輪廓判定。<br>道路：© OpenStreetMap contributors，道路資料快照 2021-12-17，可能缺少新道路。自動前往和搖桿僅沿收錄道路；離島經已收錄港口搭船；未收錄航線不會自動轉移。地標位置保留原表坐標，互動點取附近道路，與入口可能有距離。<br>陸域資料版本：${escape(navigation?.coast.meta.timestamp||'尚未取得')}。陸域檔案與遊戲一同提供，出發不需查詢外部海岸服務。此輪廓由行政圖資衍生，不反映即時潮位，也不代表實際可通行範圍。</p><a href="https://maps.nlsc.gov.tw/" target="_blank" rel="noopener noreferrer">國土測繪圖資服務雲 ↗</a> · <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">© OpenStreetMap contributors（ODbL）↗</a></div>`;
 
 function toast(msg){$('#toast').textContent=msg;$('#toast').classList.add('visible');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('#toast').classList.remove('visible'),3800)}
 function persist(){try{
@@ -1284,7 +1721,7 @@ function setRegion(area,record=null,mode='map'){
  }else player={x:0,z:6,facing:0};
  target=record?nodes.find(n=>n.record.id===record.id):mapped?nodes.find(n=>n.record.id===(returning?.targetId||journey?.meta.recordId))||null:null;
  engine.setWorld(mapped?buildMapMarkers(displayedNodes()):buildWorld(nodes,area));
- engine.angle=mapped?0:.65;engine.tilt=mapped?1.12:.78;engine.focus=[player.x,0,player.z];if(started){mapOverview=false;engine.zoom=innerWidth<700?10:12}
+ engine.angle=mapped?0:.65;engine.tilt=mapped?MAP_3D_TILT:.78;engine.focus=[player.x,0,player.z];if(started){mapOverview=false;engine.zoom=innerWidth<700?10:12}
  $('#labels').innerHTML=nodes.map(n=>`<button class="place-label" id="label-${n.index}" data-node="${n.index}" style="--tag:${KINDS[n.record.kind].color}" title="${escape(KINDS[n.record.kind].label+' · '+n.record.name)}" aria-label="選取${escape(n.record.name)}" hidden><span class="dot">${KINDS[n.record.kind].symbol}</span><span class="place-name">${escape(n.record.name)}</span></button>`).join('');
  $$('.place-label').forEach(el=>{const n=nodes[Number(el.dataset.node)];n.label=el;el.addEventListener('click',()=>{start();selectMapPlace(n)})});
  $('#scene-label').textContent=observingSea?'奎壁山 · 分海觀察示意':`${area} · 道路與港口探索`;
@@ -1292,10 +1729,10 @@ function setRegion(area,record=null,mode='map'){
  routeRevision=-1;updatePlaceLayers();persist();updateProgress();updateDestination();
 }
 /* 分海動畫場景只放「奎壁山摩西分海」本身（放在礫石步道起點旁），不再隨機帶入湖西鄉其他地點 */
-function tideNodes(){const r=data.records.find(x=>x.id==='sight-47');return r?[{record:r,x:17.5,z:-1.5,index:0}]:[]}
+function tideNodes(){const r=data.records.find(x=>x.id===migrateId('sight-47'));return r?[{record:r,x:17.5,z:-1.5,index:0}]:[]}
 function returnToMap(){if(!mapMode())setRegion(mapReturn?.area||save.area)}
 /* 沿路／搭船前往某個港口（鄉市選單的離島、交通船面板共用） */
-function goToPort(port,area=port.area){if($('#details').open)$('#details').close();closePanel();returnToMap();start();target=null;destinationKey='';$('#destination').hidden=true;document.body.classList.remove('has-target');$$('.place-label').forEach(el=>el.classList.remove('target'));if(area)$('#region').value=area;$('#scene-label').textContent=`前往${port.name}`;planTrip({...port.road});persist()}
+function goToPort(port,area=port.area){if($('#details').open)$('#details').close();closePanel();returnToMap();start();target=null;destinationKey='';$('#destination').hidden=true;document.body.classList.remove('has-target');$$('.place-label').forEach(el=>el.classList.remove('target'));if(area)$('#region').value=area;$('#scene-label').textContent=`前往${port.name}`;planTrip({...port.road},port.name);persist()}
 /* 選離島鄉市：目的地為該島下船的港口本身（望安潭門港、七美南滬港），不再續走到島上地標 */
 const REGION_PORTS={'望安鄉':'wangan','七美鄉':'qimei'};
 function navigateRegion(area){
@@ -1308,15 +1745,15 @@ function navigateRegion(area){
 function setTarget(n,walk=false){if(!n)return;if(!walk)stopWalking();target=n;destinationKey='';if(!enabledKinds[n.record.kind]){$('#place-kind').value=n.record.kind;Object.assign(enabledKinds,categoryKinds(n.record.kind));if(mapMode())refreshPlaceVisibility()}if(mapOverview)engine.zoom=innerWidth<700?10:12;mapOverview=false;inspectPoint=mapMode()?{x:n.x,z:n.z}:null;if(walk)planTrip(approach(n));updateDestination()}
 function updateDestination(){
  const visible=started&&!!target;$('#destination').hidden=!visible;document.body.classList.toggle('has-target',visible);if(!visible)return;
- const r=target.record,photo=placeImages(r)[0],end=approach(target),isGoal=journey?.active&&journey.meta.recordId===r.id,queued=journey?.pending?.meta.recordId===r.id;
+ const r=target.record,photo=placeImages(r)[0],end=approach(target),navGoal=!!gpsNav&&gpsNav.meta.recordId===r.id,isGoal=navGoal||journey?.active&&journey.meta.recordId===r.id,queued=journey?.pending?.meta.recordId===r.id;
  const planned=mapMode()&&!isGoal&&end&&navigation?.isOnRoad(player)?journey?.planner.plan(player,end):null;
- const d=mapMode()?(isGoal?journey.remaining(player):planned?.distance??Infinity):distanceTo(target),near=mapMode()?distanceTo(target)<interactionRange():d<interactionRange(),collected=save.stamps[r.id];
- const active=isGoal||queued,canGo=!!planned||!!journey?.inTransit,ports=isGoal?journey.plan.ports:planned?.ports||[];
+ const d=mapMode()?(navGoal?gpsNav.remaining():isGoal?journey.remaining(player):planned?.distance??Infinity):distanceTo(target),near=mapMode()?distanceTo(target)<interactionRange():d<interactionRange(),collected=save.stamps[r.id];
+ const active=isGoal||queued,canGo=!!planned||!!journey?.inTransit,ports=navGoal?gpsNav.plan.ports:isGoal?journey.plan.ports:planned?.ports||[];
  const shown=near?'✓':(Number.isFinite(d)?Math.round(d*WORLD_METRES*Math.cos(worldToGeo(player.x,player.z).lat*Math.PI/180)):'—');
  /* 行進中只更新距離數字，不重建整張卡片：手機點按「地點資料與故事」等按鈕時，按鈕不會在手指底下被換掉 */
- const key=[r.id,near,collected,journey?.revision,journey?.label,queued,!!navigation,!!target.approach,mapMode(),canGo,!!end,active,ports.join('>'),Number.isFinite(d),!!photo].join('|');if(key===destinationKey){const n=$('#destination .distance strong');if(n&&n.textContent!==String(shown))n.textContent=shown;return}destinationKey=key;
- const phase=queued?'已排入下一港口後的旅程':isGoal?journey.label:'';
- $('#destination').innerHTML=`<div class="destination-head"><span>目前目的地</span><button id="destination-close" aria-label="關閉目的地並停止導航">×</button></div><span class="tag">${KINDS[r.kind].label} · ${escape(r.area)}</span><h3>${escape(r.name)}</h3>${phase?`<p class="journey-phase" role="status">${escape(phase)}</p>`:''}${ports.length?`<p class="journey-ports">${ports.map(escape).join(' → ')}<small>港口間為遊戲航線示意</small></p>`:photo&&!active?`<button class="destination-photo" id="destination-photo" aria-label="查看${escape(r.name)}相片"><img data-place-photo src="${escape(photo.src)}" alt="${escape(r.name)}" loading="lazy" decoding="async"></button>`:''}<div class="distance"><span>${near?'已抵達道路互動點':active?'旅程剩餘距離':ports.length?'道路＋搭船距離':'沿道路距離'}</span><span><strong>${shown}</strong> <small>${near?'':'公尺'}</small></span></div><button class="primary${isGoal&&!near?' is-active':''}" id="destination-action" ${mapMode()&&(!navigation||!end||active||!near&&!canGo)?'disabled':''}>${near?(collected?'閱讀地點故事':'閱讀故事・蓋章'):queued?'抵港後接續導航':isGoal?'正在自動導航':mapMode()&&!navigation?'等待道路與港口資料':mapMode()&&!end?'附近無已收錄道路':mapMode()&&!canGo?'無已收錄交通路線':ports.length?'沿路＋搭船前往':'沿道路前往'} <span>${near?'E':'↗'}</span></button><button class="small-button destination-story" id="destination-story">地點資料與故事</button>`;
+ const key=[navGoal,r.id,near,collected,journey?.revision,journey?.label,queued,!!navigation,!!target.approach,mapMode(),canGo,!!end,active,ports.join('>'),Number.isFinite(d),!!photo].join('|');if(key===destinationKey){const n=$('#destination .distance strong');if(n&&n.textContent!==String(shown))n.textContent=shown;return}destinationKey=key;
+ const phase=queued?'已排入下一港口後的旅程':navGoal?'從你的位置導航中，熊寶跟著你':isGoal?journey.label:'';
+ $('#destination').innerHTML=`<div class="destination-head"><span>目前目的地</span><button id="destination-close" aria-label="關閉目的地並停止導航">×</button></div><span class="tag">${KINDS[r.kind].label} · ${escape(r.area)}</span><h3>${escape(r.name)}</h3>${phase?`<p class="journey-phase" role="status">${escape(phase)}</p>`:''}${ports.length?`<p class="journey-ports">${ports.map(escape).join(' → ')}<small>港口間為遊戲航線示意</small></p>`:photo&&!active?`<button class="destination-photo" id="destination-photo" aria-label="查看${escape(r.name)}相片"><img data-place-photo src="${escape(photo.src)}" alt="${escape(r.name)}" loading="lazy" decoding="async"></button>`:''}<div class="distance"><span>${near?'已抵達道路互動點':active?'旅程剩餘距離':ports.length?'道路＋搭船距離':'沿道路距離'}</span><span><strong>${shown}</strong> <small>${near?'':'公尺'}</small></span></div><button class="primary${isGoal&&!near?' is-active':''}" id="destination-action" ${mapMode()&&(!navigation||!end||active||!near&&!canGo)?'disabled':''}>${near?(collected?'閱讀地點故事':'閱讀故事・蓋章'):queued?'抵港後接續導航':navGoal?'導航中':isGoal?'正在自動導航':mapMode()&&!navigation?'等待道路與港口資料':mapMode()&&!end?'附近無已收錄道路':mapMode()&&!canGo?'無已收錄交通路線':ports.length?'沿路＋搭船前往':'沿道路前往'} <span>${near?'E':'↗'}</span></button><button class="small-button destination-story" id="destination-story">地點資料與故事</button>`;
  $('#destination-close').onclick=()=>{const transit=journey?.inTransit;clearTarget();persist();if(transit)toast('將在下一港口靠岸下船後停止。')};$('#destination-story').onclick=()=>showDetail(r,near);if($('#destination-photo'))$('#destination-photo').onclick=()=>showDetail(r,near);bindPhotoErrors($('#destination'));
  $('#destination-action').onclick=()=>near?showDetail(r,true):setTarget(target,true);
  $$('.place-label').forEach(el=>el.classList.toggle('target',Number(el.dataset.node)===target.index));
@@ -1339,7 +1776,7 @@ function navigateTo(r){
  setTarget(nodes.find(n=>n.record.id===r.id),true);persist();
 }
 function safeURL(url){try{const u=new URL(url);return ['https:','http:'].includes(u.protocol)?u.href:''}catch{return ''}}
-function photoGallery(record){const images=placeImages(record);return images.length?`<div class="place-gallery">${images.map(image=>`<a class="place-photo" href="${escape(imageSource(image))}" target="_blank" rel="noopener noreferrer"><img data-place-photo src="${escape(image.src)}" alt="${escape(record.name)}" width="${image.width}" height="${image.height}" loading="lazy" decoding="async"><span class="photo-error" hidden>圖片未載入，點此開啟原圖 ↗</span></a>`).join('')}</div>`:''}
+function photoGallery(record){const images=placeImages(record);return images.length?`<div class="place-gallery">${images.map(image=>`<a class="place-photo" href="${escape(imageSource(image))}" target="_blank" rel="noopener noreferrer"><img data-place-photo src="${escape(image.src)}" alt="${escape(record.name)}" ${image.width>0?`width="${image.width}" height="${image.height}" `:''}loading="lazy" decoding="async"><span class="photo-error" hidden>圖片未載入，點此開啟原圖 ↗</span></a>`).join('')}</div>`:''}
 function bindPhotoErrors(root=document){root.querySelectorAll('[data-place-photo]').forEach(img=>img.addEventListener('error',()=>{img.hidden=true;const notice=img.parentElement.querySelector('.photo-error');if(notice)notice.hidden=false},{once:true}))}
 function showDetail(r,atPlace=false){
  stopWalking();keys.clear();const kind=KINDS[r.kind],stamped=save.stamps[r.id],node=nodes.find(n=>n.record.id===r.id),near=node&&distanceTo(node)<interactionRange();
@@ -1375,7 +1812,7 @@ function renderFerries(){
  const bundled=planner.links.map(l=>{const a=planner.port(l.from),b=planner.port(l.to);return{operator:l.operator,vessel:l.vessel,from:a.name,to:b.name,source:l.source}});
  const rows=ferrySheet||bundled,groups=new Map();for(const r of rows){const k=r.operator||'交通船';if(!groups.has(k))groups.set(k,[]);groups.get(k).push(r)}
  const sailable=(a,b)=>a&&b&&planner.links.some(l=>l.from===a.id&&l.to===b.id||l.to===a.id&&l.from===b.id);
- const status=ferrySheet?`即時讀取試算表「交通船資訊」${rows[0]?.date?`（整理日期 ${escape(rows[0].date)}）`:''}`:ferrySheetState==='loading'?'正在讀取試算表「交通船資訊」…':'試算表暫時讀不到，顯示遊戲內建資料';
+ const status=ferrySheet?(rows[0]?.date?`航線資訊整理日期 ${escape(rows[0].date)}`:'航線資訊已更新'):ferrySheetState==='loading'?'正在更新交通船資訊…':'暫時無法更新，顯示遊戲內建航線';
  $('#panel-body').innerHTML=`<p class="ferry-status">${status}</p><p>共 ${rows.length} 條航線。按「前往」熊寶會從目前位置沿路走到該港；選離島的港口就會自動搭船過去。</p>${[...groups].map(([operator,list])=>`<section class="ferry-group"><h3>${escape(operator)}</h3>${list.map(r=>{const a=byName(r.from),b=byName(r.to),ok=sailable(a,b),src=safeURL(r.source);return `<div class="ferry-route"><div class="ferry-name"><b>${escape(short(r.from))} ⇄ ${escape(short(r.to))}</b>${r.vessel?`<small>船名：${escape(r.vessel)}</small>`:''}${ok?'':'<small class="ferry-warn">遊戲尚未收錄此航線的海路，暫時無法搭船前往</small>'}</div><div class="ferry-actions">${a?`<button data-ferry-port="${a.id}">前往${escape(short(a.name))}</button>`:''}${b&&ok?`<button data-ferry-port="${b.id}">前往${escape(short(b.name))}</button>`:''}${src?`<a href="${escape(src)}" target="_blank" rel="noopener noreferrer">官方時刻表 ↗</a>`:''}</div></div>`}).join('')}</section>`).join('')}<p class="small-note">${escape(planner.notice||'')} 班次、票價、停航與實際碼頭請以官方公告為準。</p>`;
  $$('[data-ferry-port]').forEach(b=>b.onclick=()=>goToPort(planner.port(b.dataset.ferryPort)));
 }
@@ -1415,12 +1852,12 @@ function renderTideContent(){
  if(!day){$('#tide-content').innerHTML='<div class="empty">原表沒有這個日期的資料，請選擇範圍內的日期。</div>';return}
  if(isSea){
   const pairs=[['緩慢分海',day.open],['緩慢合海',day.close]];
-  $('#tide-content').innerHTML=`<div class="tide-summary"><h3>${escape(tideDate)} · 奎壁山</h3><div class="time-pairs">${pairs.map(([a,b])=>`<div>${a}<strong>${b.length?b.map(escape).join(' / '):'原表未列'}</strong></div>`).join('')}</div><p class="small-note">日出 ${escape(day.sunrise||'未列')} · 日沒 ${escape(day.sunset||'未列')}</p></div>${day.reference.length?`<p class="small-note">原表「參考安全通行」：${day.reference.map(escape).join('、')}。此為原表欄位內容，須依現場管制。</p>`:''}<table class="tide-table"><thead><tr><th>潮汐</th><th>潮時</th><th>潮高（原表值）</th></tr></thead><tbody>${day.events.map(e=>`<tr><td class="${e.type==='乾潮'?'low':''}">${escape(e.type)}</td><td>${escape(e.time)}</td><td>${escape(e.height)}</td></tr>`).join('')}</tbody></table><div class="simulator"><h3>讓海，慢慢退去</h3><p>按「觀察分海動畫」，在地圖上看奎壁山到赤嶼的礫石步道隨潮汐露出、淹沒。</p><div id="tide-chart-wrap">${tideChart(day.events,simMinute)}</div><input id="sim-time" type="range" min="0" max="1439" value="${simMinute}" aria-label="分海示意時間"><div class="slider-labels"><span>00:00</span><span>12:00</span><span>23:59</span></div><output id="sim-output"></output><button id="observe-sea" class="small-button" style="margin-top:14px">${save.observed?'再看一次分海動畫':'觀察分海動畫'}</button><p>潮高以原表極值平滑插值，步道露出程度為遊戲示意。動畫不判定實際通行條件，赤嶼禁止登島，請遵守現場管制。</p></div><p class="small-note">來源：奎壁山摩西分海。資料範圍 2025/12/31–2027/12/31。</p>`;
+  $('#tide-content').innerHTML=`<div class="tide-summary"><h3>${escape(tideDate)} · 奎壁山</h3><div class="time-pairs">${pairs.map(([a,b])=>`<div>${a}<strong>${b.length?b.map(escape).join(' / '):'原表未列'}</strong></div>`).join('')}</div><p class="small-note">日出 ${escape(day.sunrise||'未列')} · 日沒 ${escape(day.sunset||'未列')}</p></div>${day.reference.length?`<p class="small-note">原表「參考安全通行」：${day.reference.map(escape).join('、')}。此為原表欄位內容，須依現場管制。</p>`:''}<table class="tide-table"><thead><tr><th>潮汐</th><th>潮時</th><th>潮高（原表值）</th></tr></thead><tbody>${day.events.map(e=>`<tr><td class="${e.type==='乾潮'?'low':''}">${escape(e.type)}</td><td>${escape(e.time)}</td><td>${escape(e.height)}</td></tr>`).join('')}</tbody></table><div class="simulator"><h3>讓海，慢慢退去</h3><p>按「觀察分海動畫」，在地圖上看奎壁山到赤嶼的礫石步道隨潮汐露出、淹沒。</p><div id="tide-chart-wrap">${tideChart(day.events,simMinute)}</div><input id="sim-time" type="range" min="0" max="1439" value="${simMinute}" aria-label="分海示意時間"><div class="slider-labels"><span>00:00</span><span>12:00</span><span>23:59</span></div><output id="sim-output"></output><button id="observe-sea" class="small-button" style="margin-top:14px">${save.observed?'再看一次分海動畫':'觀察分海動畫'}</button><p>潮高以原表極值平滑插值，步道露出程度為遊戲示意。動畫不判定實際通行條件，赤嶼禁止登島，請遵守現場管制。</p></div><p class="small-note">資料範圍 2025/12/31–2027/12/31。</p>`;
   $('#sim-time').oninput=e=>{simMinute=Number(e.target.value);updateSimulation(day);$('#tide-chart-wrap').innerHTML=tideChart(day.events,simMinute)};
   $('#observe-sea').onclick=()=>{start();save.observed=true;persist();updateProgress();enterTideView()};updateSimulation(day);
  }else{
   const group=data.forecasts[forecastBlock];
-  $('#tide-content').innerHTML=`<div class="tide-summary"><h3>${escape(tideDate)} · 區塊 ${group.index}</h3><p class="small-note">${escape(day.label).replace(/\n/g,'<br>')}</p></div><p class="small-note">原表重複六組表頭，未提供各區塊的站名。這裡保留原始分組，不對應任何鄉市。日期年份依本次讀取日期推定為 2026。</p><table class="tide-table"><thead><tr><th>潮汐</th><th>時間</th><th>臺灣高程</th><th>當地平均</th><th>海圖</th></tr></thead><tbody>${day.events.map(e=>`<tr><td class="${e.type==='乾潮'?'low':''}">${escape(e.type)}</td><td>${escape(e.time)}</td><td>${escape(e.heightTW)}</td><td>${escape(e.heightLocal)}</td><td>${escape(e.heightChart)}</td></tr>`).join('')}</tbody></table><p class="small-note">高度保留原表值，原表未標單位。區塊表頭位於第 ${group.headerRow} 列。本區資料涵蓋 ${Object.keys(group.days).sort()[0]}–${Object.keys(group.days).sort().at(-1)}，共 ${Object.keys(group.days).length} 日。</p><h4 style="font-size:12px">本區塊所列分／合海欄位</h4><p class="small-note">${day.events.filter(e=>e.open||e.close).map(e=>`${e.open?'緩慢分海 '+escape(e.open):''}${e.close?'緩慢合海 '+escape(e.close):''}（第 ${e.row} 列）`).join('<br>')||'原表未列。'}</p>`;
+  $('#tide-content').innerHTML=`<div class="tide-summary"><h3>${escape(tideDate)} · 區塊 ${group.index}</h3><p class="small-note">${escape(day.label).replace(/\n/g,'<br>')}</p></div><p class="small-note">原表重複六組表頭，未提供各區塊的站名。這裡保留原始分組，不對應任何鄉市。日期年份依讀取日期推定。</p><table class="tide-table"><thead><tr><th>潮汐</th><th>時間</th><th>臺灣高程</th><th>當地平均</th><th>海圖</th></tr></thead><tbody>${day.events.map(e=>`<tr><td class="${e.type==='乾潮'?'low':''}">${escape(e.type)}</td><td>${escape(e.time)}</td><td>${escape(e.heightTW)}</td><td>${escape(e.heightLocal)}</td><td>${escape(e.heightChart)}</td></tr>`).join('')}</tbody></table><p class="small-note">高度保留原表值，原表未標單位。區塊表頭位於第 ${group.headerRow} 列。本區資料涵蓋 ${Object.keys(group.days).sort()[0]}–${Object.keys(group.days).sort().at(-1)}，共 ${Object.keys(group.days).length} 日。</p><h4 style="font-size:12px">本區塊所列分／合海欄位</h4><p class="small-note">${day.events.filter(e=>e.open||e.close).map(e=>`${e.open?'緩慢分海 '+escape(e.open):''}${e.close?'緩慢合海 '+escape(e.close):''}（第 ${e.row} 列）`).join('<br>')||'原表未列。'}</p>`;
  }
 }
 /* 分海場景：鏡頭對準奎壁山→赤嶼礫石步道，自動播放一天的潮汐（約 12 秒），下方時間條可拖曳／暫停／返回地圖 */
@@ -1434,7 +1871,7 @@ function enterTideView(){
  tideView=true;tidePlaying=true;document.body.classList.add('tide-mode');$('#tide-bar').hidden=false;mapOverview=false;inspectPoint={x:mid.x,z:mid.z};engine.angle=0;engine.tilt=1.12;engine.zoom=innerWidth<700?8:9;
  updateTideBar();toast(`奎壁山摩西分海：自動播放 ${tideDate} 一天的潮汐（約 12 秒），退潮時步道露出。可拖曳下方時間或暫停，按「返回地圖」回到熊寶身邊。`);
 }
-function exitTideView(){tideView=false;tidePlaying=false;document.body.classList.remove('tide-mode');$('#tide-bar').hidden=true;inspectPoint=null;engine.zoom=innerWidth<700?10:12;toast('已返回地圖，熊寶在原來的位置。')}
+function exitTideView(){tideView=false;tidePlaying=false;document.body.classList.remove('tide-mode');$('#tide-bar').hidden=true;inspectPoint=null;engine.zoom=innerWidth<700?10:12;engine.tilt=MAP_3D_TILT;toast('已返回地圖，熊寶在原來的位置。')}
 /* 步道露出比例：原表潮高 -10 以下開始露出，-80 以下全露（由兩岸往中間） */
 function drawTidePath(g){
  if(!tideView||!mapMode())return;const day=data.seaDays[tideDate]||Object.values(data.seaDays)[0],h=day?interpolateTide(day.events,simMinute):null;if(h===null)return;
@@ -1459,7 +1896,7 @@ function frame(now){
   if(Math.hypot(sx,sy)>.12&&!journey?.inTransit){mapOverview=false;inspectPoint=null;stopWalking();if(gps.on&&(gps.follow||gps.camera)){gps.follow=false;gps.camera=false;updateGpsUI()}dx=sx*Math.cos(a)+sy*Math.sin(a);dz=-sx*Math.sin(a)+sy*Math.cos(a)}
   if(mapMode()){
    if(dx||dz)moving=navigation.manual(player,dx,dz,dt*(keys.has('shift')?5:3));
-   else moving=(journey?.advance(player,dt)||0)>1e-8;
+   else moving=(journey?.advance(player,dt,journey?.meta?.gps&&gps.on?gpsBearSpeed():3)||0)>1e-8;
   }else{
    if(destination&&!dx&&!dz){dx=destination.x-player.x;dz=destination.z-player.z;if(Math.hypot(dx,dz)<.025){player.x=destination.x;player.z=destination.z;destination=null;dx=dz=0}}
    if(dx||dz){const speed=destination?Math.min(7,Math.hypot(dx,dz)/Math.max(dt,.001)):7;moving=movePlayer(player,dx,dz,dt,speed,insideIsland)}
@@ -1471,7 +1908,9 @@ function frame(now){
   if(tideView&&tidePlaying&&!paused){simMinute=(simMinute+dt*120)%1440;updateTideBar()}
  for(const i of [0,2])engine.focus[i]+=(focus[i]-engine.focus[i])*Math.min(1,dt*2);
  if(mapMode()&&mapOverview)engine.zoom=Math.max(MAP.height*Math.sin(engine.tilt)/2,MAP.width/(innerWidth/innerHeight)/2)*1.12;else if(!started)engine.zoom=mapMode()?(mobile?12:20):(mobile?27:24);
- if(mapMode()&&journey?.revision!==routeRevision){engine.setRoute(journey?.active?journey.geometry(player):null);routeRevision=journey?.revision}
+ if(mapMode()&&!gpsNav&&journey?.revision!==routeRevision){engine.setRoute(journey?.active?journey.geometry(player):null);routeRevision=journey?.revision}
+ /* 導航中：地圖轉成你的行進方向朝上（你手動轉地圖後 8 秒內不自動轉） */
+ if(mapMode()&&gpsNav&&gps.on&&gps.camera&&gps.heading&&performance.now()>navRotateHold&&!mapOverview&&!inspectPoint){const want=Math.atan2(-gps.heading.x,-gps.heading.z);let diff=want-engine.angle;diff=((diff+Math.PI)%(2*Math.PI)+2*Math.PI)%(2*Math.PI)-Math.PI;engine.angle+=diff*Math.min(1,dt*1.5)}
  persistElapsed+=dt;if(persistElapsed>=2){persistElapsed=0;persist()}
  const g=new Geometry();
  g.cylinder(player.x,1.025,player.z,.35,.012,.23,'#9ca78f',22);
@@ -1491,7 +1930,7 @@ function frame(now){
  drawTidePath(g);
  engine.render(time,g);
  const feet=engine.project([player.x,1.05,player.z]),head=engine.project([player.x,4.8,player.z]),avatar=$('#bearbao-avatar');
- if(feet&&head){const size=clamp(Math.abs(head.y-feet.y)*.82,8,100),bob=moving?Math.sin(time*12)*2:Math.sin(time*2)*.3;avatar.style.left=feet.x+'px';avatar.style.top=(feet.y-bob)+'px';avatar.style.width=size+'px';avatar.style.height=size+'px';avatar.style.setProperty('--lean',moving?Math.sin(player.facing+engine.angle)*3+'deg':'0deg');avatar.hidden=(mapMode()&&(!navigation||!navigation.isOnRoad(player)&&!journey?.inTransit))||feet.x< -size||feet.x>innerWidth+size||feet.y<0||feet.y>innerHeight+size}
+ if(feet&&head){const size=clamp(Math.abs(head.y-feet.y)*.82*(mapMode()?BEAR_TILT_FIX():1),8,100),bob=moving?Math.sin(time*12)*2:Math.sin(time*2)*.3;avatar.style.left=feet.x+'px';avatar.style.top=(feet.y-bob)+'px';avatar.style.width=size+'px';avatar.style.height=size+'px';avatar.style.setProperty('--lean',moving?Math.sin(player.facing+engine.angle)*3+'deg':'0deg');avatar.hidden=(mapMode()&&(!navigation||!navigation.isOnRoad(player)&&!journey?.inTransit))||feet.x< -size||feet.x>innerWidth+size||feet.y<0||feet.y>innerHeight+size}
  const boat=$('#ferry-boat'),sailing=mapMode()&&journey?.inTransit&&!navigation.isLand(player.x,player.z);
  /* 角色圖：海上搭船＝搭船熊寶；陸上移動中＝騎車熊寶；停下來（含剛上岸）＝原始熊寶。三張都是使用者提供的原圖，只縮放不改繪 */
  const boatBear=$('#bear-boat'),rideBear=$('#bear-ride'),showBoat=!!feet&&!avatar.hidden&&sailing,showRide=!!feet&&!avatar.hidden&&!showBoat&&moving&&journey?.leg?.type!=='port';
@@ -1517,20 +1956,20 @@ function frame(now){
 function bindControls(){
  document.body.classList.add('not-started');$('#start').onclick=start;$('#home').onclick=e=>{e.preventDefault();returnToMap();start();inspectPoint=null;mapOverview=false;engine.focus=[player.x,0,player.z];toast('回到熊寶目前位置。')};$('#help').onclick=()=>{keys.clear();$('#help-dialog').showModal()};$('#help-go').onclick=()=>{$('#help-dialog').close();start()};
  $('#place-kind').onchange=e=>{Object.assign(enabledKinds,categoryKinds(e.target.value));refreshPlaceVisibility()};$('#places-catalog').onclick=()=>openPanel('atlas');
- $('#map-overview').onclick=()=>{closeMapMenu();returnToMap();mapOverview=true;inspectPoint=null;engine.angle=0;engine.tilt=1.12;toast('全區地圖；用類別選單選美食、景點或廟宇，點數字查看群組。')};$('#zoom-in').onclick=()=>{mapOverview=false;engine.zoom=clamp(engine.zoom*.72,3,650)};$('#zoom-out').onclick=()=>{mapOverview=false;engine.zoom=clamp(engine.zoom/ .72,3,650)};$('#map-follow').onclick=()=>{closeMapMenu();gps.camera=false;mapOverview=false;inspectPoint=null;engine.zoom=innerWidth<700?10:12;engine.focus=[player.x,0,player.z]};
+ $('#map-overview').onclick=()=>{closeMapMenu();returnToMap();mapOverview=true;inspectPoint=null;engine.angle=0;engine.tilt=1.12;toast('全區地圖；用類別選單選美食、景點或廟宇，點數字查看群組。')};$('#zoom-in').onclick=()=>{mapOverview=false;engine.zoom=clamp(engine.zoom*.72,3,650)};$('#zoom-out').onclick=()=>{mapOverview=false;engine.zoom=clamp(engine.zoom/ .72,3,650)};$('#map-follow').onclick=()=>{closeMapMenu();gps.camera=false;mapOverview=false;inspectPoint=null;engine.tilt=MAP_3D_TILT;engine.zoom=innerWidth<700?10:12;engine.focus=[player.x,0,player.z]};
  $$('.dialog-close').forEach(b=>b.onclick=()=>b.closest('dialog').close());$$('dialog').forEach(d=>d.addEventListener('click',e=>{if(e.target===d){const r=d.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)d.close()}}));
  $('#close-panel').onclick=closePanel;$$('[data-panel]').forEach(b=>b.onclick=()=>openPanel(b.dataset.panel));
  $('#region').onchange=e=>navigateRegion(e.target.value);
  $('#tide-bar-range').oninput=e=>{tidePlaying=false;simMinute=Number(e.target.value);updateTideBar()};$('#tide-play').onclick=()=>{tidePlaying=!tidePlaying;updateTideBar()};$('#tide-exit').onclick=exitTideView;
  $('#gps-toggle').onclick=()=>{closeMapMenu();toggleGps()};$('#gps-chip').onclick=gpsRecenter;
  $('#map-more').onclick=e=>{e.stopPropagation();const open=!$('#map-tools').classList.contains('open');$('#map-tools').classList.toggle('open',open);$('#map-more').setAttribute('aria-expanded',String(open))};
- $('#north-liao').addEventListener('click',closeMapMenu);$('#enforce-toggle').onchange=e=>toggleEnforce(e.target.checked);setupEnforcement();$('#map-retry').addEventListener('click',closeMapMenu);
+ $('#north-liao').addEventListener('click',closeMapMenu);$('#enforce-toggle').onchange=e=>{closeMapMenu();toggleEnforce(e.target.checked)};setupEnforcement();$('#map-retry').addEventListener('click',closeMapMenu);
  document.addEventListener('pointerdown',e=>{if($('#map-tools').classList.contains('open')&&!e.target.closest('#map-tools'))closeMapMenu()});
  setupAsk();
  window.addEventListener('keydown',e=>{if(['INPUT','SELECT','TEXTAREA'].includes(document.activeElement.tagName))return;const k=e.key.toLowerCase();if(k==='escape'){closePanel();return}if(['w','a','s','d','arrowup','arrowdown','arrowleft','arrowright','shift','e'].includes(k)){e.preventDefault();if(k==='e'&&!e.repeat)interact();else keys.add(k)}});
  window.addEventListener('keyup',e=>keys.delete(e.key.toLowerCase()));window.addEventListener('blur',()=>{keys.clear();joystick={x:0,y:0};persist()});document.addEventListener('visibilitychange',()=>{keys.clear();joystick={x:0,y:0};last=0;persist()});
  let drag=null;$('#world').addEventListener('pointerdown',e=>{if(currentPanel)return;drag={x:e.clientX,y:e.clientY,lastX:e.clientX,lastY:e.clientY,moved:0};$('#world').setPointerCapture(e.pointerId)});
- $('#world').addEventListener('pointermove',e=>{if(!drag)return;const dx=e.clientX-drag.lastX,dy=e.clientY-drag.lastY;drag.moved+=Math.abs(dx)+Math.abs(dy);if(drag.moved>7){engine.angle-=dx*.006;engine.tilt=clamp(engine.tilt+dy*.003,.48,1.1)}drag.lastX=e.clientX;drag.lastY=e.clientY});
+ $('#world').addEventListener('pointermove',e=>{if(!drag)return;const dx=e.clientX-drag.lastX,dy=e.clientY-drag.lastY;drag.moved+=Math.abs(dx)+Math.abs(dy);if(drag.moved>7){navRotateHold=performance.now()+8000;engine.angle-=dx*.006;engine.tilt=clamp(engine.tilt+dy*.003,.48,1.1)}drag.lastX=e.clientX;drag.lastY=e.clientY});
  $('#world').addEventListener('pointerup',e=>{if(drag&&drag.moved<7){const p=engine.ground(e.clientX,e.clientY,mapMode()?.98:1.02);if(p){if(mapMode()&&!navigation){toast('道路資料未就緒，步行暫停。')}else if(mapMode()||insideIsland(p.x,p.z)){start();mapOverview=false;clearTarget();planTrip(p)}}}drag=null});$('#world').addEventListener('pointercancel',()=>drag=null);
  $('#world').addEventListener('wheel',e=>{e.preventDefault();mapOverview=false;engine.zoom=clamp(engine.zoom+e.deltaY*.025,3,mapMode()?650:39)},{passive:false});
  /* 手機：兩指縮放地圖（單指拖曳、點選道路維持原本行為） */
@@ -1544,10 +1983,12 @@ function bindControls(){
  const updateJoy=e=>{if(!joyCenter){const r=joy.getBoundingClientRect();joyCenter={x:r.left+r.width/2,y:r.top+r.height/2}}const x=e.clientX-joyCenter.x,y=e.clientY-joyCenter.y,scale=Math.min(1,30/Math.hypot(x,y));joystick={x:x*scale/30,y:y*scale/30};stick.style.transform=`translate(${x*scale}px,${y*scale}px)`};
  joy.addEventListener('pointerdown',e=>{e.preventDefault();joyId=e.pointerId;joyCenter=null;joy.setPointerCapture(joyId);updateJoy(e)});joy.addEventListener('pointermove',e=>{if(joyId===e.pointerId)updateJoy(e)});const resetJoy=()=>{joyId=null;joyCenter=null;joystick={x:0,y:0};stick.style.transform=''};joy.addEventListener('pointerup',resetJoy);joy.addEventListener('pointercancel',resetJoy);$('#touch-action').onclick=interact;
  /* 手機 App 切到背景再回來時，系統可能收回 3D 畫面（只剩地標、地圖變空白）。進度先存好，畫面恢復或回到 App 時自動重新載入 */
- let glLost=false;const reloadAfterLoss=()=>{if(!glLost)return;glLost=false;persist();try{sessionStorage.setItem('bear-penghu-resume','1')}catch{}location.reload()};
+ let glLost=false;const reloadAfterLoss=()=>{if(!glLost)return;glLost=false;persist();try{const nav=gpsNav?{end:gpsNav.end,meta:gpsNav.meta}:gps.pendingNav?{end:gps.pendingNav.point,meta:gps.pendingNav.meta}:null;sessionStorage.setItem('bear-penghu-resume',gps.on?JSON.stringify({gps:1,nav}):'1')}catch{}location.reload()};
  $('#world').addEventListener('webglcontextlost',e=>{e.preventDefault();glLost=true;persist();toast('地圖畫面重新整理中…')});
  $('#world').addEventListener('webglcontextrestored',reloadAfterLoss);
- document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&(glLost||engine?.gl?.isContextLost?.())){glLost=true;setTimeout(reloadAfterLoss,300)}});
+ document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&(glLost||engine?.gl?.isContextLost?.())){glLost=true;setTimeout(reloadAfterLoss,300)}if(document.visibilityState==='visible'&&gps.on){keepScreenOn(true);enforce.audio?.resume?.()}});
+ /* 提示音需要先碰一下畫面才能播放：重新載入後第一次觸控時準備好 */
+ window.addEventListener('pointerdown',()=>{if(enforce.on){ensureEnforceAudio();enforce.audio?.resume?.()}},{passive:true});
 }
 /* 問熊寶：本機文字查詢。只列原表地點；「前往」沿用 navigateTo（沿道路／港口搭船，不瞬移） */
 const FERRY_AREAS=['望安鄉','七美鄉'];
@@ -1605,7 +2046,10 @@ function showRegionInfo(area){
 }
 /* GPS 類導航：顯示使用者實際位置；熊寶沿收錄道路（離島經港口搭船）跟上，稍有延遲，不瞬移。
    使用者選了目的地時只顯示位置、不搶導航；關掉目的地後恢復跟隨。手動用搖桿／方向鍵時暫停跟隨，點位置膠囊恢復。 */
-let gps={on:false,watch:null,fix:null,world:null,road:null,lastPlan:0,planned:null,follow:true,camera:true,warned:'',message:''};
+let gps={on:false,watch:null,fix:null,world:null,road:null,lastPlan:0,planned:null,follow:true,camera:true,warned:'',message:'',heading:null,speed:0,hist:[],pendingNav:null};
+/* 「我的位置」導航：開著定位選目的地時，路線從你的實際位置規劃（gpsNav），熊寶不自己跑去目的地，
+   而是沿道路跟著你、照你的速度前進；地圖跟著你並轉成行進方向朝上 */
+let gpsNav=null,navRotateHold=0;
 const GPS_ROAD_RANGE=1.5; // 世界單位，約 150 公尺內找道路
 const metres=d=>Math.round(d*WORLD_METRES*Math.cos(23.55*Math.PI/180));
 function closeMapMenu(){const t=$('#map-tools');if(t){t.classList.remove('open');$('#map-more')?.setAttribute('aria-expanded','false')}}
@@ -1616,44 +2060,89 @@ function toggleGps(){
  if(!isSecureContext){toast('定位需要 https 網址才能使用。');return}
  if(enforce.on)ensureEnforceAudio();returnToMap();start();Object.assign(gps,{on:true,follow:true,camera:true,lastPlan:0,planned:null,warned:'',message:'正在取得你的位置…'});updateGpsUI();
  toast('正在取得你的位置；第一次使用請允許「位置」權限。');
- gps.watch=navigator.geolocation.watchPosition(onGps,onGpsError,{enableHighAccuracy:true,maximumAge:5000,timeout:30000});
+ gps.watch=navigator.geolocation.watchPosition(onGps,onGpsError,{enableHighAccuracy:true,maximumAge:1000,timeout:30000});keepScreenOn(true);
 }
-function gpsStop(msg){if(gps.watch!==null)navigator.geolocation.clearWatch(gps.watch);Object.assign(gps,{on:false,watch:null,fix:null,world:null,road:null,planned:null,message:''});if(journey?.active&&journey.meta.gps)stopWalking();updateGpsUI();if(msg)toast(msg)}
+/* 開「我的位置」當導航時，螢幕保持亮著（不支援的裝置略過）；回到 App 時重新申請 */
+async function keepScreenOn(on){try{if(!on){await gps.wake?.release?.();gps.wake=null;return}if(gps.wake||!navigator.wakeLock||document.visibilityState!=='visible')return;gps.wake=await navigator.wakeLock.request('screen');gps.wake.addEventListener?.('release',()=>{gps.wake=null})}catch{gps.wake=null}}
+function gpsStop(msg){if(gps.watch!==null)navigator.geolocation.clearWatch(gps.watch);keepScreenOn(false);if(gpsNav){gpsNav=null;engine?.setRoute(null);routeRevision=-1}Object.assign(gps,{on:false,watch:null,fix:null,world:null,road:null,planned:null,message:'',heading:null,speed:0,hist:[],pendingNav:null});if(journey?.active&&journey.meta.gps)stopWalking();updateGpsUI();if(msg)toast(msg)}
 function onGps(pos){
- if(!gps.on)return;if(gps.warned==='error'){gps.warned='';gps.message=''}const {latitude:lat,longitude:lng,accuracy}=pos.coords;gps.fix={lat,lng,accuracy};gps.world=mapPosition({lat,lng});
+ if(!gps.on)return;if(gps.warned==='error'){gps.warned='';gps.message=''}const {latitude:lat,longitude:lng,accuracy}=pos.coords;gps.fix={lat,lng,accuracy};gps.fixAt=Date.now();gps.world=mapPosition({lat,lng});
  if(!gps.world){gps.road=null;gpsWarn('outside','你目前不在澎湖圖資範圍內，熊寶留在原位。');updateGpsUI();return}
  gps.road=navigation?.snap(gps.world.x,gps.world.z,GPS_ROAD_RANGE)||null;
  if(!gps.road)gpsWarn('noroad','你附近約 150 公尺內沒有已收錄道路（或正在海上），熊寶先在原地等你。');else if(gps.warned==='outside'||gps.warned==='noroad'){gps.warned='';gps.message=''}
- enforceGpsCheck(pos);gpsFollowBear(true);updateGpsUI();
+ gpsMotion(pos);gpsNavUpdate();enforceGpsCheck(pos);gpsFollowBear(true);updateGpsUI();
 }
+/* 你的行進方向與速度：方向用至少 30 公尺（定位誤差大時取誤差的 3 倍）以前的位置計算，避免定位飄移時方向顛倒；
+   剛出發還不到這段距離時，改用手機回報的方向。速度取手機回報與位置推算的較大值 */
+function gpsMotion(pos){
+ const unit=realMetres(),now={x:gps.world.x,z:gps.world.z,t:pos.timestamp||Date.now()},hist=gps.hist;
+ if(hist.length&&now.t<hist[hist.length-1].t)hist.length=0;gps.prevFix=hist[hist.length-1]||null;hist.push(now);while(hist.length&&now.t-hist[0].t>15000)hist.shift();
+ const acc=Math.min(50,Number(pos.coords?.accuracy)||10),need=Math.max(30,3*acc);let base=null;
+ for(let i=hist.length-2;i>=0;i--)if(Math.hypot(now.x-hist[i].x,now.z-hist[i].z)*unit>=need){base=hist[i];break}
+ const dist=base?Math.hypot(now.x-base.x,now.z-base.z)*unit:0,own=Number(pos.coords?.speed),hd=Number(pos.coords?.heading);
+ gps.speed=Math.max(Number.isFinite(own)?own:0,base?dist/Math.max(.5,(now.t-base.t)/1000):0);
+ /* 方向：手機有回報行進方向（衛星都卜勒，移動中最準）就用它；否則用 30 公尺以前的位置。
+    定位飄移偶爾會算出相反方向：和上一次方向相反時，要連續兩次都相反才採用 */
+ const dev=Number.isFinite(hd)&&own>=2.5?{x:Math.sin(hd*Math.PI/180),z:-Math.cos(hd*Math.PI/180)}:null,calc=base?{x:(now.x-base.x)*unit/dist,z:(now.z-base.z)*unit/dist}:null;
+ let h=gps.speed<5/3.6?null:dev||calc||(Number.isFinite(hd)&&own>=2?{x:Math.sin(hd*Math.PI/180),z:-Math.cos(hd*Math.PI/180)}:null);
+ if(h&&gps.heading&&!dev&&h.x*gps.heading.x+h.z*gps.heading.z<0){gps.flip=(gps.flip||0)+1;if(gps.flip<2)h=gps.heading}else gps.flip=0;
+ gps.heading=h||(gps.speed<5/3.6?null:gps.heading);
+}
+/* 你所在的道路點：有行進方向時取方向一致的道路（避免對到旁邊或交叉的路）；導航中且在路線上時取路線上的點 */
+function gpsRoadPoint(){
+ if(!gps.world||!navigation)return gps.road;
+ if(gpsNav&&gpsNav.off===0&&gpsNav.lastLat<=40){const q=gpsNav.point(gpsNav.s);if(q.type==='walk'){const on=navigation.nearby(q.x,q.z,.05)[0];if(on)return on}}
+ if(gps.heading){const h=gps.heading,c=navigation.nearby(gps.world.x,gps.world.z,.5).find(q=>Math.abs(q.axis.x*h.x+q.axis.z*h.z)>=.7);if(c)return c}
+ return gps.road;
+}
+function startGpsNav(point,meta){
+ const from=gpsRoadPoint();if(!from||!journey){gps.pendingNav={point:{...point},meta};toast('正在取得你的位置，定位後從你所在的位置開始導航。');return true}
+ const plan=journey.planner.plan(from,point);if(!plan){toast('從你目前位置到目的地沒有已收錄道路或航線。');return false}
+ gps.pendingNav=null;gps.navDone=false;gpsNav=new GpsNav(plan,point,meta);gpsNav.lastReroute=performance.now();
+ if(journey.active&&!journey.meta.gps)journey.cancel();
+ gps.follow=true;gps.camera=true;inspectPoint=null;mapOverview=false;navRotateHold=0;engine.setRoute(gpsNav.geometry());routeRevision=-1;updateGpsUI();persist();
+ const km=gpsNav.total*realMetres()/1000;toast(`開始導航${meta.name?'到'+meta.name:''}：${plan.ports.length?'沿路到港口再搭船（'+plan.ports.join(' → ')+'），':'沿道路，'}約 ${km>=1?km.toFixed(1)+' 公里':Math.round(km*1000)+' 公尺'}。熊寶會跟著你走。`);return true;
+}
+function gpsNavUpdate(){
+ if(gps.pendingNav&&!gpsNav&&gps.world){const p=gps.pendingNav;gps.pendingNav=null;startGpsNav(p.point,p.meta)}
+ if(!gpsNav||!gps.world)return;const unit=realMetres();gpsNav.prevS=gpsNav.s;gpsNav.update(gps.world,unit,Math.max(40,Math.min(80,(gps.fix?.accuracy||10)*2)));
+ if(gpsNav.arrived(unit)){const name=gpsNav.meta.name;gpsNav=null;gps.navDone=true;engine.setRoute(null);routeRevision=-1;toast(`已抵達${name||'目的地'}。`);return}
+ if(gpsNav.off>=2&&performance.now()-gpsNav.lastReroute>5000){const from=gpsRoadPoint(),plan=from&&journey.planner.plan(from,gpsNav.end);gpsNav.lastReroute=performance.now();if(plan){const meta=gpsNav.meta;gpsNav=new GpsNav(plan,gpsNav.end,meta);gpsNav.lastReroute=performance.now();toast('已偏離路線，從你目前位置重新規劃。')}}
+ engine.setRoute(gpsNav.geometry());
+}
+/* 熊寶跟著你時的速度：離你遠（約 280 公尺以上）先快速沿路趕上；靠近後照你的速度前進，不會跑到你前面或自己亂跑 */
+function gpsBearSpeed(){const rem=journey.remaining(player);if(rem>3)return 3;return clamp(Math.max((gps.speed||0)/realMetres()*1.05,rem/1.2),.01,3)}
 function onGpsError(err){
  if(err.code===1){gpsStop('沒有定位權限。請到瀏覽器或 App 設定允許「位置」後再按一次。');return}
+ if(gps.fixAt&&Date.now()-gps.fixAt<15000)return; // 剛剛還有定位：偶發逾時不提示
  gpsWarn('error','暫時取得不到定位訊號，持續嘗試中…');updateGpsUI();
 }
 function gpsFollowBear(fresh=false){
  if(!gps.on||!gps.follow||!gps.road||!journey||!navigation||!mapMode()||!started)return;
- if(target)return; // 使用者自己選了目的地：GPS 只顯示位置
+ if(target&&!gpsNav&&!gps.navDone)return; // 沒開導航時，使用者自己選的目的地由熊寶自動前往（導航抵達後熊寶繼續跟著你）
  if(journey.active&&!journey.meta.gps)return; // 正在前往使用者選的鄉市／港口
  if(journey.inTransit)return; // 船上：靠港後再更新
- const now=performance.now(),gap=Math.hypot(gps.road.x-player.x,gps.road.z-player.z);
+ const road=gpsRoadPoint()||gps.road,now=performance.now(),gap=Math.hypot(road.x-player.x,road.z-player.z);
  if(gap<.2&&!journey.active)return; // 約 20 公尺內視為已跟上
- const moved=gps.planned?Math.hypot(gps.road.x-gps.planned.x,gps.road.z-gps.planned.z):Infinity;
- if(journey.active&&journey.meta.gps&&moved<.3)return; // 你沒移動多少，維持原路線
- if(now-gps.lastPlan<(fresh?2500:6000))return;
- gps.lastPlan=now;gps.planned={...gps.road};
- const result=journey.request(player,{...gps.road},{recordId:'',area:$('#region').value,name:'你的位置',gps:true});
+ const moved=gps.planned?Math.hypot(road.x-gps.planned.x,road.z-gps.planned.z):Infinity,close=gap<5; // 約 460 公尺內：每次定位都更新，照你的速度跟
+ if(journey.active&&journey.meta.gps&&moved<(close?.03:.3))return; // 你沒移動多少，維持原路線
+ if(now-gps.lastPlan<(close?700:fresh?2500:6000))return;
+ gps.lastPlan=now;gps.planned={...road};
+ const result=journey.request(player,{...road},{recordId:'',area:$('#region').value,name:'你的位置',gps:true});
  if(!result){gpsWarn('noroute','從熊寶目前位置到你附近沒有已收錄道路或航線，熊寶留在原位。');return}
  if(gps.warned==='noroute'){gps.warned='';gps.message=''}
  routeRevision=-1;persist();
 }
-function gpsRecenter(){if(!gps.on)return;closeMapMenu();returnToMap();mapOverview=false;inspectPoint=null;gps.camera=true;gps.follow=true;if(target)clearTarget();else if(journey?.active&&!journey.meta.gps)stopWalking();gps.lastPlan=0;gpsFollowBear(true);updateGpsUI();toast(journey?.inTransit?'畫面回到你的位置；熊寶在船上，靠港後沿路跟上。':'畫面回到你的位置，熊寶會沿路跟上。')}
+function gpsRecenter(){if(!gps.on)return;closeMapMenu();returnToMap();mapOverview=false;inspectPoint=null;gps.camera=true;gps.follow=true;navRotateHold=0;if(gpsNav){}else if(target)clearTarget();else if(journey?.active&&!journey.meta.gps)stopWalking();gps.lastPlan=0;gpsFollowBear(true);updateGpsUI();toast(journey?.inTransit?'畫面回到你的位置；熊寶在船上，靠港後沿路跟上。':'畫面回到你的位置，熊寶會沿路跟上。')}
 function updateGpsUI(){
  const btn=$('#gps-toggle'),chip=$('#gps-chip');if(!btn||!chip)return;
  btn.classList.toggle('active',gps.on);btn.setAttribute('aria-pressed',String(gps.on));chip.hidden=!gps.on;document.body.classList.toggle('gps-on',gps.on);if(!gps.on)return;
  let text=gps.message||'定位中…';
  if(gps.fix&&gps.world&&gps.warned!=='error'){
   const acc=`±${Math.round(gps.fix.accuracy)}m`,gap=metres(Math.hypot(gps.world.x-player.x,gps.world.z-player.z));
-  const state=target||journey?.active&&!journey.meta.gps?'前往目的地中（點此改跟隨你）':!gps.follow?'自由移動（點此恢復跟隨）':journey?.inTransit?'搭船中，靠港後跟上':gap<40?'就在你身邊':'沿路跟上中';
+  const km=d=>d>=1000?(d/1000).toFixed(1)+' 公里':d+' 公尺';
+  if(gpsNav){const left=metres(gpsNav.remaining()),v=Math.round((gps.speed||0)*3.6);text=gps.message&&gps.warned?gps.message:`導航中 · 剩 ${km(left)} · 時速 ${v} 公里 · GPS ${acc}${gps.camera?'':'（點此回到你的位置）'}`;if(chip.textContent!==text)chip.textContent=text;return}
+  const state=gps.navDone&&target?'已抵達目的地，熊寶跟著你':target||journey?.active&&!journey.meta.gps?'前往目的地中（點此改跟隨你）':!gps.follow?'自由移動（點此恢復跟隨）':journey?.inTransit?'搭船中，靠港後跟上':gap<40?'就在你身邊':'沿路跟上中';
   text=gps.message&&gps.warned?gps.message:`GPS ${acc} · 熊寶距你 ${gap>=1000?(gap/1000).toFixed(1)+' 公里':gap+' 公尺'} · ${state}`;
  }
  if(chip.textContent!==text)chip.textContent=text;
@@ -1677,13 +2166,16 @@ async function toggleEnforce(on,silent=false){
  enforce.on=on;try{localStorage.setItem(ENFORCE_KEY,on?'1':'0')}catch{}
  document.body.classList.toggle('enforce-on',on);
  if(on&&!silent)ensureEnforceAudio();
- if(!on){$('#enforce-labels').innerHTML='';$('#enforce-alert').hidden=true;document.body.classList.remove('enforce-alerting');if(!silent)toast('已關閉測速／科技執法圖層與提醒。');return}
+ if(!on){$('#enforce-labels').innerHTML='';hideEnforceAlert();if(!silent)toast('已關閉測速／科技執法圖層與提醒。');return}
  if(!enforce.points.length&&!enforce.loading){enforce.loading=true;const res=await loadEnforcement();enforce.loading=false;enforce.from=res.from;enforce.meta=res.meta||null;enforce.points=groupPoints(res.records);prepareEnforcePoints()}
  renderEnforceMarkers();
- if(!silent){const shown=enforce.points.filter(q=>!q.suspect),n=shown.length,nt=shown.filter(q=>q.tech).length;toast(n?`已顯示測速照相 ${shown.filter(q=>q.speed).length} 處${nt?`（其中 ${nt} 處路口另有科技執法）`:''}（${enforce.from==='sheet'?'即時讀取試算表':'遊戲內建資料'}，澎湖縣警察局公布）。騎車請勿操作手機，以現場標誌與速限為準。`:'測速／科技執法資料暫時讀不到。')}
+ if(!silent){const shown=enforce.points.filter(q=>!q.suspect),n=shown.length,nt=shown.filter(q=>q.tech).length;toast(n?`已顯示測速照相 ${shown.filter(q=>q.speed).length} 處${nt?`（其中 ${nt} 處路口另有科技執法）`:''}（澎湖縣警察局公布）。騎車請勿操作手機，以現場標誌與速限為準。`:'測速／科技執法資料暫時讀不到。')}
 }
 /* 世界座標與「提醒點」（附近收錄道路，只用來算距離；標記仍在原始座標） */
-function prepareEnforcePoints(){for(const p of enforce.points){p.world=mapPosition({lat:p.lat,lng:p.lng});p.alertAt=p.world&&navigation?.snap(p.world.x,p.world.z,.6)||p.world}}
+function prepareEnforcePoints(){for(const p of enforce.points){p.world=mapPosition({lat:p.lat,lng:p.lng});p.axis=null;if(!p.world){p.alertAt=null;continue}
+ /* 路口附近有好幾條路時，測速點選「方向與受測方向一致」的那條（約 55 公尺內），不再一律取最近的路 */
+ const near=navigation?.nearby?navigation.nearby(p.world.x,p.world.z,.6):[],aligned=p.dir&&near.find(q=>Math.abs(q.axis.x*p.dir.x+q.axis.z*p.dir.z)>=.7),pick=aligned||near[0];
+ p.alertAt=pick?{x:pick.x,z:pick.z}:p.world;p.axis=pick?pick.axis:null}}
 function renderEnforceMarkers(){
  const box=$('#enforce-labels');if(!box)return;if(!enforce.on){box.innerHTML='';return}
  box.innerHTML=enforce.points.filter(p=>p.world&&!p.suspect).map(p=>`<button class="enforce-marker${p.tech?' tech':''}${p.suspect?' suspect':''}" data-enf="${p.id}" hidden aria-label="${escape((p.speed?'測速照相':'')+(p.tech?(p.speed?'＋':'')+'路口科技執法':'')+' '+p.name)}"><b>${p.suspect?'?':escape(p.limit??'')}</b>${p.tech?'<i>科</i>':''}</button>`).join('');
@@ -1699,30 +2191,71 @@ function showEnforceDetail(p){
  if(!p)return;keys.clear();const recs=p.records,first=recs[0],uniq=list=>[...new Set(list.filter(v=>v!==null&&v!==undefined&&v!==''))];
  const speed=recs.find(r=>r.type==='speed'),tech=recs.find(r=>r.type==='tech');
  const kind=[speed?'固定測速照相':'',tech?'路口科技執法（'+(tech.techKind||'路口')+'）':''].filter(Boolean).join('＋');
- const fields=[['類型',kind],['設置地點',uniq(recs.map(r=>r.name)).join('／')],['鄉市',first.area],['速限',uniq(recs.map(r=>r.limit)).map(v=>v+' 公里／小時').join('／')],['受測方向',uniq(recs.map(r=>r.direction)).join('／')],['測速照相取締',speed?.items||''],['科技執法取締',tech?.items||''],['管轄分局',uniq(recs.map(r=>r.dept)).join('／')],['座標',`${p.lat}, ${p.lng}`],['資料',[speed?`測速資料更新 ${speed.updated}`:'',tech?`科技執法資料更新 ${tech.updated}`:'',first.date?`整理 ${first.date}`:''].filter(Boolean).join('・')],['備註',uniq(recs.map(r=>r.note)).join('；')]].filter(x=>x[1]);
+ const fields=[['類型',kind],['設置地點',uniq(recs.map(r=>r.name)).join('／')],['鄉市',first.area],['速限',uniq(recs.map(r=>r.limit)).map(v=>v+' 公里／小時').join('／')],['受測方向',uniq(recs.map(r=>r.direction)).join('／')],['測速照相取締',speed?.items||''],['科技執法取締',tech?.items||''],['管轄分局',uniq(recs.map(r=>r.dept)).join('／')],['座標',`${p.lat}, ${p.lng}`],['資料',[speed?`測速資料更新 ${speed.updated}`:'',tech?`科技執法資料更新 ${tech.updated}`:'',first.date?`整理 ${first.date}`:''].filter(Boolean).join('・')]].filter(x=>x[1]);
  const links=[speed&&safeURL(speed.source)?`<a href="${escape(safeURL(speed.source))}" target="_blank" rel="noopener noreferrer">固定測速照相設置地點表 ↗</a>`:'',tech&&safeURL(tech.source)?`<a href="${escape(safeURL(tech.source))}" target="_blank" rel="noopener noreferrer">科技執法地點 ↗</a>`:''].filter(Boolean).join('　');
  const tags=`${speed?'<span class="tag">測速照相</span>':''}${tech?'<span class="tag">路口科技執法</span>':''}`;
- $('#detail-body').innerHTML=`<div class="detail-tag">${tags}</div><h2>${escape(p.name)}</h2>${p.suspect?'<p class="enforce-warn">原始座標與地名不符，位置可能有誤，遊戲不以此點提醒。</p>':''}<dl class="detail-fields">${fields.map(([a,b])=>`<dt>${a}</dt><dd>${escape(b)}</dd>`).join('')}</dl>${links?`<p>${links}</p>`:''}<p class="small-note">資料來源：澎湖縣政府警察局（澎湖縣政府開放資料平台），${enforce.from==='sheet'?'即時讀取熊熊綜合系統試算表「測速與科技執法」':'遊戲內建資料'}；地點名稱照原始資料。實際設置與速限以現場標誌為準；騎車請勿操作手機。</p>`;
+ $('#detail-body').innerHTML=`<div class="detail-tag">${tags}</div><h2>${escape(p.name)}</h2>${p.suspect?'<p class="enforce-warn">原始座標與地名不符，位置可能有誤，遊戲不以此點提醒。</p>':''}<dl class="detail-fields">${fields.map(([a,b])=>`<dt>${a}</dt><dd>${escape(b)}</dd>`).join('')}</dl>${links?`<p>${links}</p>`:''}<p class="small-note">澎湖縣警察局公布。實際設置與速限以現場標誌為準；騎車請勿操作手機。</p>`;
  if(!$('#details').open)$('#details').showModal();
 }
 function showEnforceAlert(list,{sound=false}={}){
- if(!list.length)return;const el=$('#enforce-alert');el.textContent=alertText(list[0]);el.hidden=false;document.body.classList.add('enforce-alerting');clearTimeout(enforce.alertTimer);enforce.alertTimer=setTimeout(()=>{el.hidden=true;document.body.classList.remove('enforce-alerting')},4500);
- if(sound){try{navigator.vibrate?.([140,80,140])}catch{}try{const a=enforce.audio;if(a){a.resume?.();const t=a.currentTime;for(const [f,d] of [[880,0],[1175,.18]]){const o=a.createOscillator(),g=a.createGain();o.frequency.value=f;g.gain.setValueAtTime(.0001,t+d);g.gain.exponentialRampToValueAtTime(.25,t+d+.02);g.gain.exponentialRampToValueAtTime(.0001,t+d+.15);o.connect(g).connect(a.destination);o.start(t+d);o.stop(t+d+.16)}}}catch{}}
+ if(!list.length)return;const first=list[0];
+ /* 提醒持續顯示並倒數距離，直到通過該點才收起（不是固定幾秒就消失） */
+ enforce.active={point:first.point,sound,near:first.distance<=120,d:first.distance,miss:0};setEnforceText(first.distance);
+ /* 同一點 60 秒內只響一次（重新顯示時不重複響） */
+ if(sound){const id=first.point.id,t=Date.now(),last=(enforce.beeped||(enforce.beeped=new Map())).get(id);if(!last||t-last>60000){enforce.beeped.set(id,t);enforceBeep()}}
+}
+function setEnforceText(distance){
+ const el=$('#enforce-alert'),a=enforce.active;if(!a)return;const t=alertText({point:a.point,distance});if(el.textContent!==t)el.textContent=t;el.hidden=false;document.body.classList.add('enforce-alerting');
+ clearTimeout(enforce.alertTimer);enforce.alertTimer=setTimeout(hideEnforceAlert,8000); /* 8 秒沒有更新（停下、定位中斷）才收起 */
+}
+function hideEnforceAlert(){enforce.active=null;clearTimeout(enforce.alertTimer);const el=$('#enforce-alert');if(el)el.hidden=true;document.body.classList.remove('enforce-alerting')}
+/* 每次檢查時更新提醒中的那一點：剩餘距離倒數；通過後收起。GPS 時剩 100 公尺再響一次 */
+function trackEnforceAlert(pos,heading,opts,moved=0){
+ const a=enforce.active;if(!a)return;let d=opts.route||opts.routes?distanceAhead(a.point,pos,heading,opts):null; // 這次對不到路就用移動距離往下扣，不用直線估算
+ /* 這一次對不到路（定位飄移、路口）時，用移動距離往下扣，連續 3 次（還很遠時 6 次）對不到才收起；已經通過就收起 */
+ if(d===null){a.miss=(a.miss||0)+1;d=(a.d??0)-moved;if(a.miss>=(d>30?6:3)){const id=a.point.id;hideEnforceAlert();if(d>30){enforce.alerted.delete(id);enforce.gpsAlerted.delete(id)}return}}else a.miss=0; // 還沒到就對不到路：之後再對到時重新顯示
+ const at=a.point.alertAt||a.point.world;if(a.miss&&d<25&&heading&&at){const dx=at.x-pos.x,dz=at.z-pos.z;if((dx*heading.x+dz*heading.z)<0&&Math.hypot(dx,dz)*(opts.unit||1)>25)d=-10} // 對不到路、估計已到點附近，且點在你後方 25 公尺外：收起
+ if(d<-5){hideEnforceAlert();return}
+ if(a.d!=null&&a.miss===0)d=Math.min(a.d,Math.max(d,a.d-(moved*1.5+15))); // 顯示距離平順：不倒退、也不比實際移動跳得快（定位飄移時）
+ a.d=Math.max(0,d);setEnforceText(a.d);if(a.sound&&!a.near&&a.d<=100){a.near=true;enforceBeep()}
+}
+function enforceBeep(){
+ {try{navigator.vibrate?.([140,80,140])}catch{}try{const a=enforce.audio;if(a){a.resume?.();const t=a.currentTime;for(const [f,d] of [[880,0],[1175,.18]]){const o=a.createOscillator(),g=a.createGain();o.frequency.value=f;g.gain.setValueAtTime(.0001,t+d);g.gain.exponentialRampToValueAtTime(.25,t+d+.02);g.gain.exponentialRampToValueAtTime(.0001,t+d+.15);o.connect(g).connect(a.destination);o.start(t+d);o.stop(t+d+.16)}}}catch{}}
+
 }
 /* 熊寶行進：以 0.25 秒間的移動方向判斷前方（GPS 開啟時改用你的實際位置） */
 function enforceBearTick(){
- if(!mapMode()||!enforce.points.length)return;const prev=enforce.last;enforce.last={x:player.x,z:player.z};if(!prev)return;
+ if(!mapMode()||!enforce.points.length)return;const prev=enforce.last,wasTrip=enforce.lastTrip;enforce.last={x:player.x,z:player.z};enforce.lastTrip=!!journey?.active;if(!prev)return;
  const dx=player.x-prev.x,dz=player.z-prev.z,n=Math.hypot(dx,dz),heading=n>1e-4&&!journey?.inTransit?{x:dx/n,z:dz/n}:null;
- showEnforceAlert(checkAlerts(enforce.points,player,heading,{unit:realMetres()},enforce.alerted));
+ /* 自動前往時沿規劃道路判斷（不會被旁邊道路或路口另一條路的測速誤報）；搖桿時沿熊寶所在道路往前看。
+    剛抵達（這次移動來自自動前往）或在港區／船上時只更新「可再提醒」狀態 */
+ const ahead=journey?.active?journey.ahead(player):null;
+ if((journey?.active&&!ahead)||(!journey?.active&&wasTrip)){checkAlerts(enforce.points,player,null,{unit:realMetres()},enforce.alerted);return}
+ const unit=realMetres(),last=enforce.lastAhead,sameTrip=ahead&&last&&enforce.lastRev===journey.revision;enforce.lastAhead=ahead;enforce.lastRev=journey?.revision;
+ /* 用上次檢查時的路線（從上次位置沿實際道路到現在），這段間隔裡經過的點也會檢查到 */
+ let route=sameTrip?last:ahead,step=sameTrip?(alongRoute(last,player,unit,5,1e9)?.s??n*unit):0;
+ if(!route&&heading&&n<2){const all=navigation?.lookaheadAll?navigation.lookaheadAll(prev.x,prev.z,heading,(350+n*unit)/unit,.2):[];step=n*unit;if(all.length){trackEnforceAlert(player,heading,{unit,routes:all,step},n*unit);showEnforceAlert(checkAlerts(enforce.points,player,heading,{unit,routes:all,step},enforce.alerted));return}} /* 搖桿：沿熊寶所在道路往前看（路口幾條直行方向都看） */
+ if(!route){checkAlerts(enforce.points,player,null,{unit},enforce.alerted);return}
+ trackEnforceAlert(player,heading,{unit,route,step},n*unit);showEnforceAlert(checkAlerts(enforce.points,player,heading,{unit,route,step},enforce.alerted));
 }
-/* GPS：連續定位算出你的行進方向與速度；時速低於 5 公里（步行、停車）不提醒 */
+/* GPS：用「至少 30 公尺（定位誤差大時取誤差的 3 倍）以前的位置」算行進方向，避免定位飄移時方向顛倒；
+   時速低於 5 公里（步行、停車）不提醒。沿你目前所在的道路往前看（路口取最直的那條），只提醒這條路上同方向的測速 */
 function enforceGpsCheck(pos){
- if(!enforce.on||!gps.world||!enforce.points.length)return;const now={x:gps.world.x,z:gps.world.z,t:pos.timestamp||Date.now()},prev=enforce.gpsLast;
- const moved=prev?Math.hypot(now.x-prev.x,now.z-prev.z)*realMetres():0;if(prev&&moved<8){checkAlerts(enforce.points,now,null,{unit:realMetres()},enforce.gpsAlerted);return}
- enforce.gpsLast=now;if(!prev)return;
- const speed=Number.isFinite(pos.coords.speed)&&pos.coords.speed!==null?pos.coords.speed:moved/Math.max(.5,(now.t-prev.t)/1000);
- const heading=speed>=5/3.6?{x:(now.x-prev.x)*realMetres()/moved,z:(now.z-prev.z)*realMetres()/moved}:null;
- showEnforceAlert(checkAlerts(enforce.points,now,heading,{unit:realMetres()},enforce.gpsAlerted),{sound:true});
+ if(!enforce.on||!gps.world||!enforce.points.length)return;const unit=realMetres(),now={x:gps.world.x,z:gps.world.z,t:pos.timestamp||Date.now()},heading=gps.heading,moving=(gps.speed||0)>=5/3.6;
+ const prev=gps.prevFix,moved=prev&&now.t-prev.t<=10000?Math.hypot(now.x-prev.x,now.z-prev.z)*unit:0;
+ let route=null,step=0;
+ /* 導航中且在路線上：直接看接下來要走的路線（不必等方向算出來，轉彎也算得準）；否則沿你所在的道路往前看（路口取最直的那條，道路本身轉彎會跟著彎） */
+ if(moving&&gpsNav&&gpsNav.off===0&&gpsNav.lastLat<=40){const from=Math.max(0,Math.min(gpsNav.prevS??gpsNav.s,gpsNav.s));route=gpsNav.ahead(from,350/unit+(gpsNav.s-from));if(route)step=(gpsNav.s-from)*unit}
+ if(!route&&moving&&heading){
+  /* 從上一個定位點開始看：定位間隔較長（例如 3～5 秒一筆）時，中間經過的路口也不會漏；定位誤差大時找路範圍放寬 */
+  const from=moved>2*(gps.fix?.accuracy||10)&&moved<200?prev:now;step=from===prev?moved:0; // 移動距離比定位誤差大很多時才從上一點看（慢速時直接從目前位置看，距離較準）
+  const reach=Math.min(.6,Math.max(.35,(gps.fix?.accuracy||10)*3/unit));
+  const all=navigation?.lookaheadAll?navigation.lookaheadAll(from.x,from.z,heading,(350+step)/unit,reach):[];
+  if(all.length){if(enforce.active)trackEnforceAlert(now,heading,{unit,routes:all,step},moved);showEnforceAlert(checkAlerts(enforce.points,now,heading,{unit,routes:all,step},enforce.gpsAlerted),{sound:true});return}
+ }
+ if(enforce.active)trackEnforceAlert(now,heading,{unit,route,step},moving?moved:0);
+ if(!route){checkAlerts(enforce.points,now,null,{unit},enforce.gpsAlerted);return}
+ showEnforceAlert(checkAlerts(enforce.points,now,heading,{unit,route,step},enforce.gpsAlerted),{sound:true});
 }
 let coastLoading=false;
 async function prepareCoastline(){
@@ -1737,17 +2270,17 @@ async function prepareCoastline(){
 }
 async function init(){
  try{
-  const r=await fetch('data.json');if(!r.ok)throw Error('無法載入遊戲資料');data=await r.json();
-  let raw={};try{raw=JSON.parse(localStorage.getItem(SAVE_KEY)||'{}')}catch{saveAvailable=false}save=cleanSave(raw,data.records);
-  engine=new Engine($('#world'));engine.configureMap(MAP);engine.tiles=new TileMap(engine,s=>{$('#tile-state').textContent=s;$('.geo-status').classList.toggle('has-map-error',s.includes('未載入'))});engine.zoom=44;
+  data=await loadSheetData();$('#intro-count').textContent=`${data.records.length} 筆美食、景點與廟宇`;
+  let raw={};try{raw=JSON.parse(localStorage.getItem(SAVE_KEY)||'{}')}catch{saveAvailable=false}save=cleanSave(migrateSave(raw),data.records);
+  engine=new Engine($('#world'));engine.configureMap(MAP);engine.tiles=new TileMap(engine,s=>{$('#tile-state').textContent=s;$('.geo-status').classList.toggle('has-map-error',s.includes('未載入'))});engine.zoom=44;loadBuildings(engine).then(b=>{if(b&&engine)engine.buildings=b});
   $('#region').innerHTML=AREAS.map(a=>`<option value="${a}">${a}</option>`).join('');bindControls();setRegion(save.area);
   $('#map-layer').onchange=e=>{engine.tiles.setLayer(e.target.value);$('#layer-credit').textContent=LAYERS[e.target.value].credit;$('#layer-credit').href=LAYERS[e.target.value].href};
   $('#coast-retry').onclick=()=>{engine.tiles.retry();prepareCoastline()};$('#map-retry').onclick=()=>engine.tiles.retry();
-  $('#north-liao').onclick=()=>navigateTo(data.records.find(r=>r.id==='temple-76'));
+  $('#north-liao').onclick=()=>navigateTo(data.records.find(r=>r.id===migrateId('temple-76')));
   const sea=data.seaDays[tideDate]||Object.values(data.seaDays)[0];updateSimulation(sea);
   $('#loading').hidden=true;requestAnimationFrame(frame);prepareCoastline();
   /* 畫面被系統收回後自動重新載入：直接回到地圖，不再顯示開場 */
-  try{if(sessionStorage.getItem('bear-penghu-resume')){sessionStorage.removeItem('bear-penghu-resume');start()}}catch{}
+  try{const r=sessionStorage.getItem('bear-penghu-resume');if(r){sessionStorage.removeItem('bear-penghu-resume');start();const info=r.startsWith('{')?JSON.parse(r):null;if(info?.gps)setTimeout(()=>{if(!gps.on)toggleGps();const nav=info.nav;if(nav?.end){const n=nav.meta?.recordId&&nodes.find(x=>x.record.id===migrateId(nav.meta.recordId));if(n)setTarget(n);gps.pendingNav={point:nav.end,meta:nav.meta||{}}}},600)}}catch{} /* 原本開著定位：自動接續（已允許過權限，不會再詢問） */
  }catch(e){$('#loading').classList.add('error');$('#loading').innerHTML=`<div class="error-box"><h2>熊寶暫時無法出發</h2><p>${escape(e.message)}</p><button class="primary" onclick="location.reload()">重新載入</button></div>`;console.error(e)}
 }
 init();

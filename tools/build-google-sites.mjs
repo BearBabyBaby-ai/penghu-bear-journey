@@ -4,7 +4,7 @@
 import fs from 'node:fs';
 const BASE=process.argv[2]||'https://bearbabybaby-ai.github.io/penghu-bear-journey/';
 const D='dist/',read=f=>fs.readFileSync(D+f,'utf8');
-const ORDER=['map','engine','model','media','coastline','navigation','places','roads','tiles','travel','ask','ferry-sheet','enforcement'];
+const ORDER=['map','engine','model','media','coastline','navigation','id-migrate','places','roads','tiles','travel','deity','ask','ferry-sheet','enforcement','sheet-data','buildings','gpsnav'];
 const ident=n=>'__m_'+n.replace(/-/g,'_');
 const rewriteImports=src=>src.replace(/^import \{([^}]*)\} from '\.\/([\w-]+)\.js[^']*';\s*$/gm,(_,names,mod)=>`const {${names.split(',').map(s=>s.trim()).filter(Boolean).map(s=>s.replace(/\s+as\s+/,':')).join(',')}}=${ident(mod)};`);
 let bundle='';

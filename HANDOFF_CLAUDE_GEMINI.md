@@ -78,31 +78,29 @@
 | `tools/build-ferry-routes.mjs` | 從現有道路與陸域重建港區接駁／海路 |
 | `dist/roads.js` | 道路圖A*、精確起終點投影、路段移動與轉彎 |
 | `dist/tiles.js` | 按畫面需求取得底圖，不預抓離線圖磚 |
-| `dist/data.json` | 全部地點、分海與潮汐資料快照 |
-| `dist/assets/places/PHOTO-MANIFEST.json` | 每張照片對應地點、原表列、Drive ID、網址與雜湊 |
+| `dist/sheet-data.js` | 開啟時直接讀原表五個工作表，組成地點、分海與潮汐（不內建資料） |
+| `dist/id-migrate.js` | 舊版列號編號 → 新編號對照，讀舊存檔時轉換集章 |
+| `dist/deity.js` | 廟宇主祀判斷（多位主祀拆開、別名歸同一位） |
 
 `dist/navigation.js` 是舊陸域網格工具，保留為幾何回歸與重建使用；真實地圖的移動由 `roads.js` 控制，不能切回跨街廓的陸地直線移動。
 
 ## 資料結構
 
-`data.json` 根層有 `meta`、`records`、`seaDays`、`forecasts`。每筆地點包含穩定的 `id`、`kind`、`sheet`、`row`、`name`、`area`、`village`、`category`、`description`、`special`、`phone`、`address`、`hours`、`lat`、`lng`、`url`、`legend`、`images` 等欄位；廟宇另可能有 `festival`。
+2026-11-25 起依使用者規定：儲存庫不留任何資料備份（已刪除 `dist/data.json`、`dist/assets/places/` 照片、`sources/` 原表快照、測速內建檔），手機也不另外存；開啟時直接讀原表，讀不到就顯示提示。
+
+遊戲資料（`loadSheetData()` 回傳）有 `meta`、`records`、`seaDays`、`forecasts`。每筆地點包含 `id`、`kind`、`sheet`、`row`、`name`、`area`、`village`、`category`、`description`、`special`、`phone`、`address`、`hours`、`lat`、`lng`、`url`、`legend`、`images`；廟宇另有 `festival`。
 
 - `kind` 為 `food`／`sight`／`temple`。
-- `id` 使用種類加原表列號，例如 `food-11`；不可重新編號，否則既有集章會對不上。
+- `id` 依名稱固定（景點、廟宇：村里＋名稱；美食：鄉市＋名稱），例如 `temple-habcd6247`；原表調整列的順序不影響集章。舊版列號編號由 `id-migrate.js` 轉換。
 - 缺座標保留 `null`，不能以零、鄉市中心或其他店家位置代填。
-- `images` 每項含 `driveFileId`、`sourceURL`、`src`、`width`、`height`。`src` 為專案相對路徑。
-- 沒有圖資就保留空陣列，不找其他景點照片替補。`food-551` 的圖資欄實際為Maps連結，保留在 `imageLinks`，不當成圖片。
+- `images` 每項含 `driveFileId`、`sourceURL`、`src`（原表 Drive 檔的 `lh3.googleusercontent.com` 網址，不下載到儲存庫）。
+- 沒有圖資就保留空陣列，不找其他景點照片替補。圖資欄是地圖連結時保留在 `imageLinks`，不當成圖片。
 - 每張照片只能依同一工作表的同一列掛回地點；照片名稱相近不是任意改配的依據。
 
 原試算表識別與讀取範圍保留於資料及快照中；介面不顯示使用工作表清單，不代表可以刪除接手所需的來源對應資訊。只使用已授權的五個工作表，不讀其他工作表內容，也不修改原表。
 
 ## 圖資與資料重建
 
-- `sources/approved-sheet-snapshot-20261015.json` 含本次讀取的完整美食列與景點／廟宇圖資欄；`dist/data.json` 含既有地點及潮汐的完整解析快照。
-- 重新匯入本次食物／圖資欄：`python tools/import-food-photos.py sources/approved-sheet-snapshot-20261015.json`。
-- 上一步會重設相片資產連結，請接著執行 `node tools/link-photo-assets.mjs sources/photo-assets-20261015.json`。
-- 若更新了原圖，`tools/import-photos.mjs` 以stdin接收有效短期下載參照，下載後用ImageMagick產生網頁WebP；詳細輸入欄位可讀工具原始碼。只改尺寸、EXIF方向及編碼，不裁切、不修飾圖中內容。
-- 圖片原檔ID與SHA-256保留於PHOTO-MANIFEST。711MB左右的原始攝影檔仍由原Drive連結管理；此備份內包含34MB左右的全部網頁相片檔，足以離開Drive獨立顯示遊戲。
 - 陸域與道路的重建工具及第三方授權在 `tools/`、`dist/geo/`。不要手繪島嶼、平移原始坐標或用海面顏色當精確陸海判斷。
 
 ## 地圖與版本限制

@@ -1,10 +1,9 @@
 // 測速照相與科技執法：讀取熊熊綜合系統試算表「測速與科技執法」工作表（公開 CSV，不需 API 金鑰），
-// 讀不到時改用內建檔。資料來源為澎湖縣政府警察局開放資料；座標保留原值（只把原始資料對調的經緯度欄位換回來）。
+// 讀不到時不顯示（不內建資料）。資料來源為澎湖縣政府警察局開放資料；座標保留原值（只把原始資料對調的經緯度欄位換回來）。
 // 本檔只做資料整理與「前方提醒」判斷，不移動熊寶。
 import {parseCSV} from './ferry-sheet.js?v=20261016-sheet1';
 
 export const ENFORCE_SHEET={id:'1LOr4_3ugTHvTIi4UIfgVz2atVFh2K32zh7YKrrHxTwk',gid:777020,name:'測速與科技執法'};
-export const ENFORCE_FILE='geo/penghu-enforcement-20261016.json';
 export const ENFORCE_HEADERS=['類型','設備編號','設置地點','鄉市','緯度','經度','速限','拍攝方向','取締項目','科技執法種類','管轄分局','型式','官方資料','資料更新日期','整理日期','備註'];
 
 // 世界座標：x 向東、z 向南
@@ -15,7 +14,7 @@ export function parseDirection(text){
   const v=[...m[2]].reduce((a,c)=>[a[0]+DIRS[c][0],a[1]+DIRS[c][1]],[0,0]),n=Math.hypot(v[0],v[1]);
   return n?{x:v[0]/n,z:v[1]/n}:null;
 }
-const num=v=>{const n=Number(String(v??'').replace(/^'/,'').trim());return Number.isFinite(n)?n:null};
+const num=v=>{const t=String(v??'').replace(/^'/,'').trim();if(!t)return null;const n=Number(t);return Number.isFinite(n)?n:null};
 
 /* 一筆紀錄：經緯度若明顯對調（緯度欄 >90）就換回來，其餘數值不改 */
 export function normalizeRecord(r){
@@ -35,7 +34,7 @@ export function enforcementRowsFromCSV(text){
 /* 同一座標（同一路口）的測速與科技執法合併成一個點 */
 export function groupPoints(records){
   const map=new Map();
-  for(const r of records){const key=r.lat.toFixed(5)+','+r.lng.toFixed(5);if(!map.has(key))map.set(key,{id:'enf-'+(map.size+1),lat:r.lat,lng:r.lng,records:[]});map.get(key).records.push(r)}
+  for(const r of records){if(!Number.isFinite(r.lat)||!Number.isFinite(r.lng))continue;const key=r.lat.toFixed(5)+','+r.lng.toFixed(5);if(!map.has(key))map.set(key,{id:'enf-'+(map.size+1),lat:r.lat,lng:r.lng,records:[]});map.get(key).records.push(r)}
   return [...map.values()].map(p=>{const speed=p.records.find(r=>r.type==='speed'),tech=p.records.find(r=>r.type==='tech'),main=tech||speed;
     return{...p,name:main.name,area:main.area,speed:!!speed,tech:!!tech,limit:(speed||tech).limit,direction:(speed||tech).direction,dir:parseDirection((speed||tech).direction),items:[...new Set(p.records.flatMap(r=>r.items.split(/[、,，]/)).map(s=>s.trim()).filter(Boolean))],suspect:p.records.some(r=>r.suspect)}});
 }
@@ -122,9 +121,8 @@ export async function loadEnforcementSheet(fetcher=globalThis.fetch){
   return null;
 }
 
-/* 先讀試算表，讀不到改用內建檔；回傳 {records,from} */
+/* 直接讀試算表（不內建資料）；回傳 {records,from} */
 export async function loadEnforcement(fetcher=globalThis.fetch){
   const sheet=await loadEnforcementSheet(fetcher);if(sheet)return{records:sheet,from:'sheet'};
-  try{const res=await fetcher(ENFORCE_FILE);if(res.ok){const data=await res.json();return{records:data.records.map(normalizeRecord),from:'bundled',meta:data}}}catch{}
   return{records:[],from:'none'};
 }
